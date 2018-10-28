@@ -5,7 +5,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorMode;
 
-public class DriveDetect extends Thread implements UltrasonicController {
+public class RingController extends Thread implements UltrasonicController {
 	public enum Color { ORANGE, BLUE, GREEN, YELLOW, NONE };
 	private EV3ColorSensor lightSensor;
 	private SensorMode color;
@@ -17,13 +17,37 @@ public class DriveDetect extends Thread implements UltrasonicController {
 	private Odometer odo;
 	private static final int FILTER_OUT = 20;
 	
-	public DriveDetect(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, EV3ColorSensor lightSensor) throws OdometerExceptions {
+	public RingController(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, EV3ColorSensor lightSensor) throws OdometerExceptions {
 		this.navigation = navigation;
 		this.odo = odometer;
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
 		this.lightSensor = lightSensor;
 	}
+	
+	/**
+	 * Make the robot travel to the starting position of the tree
+	 * @param treeX
+	 * @param treeY
+	 */
+	public void approachTree(int treeX, int treeY) {
+		
+	}
+	
+	/**
+	 * Once at the tree, the robot must detect when it encounters a ring
+	 */
+	public void detectRing() {
+		
+	}
+	
+	/**
+	 * Travel to new side of tree for ring search
+	 */
+	public void switchSides() {
+		
+	}
+	
 	
 	/**
 	 * this method is implemented to search the ring as well as distinguish the color of the ring
