@@ -86,7 +86,10 @@ public class Navigation implements UltrasonicController {
 
 
 	/**
-	 * This method instructs the robot to rotate to a certain angle
+	 * This method instructs the robot to rotate to a certain angle, with respect to its current
+	 * angle as measured by the odometer
+	 * @param minimalT
+	 * @param original
 	 */
 	public void turnTo(double minimalT, double original) {
 		//Calculating by how much we have to rotate with respect to our current angle

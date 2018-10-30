@@ -70,7 +70,7 @@ public class DPMFinalProject {
 			    usPoller.start();
 			    
 			    final TunnelFollower tunnelFollower = new TunnelFollower(leftMotor, rightMotor, navigation, odometer);
-			    final RingController ringController = new RingController(leftMotor, rightMotor, navigation, odometer, LS);
+			    final TreeController ringController = new TreeController(leftMotor, rightMotor, navigation, odometer, LS);
 			    //usPoller2 = new UltrasonicPoller(usDistanceCol, usDataCol, driveDetect);
 			    //usPoller2.start();
 			    

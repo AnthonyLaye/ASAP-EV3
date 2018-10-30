@@ -16,6 +16,14 @@ public class TunnelFollower {
 		this.odo = odometer;
 	}
 	
+	/**
+	 * This method prepares the robot to traverse the tunnel.
+	 * It may raise or lower the arms to ensure safe passage
+	 * @param startX
+	 * @param startY
+	 * @param endX
+	 * @param endY
+	 */
 	public void traverseTunnel(double startX, double startY, double endX, double endY) {
 		
 		

@@ -17,11 +17,8 @@ public class UltrasonicLocalizer {
 		}
 
 	  /**
-	   * this method is to process the input that the user just gave,
-	   * whether using a routine of falling edge or a routine of rising edge
-	   * if the chooseWhichRoutine == 0 then use the rising edge routine
-	   * else use a falling edge routine
-	   * this is chosen on the EV3 display
+	   * This method is to process the user input, to determine if we should perform
+	   * rising edge, or falling edge localization
 	   */
 	  public void whichRoutine() {
 		  if(chooseWhichRoutine == 0)
@@ -31,7 +28,7 @@ public class UltrasonicLocalizer {
 	  }
 	  
 	  /**
-	   * this method is implemented as the slides said 
+	   * This method implements rising edge localization
 	   * If the robot starts facing a wall, it can:
 	   * Detect a rising edge, switch directions, then detect another rising edge
 	   * Detect a rising edge, continue in the same direction, then detect a falling edge
@@ -75,7 +72,7 @@ public class UltrasonicLocalizer {
 	  }
 
 	  /**
-	   * this method is implemented as the slides said 
+	   * This method implements falling edge localization
 	   * If the robot starts facing away from the walls, it can:
 	   * Detect a falling edge, continue in the same direction, then detect a rising edge
 	   */

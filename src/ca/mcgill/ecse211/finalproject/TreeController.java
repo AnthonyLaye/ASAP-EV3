@@ -5,7 +5,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorMode;
 
-public class RingController extends Thread implements UltrasonicController {
+public class TreeController implements UltrasonicController {
 	public enum Color { ORANGE, BLUE, GREEN, YELLOW, NONE };
 	private EV3ColorSensor lightSensor;
 	private SensorMode color;
@@ -17,7 +17,7 @@ public class RingController extends Thread implements UltrasonicController {
 	private Odometer odo;
 	private static final int FILTER_OUT = 20;
 	
-	public RingController(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, EV3ColorSensor lightSensor) throws OdometerExceptions {
+	public TreeController(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, EV3ColorSensor lightSensor) throws OdometerExceptions {
 		this.navigation = navigation;
 		this.odo = odometer;
 		this.leftMotor = leftMotor;
@@ -35,7 +35,7 @@ public class RingController extends Thread implements UltrasonicController {
 	}
 	
 	/**
-	 * Once at the tree, the robot must detect when it encounters a ring
+	 * Once at the tree, the robot must detect when it encounters a ring, and beeps a specified amount of times
 	 */
 	public void detectRing() {
 		
@@ -50,33 +50,7 @@ public class RingController extends Thread implements UltrasonicController {
 	
 	
 	/**
-	 * this method is implemented to search the ring as well as distinguish the color of the ring
-	 * in the end it will move from the initial position lX, lY to the last position rX, rY
-	 * targetColor is simply the color that we want to find
-	 * @param lX
-	 * @param lY
-	 * @param rX
-	 * @param rY
-	 * @param targetColor
-	 */
-	public void search(int lX, int lY, int rX, int rY, Color targetColor) {
-		
-		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] {leftMotor, rightMotor}) {
-		      motor.stop();
-		      motor.setAcceleration(1000);
-		}
-
-		// Sleep for 2 seconds
-		try {
-			Thread.sleep(2000);
-		    } catch (InterruptedException e) {
-		    // There is nothing to be done here
-		}
-	}
-	
-	/**
-	 * this method is implemented to distinguish the color of a ring using RGB color mode
-	 * @return
+	 * This method is implemented to distinguish the color of a ring using RGB color mode
 	 */
 	public Color checkColour(){
 		
