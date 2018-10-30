@@ -2,6 +2,10 @@ package ca.mcgill.ecse211.finalproject;
 
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 
+/**
+ * This class is used to control the robot's two arms
+ *
+ */
 public class ArmController {
 	private EV3MediumRegulatedMotor leftArmMotor;
 	private EV3MediumRegulatedMotor rightArmMotor;

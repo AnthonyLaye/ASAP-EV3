@@ -3,6 +3,10 @@ package ca.mcgill.ecse211.finalproject;
 
 import lejos.hardware.Sound;
 
+/**
+ * This class implements falling or rising edge localization to direct the robot towards true 0 degrees
+ *
+ */
 public class UltrasonicLocalizer {
 		private Navigation navigation;
 		private Odometer odo;  //get the current local position data

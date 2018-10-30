@@ -2,6 +2,10 @@ package ca.mcgill.ecse211.finalproject;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
+/**
+ * This class prepares for, and executes tunnel traversal
+ *
+ */
 public class TunnelFollower {
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;

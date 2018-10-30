@@ -5,6 +5,10 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorMode;
 
+/**
+ * This class handles all logic related to interacting with the tree and rings
+ *
+ */
 public class TreeController implements UltrasonicController {
 	public enum Color { ORANGE, BLUE, GREEN, YELLOW, NONE };
 	private EV3ColorSensor lightSensor;

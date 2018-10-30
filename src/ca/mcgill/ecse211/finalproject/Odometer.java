@@ -12,6 +12,10 @@ package ca.mcgill.ecse211.finalproject;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
+/**
+ * 
+ * This class implements odometer methods to compute coordinates of the robot
+ */
 public class Odometer extends OdometerData implements Runnable {
 
   private OdometerData odoData;
