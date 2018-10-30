@@ -18,21 +18,21 @@ public class ArmController {
 	
 	/**
 	 * Make the robot arms move upwards or downwards by a specified distance
-	 * @param distance
+	 * @param distance : distance to move vertically
 	 */
 	public void moveArmVertically(int distance) {
 		
 	}
 	
-	/*
+	/**
 	 * Slowly close the arms together to grasp a ring
 	 */
 	public void closeArms() {
 		
 	}
 	
-	/*
-	 * Open up arms wide to begin collecting ring
+	/**
+	 * Open up arms wide enough to begin collecting rim
 	 */
 	public void openArms() {
 		

@@ -31,8 +31,8 @@ public class TreeController implements UltrasonicController {
 	
 	/**
 	 * Make the robot travel to the starting position of the tree
-	 * @param treeX
-	 * @param treeY
+	 * @param treeX : x coordinate of tree
+	 * @param treeY : y coordinate of tree
 	 */
 	public void approachTree(int treeX, int treeY) {
 		

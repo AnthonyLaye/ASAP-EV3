@@ -18,8 +18,8 @@ public class Display implements Runnable {
   /**
    * This is the class constructor
    * 
-   * @param odoData
-   * @throws OdometerExceptions 
+   * @param odoData : odometer data to be displayed
+   * @throws OdometerExceptions : exceptions
    */
   public Display(TextLCD lcd) throws OdometerExceptions {
     odo = Odometer.getOdometer();
@@ -29,8 +29,8 @@ public class Display implements Runnable {
   /**
    * This is the overloaded class constructor
    * 
-   * @param odoData
-   * @throws OdometerExceptions 
+   * @param odoData : odometer data to be displayed
+   * @throws OdometerExceptions : exceptions
    */
   public Display(TextLCD lcd, long timeout) throws OdometerExceptions {
     odo = Odometer.getOdometer();

@@ -32,9 +32,9 @@ public class Navigation implements UltrasonicController {
 	/**
 	 * This method is meant to drive the robot to the predefined waypoints, user must enter if we wait for the robot to finish moving before
 	 * return from the method
-	 * @param x
-	 * @param y
-	 * @param immediateReturn
+	 * @param x : x value to travel to
+	 * @param y : y value to travel to
+	 * @param immediateReturn : True if the function is to be instantly returned. False if the function is to be returned after the travel is completed
 	 */
 	public void travelTo(double x, double y, boolean immediateReturn) {
 		double minimalTheta = 0, travelDistance = 0, currentTheta = 0;
@@ -88,8 +88,8 @@ public class Navigation implements UltrasonicController {
 	/**
 	 * This method instructs the robot to rotate to a certain angle, with respect to its current
 	 * angle as measured by the odometer
-	 * @param minimalT
-	 * @param original
+	 * @param minimalT : minimal angle to turn
+	 * @param original : original angle on odometer
 	 */
 	public void turnTo(double minimalT, double original) {
 		//Calculating by how much we have to rotate with respect to our current angle
@@ -127,9 +127,9 @@ public class Navigation implements UltrasonicController {
 	
 	/**
 	 * This method is created to let the robot rotate an absolute angle
-	 * @param clockWise
-	 * @param angleToRotate
-	 * @param blocked
+	 * @param clockWise : direction to rotate robot
+	 * @param angleToRotate : absolute angle to rotate robot
+	 * @param blocked : True if the function is to be instantly returned. False if the function is to be returned after the travel is completed
 	 */
 	public void rotateTheRobot(boolean clockWise, double angleToRotate, boolean blocked) {
 		double absAngleToRotate = Math.abs(angleToRotate);
@@ -160,7 +160,7 @@ public class Navigation implements UltrasonicController {
 	/**Advances the robot a desired amount of cm.
 	* 
 	* @param distanceToTravel Distance to travel in cm.
-	* @param immediateReturn    True if the function is to be instantly returned. False if the function is to be returned after the travel is completed.
+	* @param immediateReturn True if the function is to be instantly returned. False if the function is to be returned after the travel is completed.
 	*/
 	public void advanceRobot(double distanceToTravel, boolean immediateReturn) {
 
@@ -184,8 +184,8 @@ public class Navigation implements UltrasonicController {
 	 * This method allows the conversion of a distance to the total rotation of each wheel need to
 	 * cover that distance.
 	 * 
-	 * @param radius
-	 * @param distance
+	 * @param radius : radius of wheel
+	 * @param distance : distance to travel
 	 * @return
 	 */
 	public static int convertDistance(double radius, double travelDistance) {
