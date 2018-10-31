@@ -54,6 +54,15 @@ public class TreeController implements UltrasonicController {
 	
 	
 	/**
+	 * drive a cycle around the tree
+	 */
+	public void driveACircle()
+	{
+		
+	}
+	
+	
+	/**
 	 * This method is implemented to distinguish the color of a ring using RGB color mode
 	 */
 	public Color checkColour(){
