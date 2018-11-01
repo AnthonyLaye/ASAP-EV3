@@ -11,13 +11,15 @@ public class TunnelFollower {
 	private EV3LargeRegulatedMotor rightMotor;
 	private Odometer odo;
 	private Navigation navigation;
+	private ArmController armController;
 	
 	
-	public TunnelFollower(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer) throws OdometerExceptions {
+	public TunnelFollower(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, ArmController armController) throws OdometerExceptions {
 		this.navigation = navigation;
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
 		this.odo = odometer;
+		this.armController = armController;
 	}
 	
 	/**
@@ -30,7 +32,13 @@ public class TunnelFollower {
 	 */
 	public void traverseTunnel(double startX, double startY, double endX, double endY) {
 		
+		armController.closeArms();
 		
+		navigation.travelTo(startX, startY, false);
+		
+		navigation.travelTo(endX, endY, false);
+		
+		armController.openArms();
 	}
 
 }

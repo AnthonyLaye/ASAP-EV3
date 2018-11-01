@@ -76,7 +76,7 @@ public class DPMFinalProject {
 			    usPoller.start();
 			    
 			    final ArmController armController = new ArmController(leftArmMotor, rightArmMotor);
-			    final TunnelFollower tunnelFollower = new TunnelFollower(leftMotor, rightMotor, navigation, odometer);
+			    final TunnelFollower tunnelFollower = new TunnelFollower(leftMotor, rightMotor, navigation, odometer, armController);
 			    final TreeController ringController = new TreeController(leftMotor, rightMotor, navigation, odometer, LS, armController);
 
 			    //usPoller2 = new UltrasonicPoller(usDistanceCol, usDataCol, driveDetect);
