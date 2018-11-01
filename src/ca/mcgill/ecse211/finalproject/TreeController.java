@@ -71,6 +71,8 @@ public class TreeController implements UltrasonicController {
 	 */
 	public boolean detectRing() {
 		//have to see the real hardware
+		checkColour();
+		if(checkColour() == Color.YELLOW) return true;
 		return false;
 	}
 	
@@ -92,14 +94,6 @@ public class TreeController implements UltrasonicController {
 		}
 	}
 	
-	/**
-	 * to get the ring
-	 */
-	private void getTheRing() {
-		// TODO Auto-generated method stub
-		//finish after
-		//i think it should be armController.closeArms
-	}
 		
 	/**
 	 * This method is implemented to distinguish the color of a ring using RGB color mode

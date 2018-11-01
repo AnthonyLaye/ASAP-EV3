@@ -14,16 +14,7 @@ public class ArmController {
 		this.leftArmMotor = leftArmMotor;
 		this.rightArmMotor = rightArmMotor;
 	}
-	
-	
-	/**
-	 * Make the robot arms move upwards or downwards by a specified distance
-	 * @param distance : distance to move vertically
-	 */
-	public void moveArmVertically(int distance) {
-		//do we need that?
-	}
-	
+		
 	/**
 	 * Slowly close the arms together to grasp a ring
 	 */
