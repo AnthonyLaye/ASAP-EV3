@@ -6,6 +6,7 @@ import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
@@ -17,6 +18,11 @@ public class DPMFinalProject {
 				new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 		private static final EV3LargeRegulatedMotor rightMotor =
 				new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+		private static final EV3MediumRegulatedMotor leftArmMotor = 
+				new EV3MediumRegulatedMotor(LocalEV3.get().getPort("B"));
+		private static final EV3MediumRegulatedMotor rightArmMotor = 
+				new EV3MediumRegulatedMotor(LocalEV3.get().getPort("C"));
+		
 		private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 		private static final EV3ColorSensor LS = 
 				new EV3ColorSensor(LocalEV3.get().getPort("S3"));
@@ -69,8 +75,10 @@ public class DPMFinalProject {
 			    usPoller = new UltrasonicPoller(usDistance, usData, navigation); // the selected controller on each cycle
 			    usPoller.start();
 			    
+			    final ArmController armController = new ArmController(leftArmMotor, rightArmMotor);
 			    final TunnelFollower tunnelFollower = new TunnelFollower(leftMotor, rightMotor, navigation, odometer);
-			    final TreeController ringController = new TreeController(leftMotor, rightMotor, navigation, odometer, LS);
+			    final TreeController ringController = new TreeController(leftMotor, rightMotor, navigation, odometer, LS, armController);
+
 			    //usPoller2 = new UltrasonicPoller(usDistanceCol, usDataCol, driveDetect);
 			    //usPoller2.start();
 			    

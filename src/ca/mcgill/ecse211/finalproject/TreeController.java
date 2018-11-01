@@ -21,13 +21,15 @@ public class TreeController implements UltrasonicController {
 	private Navigation navigation;
 	private Odometer odo;
 	private static final int FILTER_OUT = 20;
+	private ArmController armController;
 	
-	public TreeController(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, EV3ColorSensor lightSensor) throws OdometerExceptions {
+	public TreeController(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, EV3ColorSensor lightSensor, ArmController armController) throws OdometerExceptions {
 		this.navigation = navigation;
 		this.odo = odometer;
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
 		this.lightSensor = lightSensor;
+		this.armController = armController;
 	}
 	
 	/**
@@ -82,7 +84,7 @@ public class TreeController implements UltrasonicController {
 			navigation.advanceRobot(5, false);
 			if(detectRing())
 			{
-				getTheRing();
+				armController.closeArms(); //get the rings
 			}
 			navigation.advanceRobot(5, false);
 			navigation.rotateTheRobot(true, 90, false);//turn 90 degree to reach other side
@@ -96,17 +98,9 @@ public class TreeController implements UltrasonicController {
 	private void getTheRing() {
 		// TODO Auto-generated method stub
 		//finish after
+		//i think it should be armController.closeArms
 	}
-
-	/**
-	 * drive a cycle around the tree
-	 */
-	public void driveACircle()
-	{
 		
-	}
-	
-	
 	/**
 	 * This method is implemented to distinguish the color of a ring using RGB color mode
 	 */
