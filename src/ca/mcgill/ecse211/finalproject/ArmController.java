@@ -21,20 +21,22 @@ public class ArmController {
 	 * @param distance : distance to move vertically
 	 */
 	public void moveArmVertically(int distance) {
-		
+		//do we need that?
 	}
 	
 	/**
 	 * Slowly close the arms together to grasp a ring
 	 */
 	public void closeArms() {
-		
+		leftArmMotor.rotate(90, true);
+		rightArmMotor.rotate(90, false);
 	}
 	
 	/**
 	 * Open up arms wide enough to begin collecting rim
 	 */
 	public void openArms() {
-		
+		leftArmMotor.rotate(-90, true);
+		rightArmMotor.rotate(-90, false);
 	}
 }

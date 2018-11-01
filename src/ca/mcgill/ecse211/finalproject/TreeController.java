@@ -4,6 +4,7 @@ import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorMode;
+import lejos.hardware.sensor.SensorModes;
 
 /**
  * This class handles all logic related to interacting with the tree and rings
@@ -35,20 +36,73 @@ public class TreeController implements UltrasonicController {
 	 * @param treeY : y coordinate of tree
 	 */
 	public void approachTree(int treeX, int treeY) {
+		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] {leftMotor, rightMotor}) {
+		      motor.stop();
+		      motor.setAcceleration(1000);
+		}
+
+		// Sleep for 2 seconds
+		try {
+			Thread.sleep(2000);
+		    } catch (InterruptedException e) {
+		    // There is nothing to be done here
+		}
+		navigation.travelTo(treeX, treeY, true);	// Navigate to starting point and beep
+		
+		while(leftMotor.isMoving() && rightMotor.isMoving())  // let the robot move
+		{
+			if(this.distance < 10)	// for example 10, have to correct after seeing the real hardware
+			{
+				leftMotor.stop();
+				rightMotor.stop();
+				navigation.rotateTheRobot(false, 90, false);//rotate the robot 90 degree to do the search
+				break;
+			}
+		}
+		
+		switchSides();
 		
 	}
 	
 	/**
 	 * Once at the tree, the robot must detect when it encounters a ring, and beeps a specified amount of times
 	 */
-	public void detectRing() {
-		
+	public boolean detectRing() {
+		//have to see the real hardware
+		return false;
 	}
 	
 	/**
 	 * Travel to new side of tree for ring search
 	 */
 	public void switchSides() {
+		int count = 0;
+		while(count != 4)//the tree have four sides so count 4
+		{
+			navigation.advanceRobot(5, false);
+			if(detectRing())
+			{
+				getTheRing();
+			}
+			navigation.advanceRobot(5, false);
+			navigation.rotateTheRobot(true, 90, false);//turn 90 degree to reach other side
+			navigation.advanceRobot(5, false);
+		}
+	}
+	
+	/**
+	 * to get the ring
+	 */
+	private void getTheRing() {
+		// TODO Auto-generated method stub
+		//finish after
+	}
+
+	/**
+	 * drive a cycle around the tree
+	 */
+	public void driveACircle()
+	{
 		
 	}
 	
