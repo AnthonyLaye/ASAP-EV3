@@ -71,7 +71,7 @@ public class DPMFinalProject {
 		    		final Gyro gyro = new Gyro();
 			    final Navigation navigation = new Navigation(leftMotor, rightMotor, odometer);
 			    final UltrasonicLocalizer USLocalizer = new UltrasonicLocalizer(navigation, chooseWhichRoutine, odometer);
-			    //final LightLocalizer LSLocalizer = new LightLocalizer(Navigator,LS);
+			    final LightLocalizer LSLocalizer = new LightLocalizer(navigation, LS);
 			    
 			    usPoller = new UltrasonicPoller(usDistance, usData, navigation); // the selected controller on each cycle
 			    usPoller.start();
@@ -92,19 +92,19 @@ public class DPMFinalProject {
 			    (new Thread() {
 			        public void run() {
 			          USLocalizer.whichRoutine(); // Ultrasonic Localize
-			          //LSLocalizer.localize();	// Light localize
+			          LSLocalizer.lightLocalize();	// Light localize
 			          
-			          navigation.travelTo(5, 5, false); // Travel to start of tunnel
-			          tunnelFollower.traverseTunnel(5, 5, 5, 10); // Travel to end of tunnel
+			          navigation.travelTo(2, 3, false); // Travel to start of tunnel, hardcode value for now
+			          tunnelFollower.traverseTunnel(1.5, 3, 1.5, 7); // Travel to end of tunnel
 			          
-			          ringController.approachTree(10, 10); //Travel to tree and do collections
+			          ringController.approachTree(2, 7.5); //Travel to tree and do collections
 			          
-			          navigation.travelTo(5,  10, false); // Travel back to tunnel
-			          tunnelFollower.traverseTunnel(5, 10, 5, 5); // Travel opposite way through tunnel
+			          navigation.travelTo(1.5,  7, false); // Travel back to tunnel
+			          tunnelFollower.traverseTunnel(1.5, 7, 1.5, 3); // Travel opposite way through tunnel
 			          
-			          navigation.travelTo(0, 0, false); // Travel back to starting location
+			          navigation.travelTo(1, 1, false); // Travel back to starting location
 			          
-			          //DROP OFF RINGS?!?!?!? HOWWWWWWW
+			          armController.openArms(); //Drop off ring!
 			        } 
 			      }).start();
 			 

@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.finalproject;
 
+import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
@@ -10,7 +11,7 @@ import lejos.hardware.sensor.SensorModes;
  * This class handles all logic related to interacting with the tree and rings
  *
  */
-public class TreeController implements UltrasonicController {
+public class TreeController {
 	public enum Color { ORANGE, BLUE, GREEN, YELLOW, NONE };
 	private EV3ColorSensor lightSensor;
 	private SensorMode color;
@@ -37,7 +38,8 @@ public class TreeController implements UltrasonicController {
 	 * @param treeX : x coordinate of tree
 	 * @param treeY : y coordinate of tree
 	 */
-	public void approachTree(int treeX, int treeY) {
+	public void approachTree(double treeX, double treeY) {
+		
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] {leftMotor, rightMotor}) {
 		      motor.stop();
 		      motor.setAcceleration(1000);
@@ -49,20 +51,15 @@ public class TreeController implements UltrasonicController {
 		    } catch (InterruptedException e) {
 		    // There is nothing to be done here
 		}
-		navigation.travelTo(treeX, treeY, true);	// Navigate to starting point and beep
+		navigation.travelTo(treeX, treeY, true);	// Navigate to just before starting point and beep
 		
-		while(leftMotor.isMoving() && rightMotor.isMoving())  // let the robot move
-		{
-			if(this.distance < 10)	// for example 10, have to correct after seeing the real hardware
-			{
-				leftMotor.stop();
-				rightMotor.stop();
-				navigation.rotateTheRobot(false, 90, false);//rotate the robot 90 degree to do the search
-				break;
-			}
+		navigation.rotateTheRobot(true, 360, true);	// Line up directly with tree
+		while(navigation.distance > 25) {
+			
 		}
+		navigation.stopMotors();
 		
-		switchSides();
+		findRings();	// Find those rings!!!!!
 		
 	}
 	
@@ -71,26 +68,33 @@ public class TreeController implements UltrasonicController {
 	 */
 	public boolean detectRing() {
 		//have to see the real hardware
-		checkColour();
-		if(checkColour() == Color.YELLOW) return true;
+		if(checkColour() != Color.NONE) return true;
 		return false;
 	}
 	
 	/**
-	 * Travel to new side of tree for ring search
+	 * Travel to all sides of tree until we find a ring
 	 */
-	public void switchSides() {
+	public void findRings() {
 		int count = 0;
-		while(count != 4)//the tree have four sides so count 4
+		while(count < 4)//the tree have four sides so count 4
 		{
 			navigation.advanceRobot(5, false);
-			if(detectRing())
-			{
-				armController.closeArms(); //get the rings
+			
+			armController.closeArms(); //get the rings
+			
+			if(detectRing()) {
+				Sound.beep();
+				break;
 			}
+			
+			navigation.advanceRobot(-5, false);
+			navigation.rotateTheRobot(true, 90, false); // Turn 90 degree to reach other side
 			navigation.advanceRobot(5, false);
-			navigation.rotateTheRobot(true, 90, false);//turn 90 degree to reach other side
+			navigation.rotateTheRobot(false, 90, false);
 			navigation.advanceRobot(5, false);
+			navigation.rotateTheRobot(false, 90, false);
+			count++;
 		}
 	}
 	
@@ -130,29 +134,5 @@ public class TreeController implements UltrasonicController {
 	    	return Color.NONE;
 	    }
 		
-	}
-	
-	@Override
-	public void processUSData(int distance) {
-		if (distance >= 255 && filterControl < FILTER_OUT) {
-		      // bad value, do not set the distance var, however do increment the
-		      // filter value
-		      filterControl++;
-		    } else if (distance >= 255) {
-		      // We have repeated large values, so there must actually be nothing
-		      // there: leave the distance alone
-		      this.distance = distance;
-		    } else {
-		      // distance went below 255: reset filter and leave
-		      // distance alone.
-		      filterControl = 0;
-		      this.distance = distance;
-		    }  
-	}
-
-	@Override
-	public int readUSDistance() {
-		// TODO Auto-generated method stub
-		return this.distance;
 	}
 }
