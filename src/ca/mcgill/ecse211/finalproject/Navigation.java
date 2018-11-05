@@ -10,8 +10,8 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  * This class is used to drive the robot on the demo floor.
  */
 public class Navigation implements UltrasonicController {
-	public EV3LargeRegulatedMotor leftMotor;
-	public EV3LargeRegulatedMotor rightMotor;
+	public static EV3LargeRegulatedMotor leftMotor;
+	public static EV3LargeRegulatedMotor rightMotor;
 	public Odometer odo;
 	public int distance = 0;  //this distance is for US, 130 is from lab1's data which is the max distance that the sensor cannot sense 
 	private int filterControl;
@@ -21,7 +21,7 @@ public class Navigation implements UltrasonicController {
 	private static final int FILTER_OUT = 20;
 	private static final double TILE_SIZE = 30.48;
 	private static final double WHEEL_RAD = 2.2;
-	private static final double TRACK = 11.3;
+	private static final double TRACK = 12.5;
 
 	public Navigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odometer) throws OdometerExceptions {
 		this.leftMotor = leftMotor;
@@ -94,7 +94,7 @@ public class Navigation implements UltrasonicController {
 	public void turnTo(double minimalT, double original) {
 		//Calculating by how much we have to rotate with respect to our current angle
 		double deltaT = 0;
-		deltaT = minimalT - original;
+		deltaT = minimalT*1.15 - original;
 		boolean turnLeft = false;
 
 		//Getting the positive equivalent
