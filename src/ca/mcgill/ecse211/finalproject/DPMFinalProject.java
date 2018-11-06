@@ -99,15 +99,15 @@ public class DPMFinalProject {
 			          USLocalizer.whichRoutine(); // Ultrasonic Localize
 			          LSLocalizer.lightLocalize();	// Light localize
 			         
-			          navigation.travelTo(1, 2, false); // Travel to start of tunnel, hardcode value for now
-			          tunnelFollower.traverseTunnel(0.5, 2, 0.5, 5); // Travel to end of tunnel
+			          navigation.travelTo(2, 3, false); // Travel to start of tunnel, hardcode value for now
+			          tunnelFollower.traverseTunnel(1.5, 3, 1.5, 6); // Travel to end of tunnel
 			          
-			          ringController.approachTree(1, 5.5); //Travel to tree and do collections
+			          ringController.approachTree(2, 6.5); //Travel to tree and do collections
 			          
-			          navigation.travelTo(0.5,  5, false); // Travel back to tunnel
-			          tunnelFollower.traverseTunnel(0.5, 5, 0.5, 2); // Travel opposite way through tunnel
+			          navigation.travelTo(1.5,  6, false); // Travel back to tunnel
+			          tunnelFollower.traverseTunnel(1.5, 6, 1.5, 3); // Travel opposite way through tunnel
 			          
-			          navigation.travelTo(0, 0, false); // Travel back to starting location
+			          navigation.travelTo(1, 1, false); // Travel back to starting location
 			          
 			          armController.openArms(); //Drop off ring!*/
 			        } 
