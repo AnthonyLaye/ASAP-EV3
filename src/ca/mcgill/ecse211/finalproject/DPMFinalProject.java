@@ -8,6 +8,7 @@ import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
@@ -26,6 +27,10 @@ public class DPMFinalProject {
 		private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 		private static final EV3ColorSensor LS = 
 				new EV3ColorSensor(LocalEV3.get().getPort("S3"));
+		private static final EV3ColorSensor ColSensor =
+				new EV3ColorSensor(LocalEV3.get().getPort("S2"));
+		private static final EV3GyroSensor GS =
+				new EV3GyroSensor(LocalEV3.get().getPort("S1"));
 		private static final double WHEEL_RAD = 2.2;
 		private static final double TRACK = 11.3;
 	
@@ -68,9 +73,9 @@ public class DPMFinalProject {
 			    odoThread.start();
 			    Thread odoDisplayThread = new Thread(odometryDisplay);
 			    odoDisplayThread.start();
-		    		final Gyro gyro = new Gyro();
+		    	// final Gyro gyro = new Gyro();
 			    final Navigation navigation = new Navigation(leftMotor, rightMotor, odometer);
-			    final UltrasonicLocalizer USLocalizer = new UltrasonicLocalizer(navigation, chooseWhichRoutine, odometer);
+			    final UltrasonicLocalizer USLocalizer = new UltrasonicLocalizer(navigation, chooseWhichRoutine);
 			    final LightLocalizer LSLocalizer = new LightLocalizer(navigation, LS);
 			    
 			    usPoller = new UltrasonicPoller(usDistance, usData, navigation); // the selected controller on each cycle
@@ -78,7 +83,7 @@ public class DPMFinalProject {
 			    
 			    final ArmController armController = new ArmController(leftArmMotor, rightArmMotor);
 			    final TunnelFollower tunnelFollower = new TunnelFollower(leftMotor, rightMotor, navigation, odometer, armController);
-			    final TreeController ringController = new TreeController(leftMotor, rightMotor, navigation, odometer, LS, armController);
+			    final TreeController ringController = new TreeController(leftMotor, rightMotor, navigation, odometer, ColSensor, armController);
 			    //usPoller2 = new UltrasonicPoller(usDistanceCol, usDataCol, driveDetect);
 			    //usPoller2.start();
 			    
@@ -93,6 +98,8 @@ public class DPMFinalProject {
 			        public void run() {
 			          USLocalizer.whichRoutine(); // Ultrasonic Localize
 			          LSLocalizer.lightLocalize();	// Light localize
+			          /*navigation.rotateTheRobot(true, 180, false);
+			          odometer.setTheta(theta);
 			          
 			          navigation.travelTo(2, 3, false); // Travel to start of tunnel, hardcode value for now
 			          tunnelFollower.traverseTunnel(1.5, 3, 1.5, 7); // Travel to end of tunnel
@@ -104,7 +111,7 @@ public class DPMFinalProject {
 			          
 			          navigation.travelTo(1, 1, false); // Travel back to starting location
 			          
-			          armController.openArms(); //Drop off ring!
+			          armController.openArms(); //Drop off ring!*/
 			        } 
 			      }).start();
 			 
