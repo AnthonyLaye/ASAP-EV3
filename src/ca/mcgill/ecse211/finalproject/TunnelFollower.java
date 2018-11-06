@@ -36,7 +36,7 @@ public class TunnelFollower {
 		
 		navigation.travelTo(startX, startY, false);
 		
-		navigation.travelTo(endX, endY, false);
+		navigation.travelTo(endX -1 , endY -1 , false);
 		
 		armController.openArms();
 	}

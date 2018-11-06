@@ -95,6 +95,9 @@ public class LightLocalizer {
 				stopMotor();
 				rotateTheRobot(true,95,false);
 				
+				odo.setX(30.48);
+				odo.setY(30.48);
+				
 				
 				correctionEnd = System.currentTimeMillis();
 				if (correctionEnd - correctionStart < CORRECTION_PERIOD) {

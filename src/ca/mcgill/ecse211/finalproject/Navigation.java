@@ -16,7 +16,7 @@ public class Navigation implements UltrasonicController {
 	public int distance = 0;  //this distance is for US, 130 is from lab1's data which is the max distance that the sensor cannot sense 
 	private int filterControl;
 	public boolean navigating = false;
-	private static final int FORWARD_SPEED = 150;
+	private static final int FORWARD_SPEED = 250;
 	private static final int ROTATE_SPEED = 100;
 	private static final int FILTER_OUT = 20;
 	private static final double TILE_SIZE = 30.48;
@@ -58,8 +58,8 @@ public class Navigation implements UltrasonicController {
 		currentY = odometer[1];
 
 		//Getting the distances with respect to the tile size
-		double deltaX = x * TILE_SIZE - currentX;
-		double deltaY =	y * TILE_SIZE - currentY;
+		double deltaX = (x - 1) * TILE_SIZE - currentX;
+		double deltaY =	(y - 1) * TILE_SIZE - currentY;
 		travelDistance = Math.hypot(Math.abs(deltaX), Math.abs(deltaY));
 
 		//Calculating the minimal angle to get to destination

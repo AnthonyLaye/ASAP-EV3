@@ -83,16 +83,23 @@ public class TreeController {
 			
 			armController.closeArms(); //get the rings
 			
+			try {
+				Thread.sleep(3000);
+			    } catch (InterruptedException e) {
+			    // There is nothing to be done here
+			}
+			
 			if(detectRing()) {
 				Sound.beep();
 				break;
 			}
 			
-			navigation.advanceRobot(-5, false);
+			armController.openArms();
+			navigation.advanceRobot(-15, false);
 			navigation.rotateTheRobot(true, 90, false); // Turn 90 degree to reach other side
-			navigation.advanceRobot(5, false);
+			navigation.advanceRobot(15, false);
 			navigation.rotateTheRobot(false, 90, false);
-			navigation.advanceRobot(5, false);
+			navigation.advanceRobot(15, false);
 			navigation.rotateTheRobot(false, 90, false);
 			count++;
 		}
