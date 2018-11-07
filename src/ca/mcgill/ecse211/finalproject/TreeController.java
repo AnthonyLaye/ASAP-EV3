@@ -51,10 +51,12 @@ public class TreeController {
 		    } catch (InterruptedException e) {
 		    // There is nothing to be done here
 		}
-		navigation.travelTo(treeX, treeY, true);	// Navigate to just before starting point and beep
+		
+		navigation.travelTo(treeX - 0.5 , odo.getXYT()[1], false);	// Travel along x first, then along y so we approach the tree head on
+		navigation.travelTo(odo.getXYT()[0], treeY - 0.5, false);	// We subtract 0.5 so the robot doesnt run into the tree
 		
 		navigation.rotateTheRobot(true, 360, true);	// Line up directly with tree
-		while(navigation.distance > 25) {
+		while(navigation.distance > 17) {
 			
 		}
 		navigation.stopMotors();
@@ -79,9 +81,10 @@ public class TreeController {
 		int count = 0;
 		while(count < 4)//the tree have four sides so count 4
 		{
-			navigation.advanceRobot(5, false);
+			navigation.advanceRobot(15, false);
 			
 			armController.closeArms(); //get the rings
+			navigation.advanceRobot(-15, false);
 			
 			try {
 				Thread.sleep(3000);
@@ -90,12 +93,10 @@ public class TreeController {
 			}
 			
 			if(detectRing()) {
-				Sound.beep();
 				break;
 			}
 			
 			armController.openArms();
-			navigation.advanceRobot(-15, false);
 			navigation.rotateTheRobot(true, 90, false); // Turn 90 degree to reach other side
 			navigation.advanceRobot(15, false);
 			navigation.rotateTheRobot(false, 90, false);
@@ -126,15 +127,25 @@ public class TreeController {
 	    //Ranges were obtained based on sampling different results for the light sensor detection
 	    
 	    if(red > 150 && green >40 && blue > 0) {
+	    	Sound.beep();
+	    	Sound.beep();
+	    	Sound.beep();
 	    	return Color.YELLOW;
 	    }
 	    if( 70 > red && red > 30 && green > 100 && 40 > blue && blue > 0){
+	    	Sound.beep();
+	    	Sound.beep();
 	    	return Color.GREEN;
 	    }
 	    if(50 > red && red > 10 && 130 > green && green > 90 && 90 > blue && blue > 60){
+	    	Sound.beep();
 	    	return Color.BLUE;
 	    }
 	    if(140 > red && red > 80 && 60 > green && green > 20 && 30 > blue){
+	    	Sound.beep();
+	    	Sound.beep();
+	    	Sound.beep();
+	    	Sound.beep();
 	    	return Color.ORANGE;
 	    }
 	    else {

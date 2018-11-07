@@ -34,9 +34,9 @@ public class TunnelFollower {
 		
 		armController.closeArms();
 		
-		navigation.travelTo(startX, startY, false);
+		navigation.travelTo(startX + 0.5, startY - 0.5, false);	//Offset values by 0.5 so we are lined up with center of tunnel
 		
-		navigation.travelTo(endX -1 , endY -1 , false);
+		navigation.travelTo(endX - 0.5, endY + 0.5, false);
 		
 		armController.openArms();
 	}

@@ -2,6 +2,8 @@ package ca.mcgill.ecse211.finalproject;
 
 
 
+import java.util.Map;
+
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
@@ -33,6 +35,7 @@ public class DPMFinalProject {
 				new EV3GyroSensor(LocalEV3.get().getPort("S1"));
 		private static final double WHEEL_RAD = 2.2;
 		private static final double TRACK = 11.3;
+		private static final double TILE_LENGTH = 30.48;
 	
 		private static SensorModes usSensor = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4")); // usSensor is the instance
 		private static SampleProvider usDistance = usSensor.getMode("Distance"); // usDistance provides samples from
@@ -44,7 +47,7 @@ public class DPMFinalProject {
 			    int buttonChoice;
 			    int chooseWhichRoutine;//if chooseWichEdge is equal to 0, then it is rising edge, else it is falling edge
 			    
-			    Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD); // TODO Complete implementation
+			    final Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD); // TODO Complete implementation
 			    Display odometryDisplay = new Display(lcd); // No need to change
 			  
 			    UltrasonicPoller usPoller = null; 
@@ -94,20 +97,80 @@ public class DPMFinalProject {
 			      // There is nothing to be done here
 			    }
 			    
+			    // ******************** OPTAIN ALL WIFI DATA FROM SERVER ***********************************
+			    
+			    Map wifiData = WifiController.readData();
+			    System.out.println(wifiData);
+			    
+			    boolean isRedTeam = false;
+			    
+			    int redTeam = ((Long) wifiData.get("RedTeam")).intValue();
+			    int greenTeam = ((Long) wifiData.get("GreenTeam")).intValue();
+			    
+			    if(redTeam == 13)	//Check if team 13 is red! if not we are green
+			    	isRedTeam = true;
+			    else if(greenTeam == 13)
+			    	isRedTeam = false;
+			    else
+			    	System.exit(-1); //This better not happen...
+			    
+			    final int corner, llX, llY, urX, urY, islandLLX, islandLLY, islandURX, islandURY, tnLLX, tnLLY, tnURX, tnURY, tX, tY;
+			    
+			    isRedTeam = false; // THIS IS JUST FOR BETA DEMO, GREEN BY DEFAULT IN DEMO
+			    
+			    if(isRedTeam) {
+			    	corner = ((Long) wifiData.get("RedCorner")).intValue();
+			    	llX = ((Long) wifiData.get("Red_LL_x")).intValue();
+			    	llY = ((Long) wifiData.get("Red_LL_y")).intValue();
+			    	urX = ((Long) wifiData.get("Red_UR_x")).intValue();
+			    	urY = ((Long) wifiData.get("Red_UR_y")).intValue();
+			    	tnLLX = ((Long) wifiData.get("TNR_LL_x")).intValue();
+			    	tnLLY = ((Long) wifiData.get("TNR_LL_y")).intValue();
+			    	tnURX = ((Long) wifiData.get("TNR_UR_x")).intValue();
+			    	tnURY = ((Long) wifiData.get("TNR_UR_y")).intValue();
+			    	tX = ((Long) wifiData.get("TR_x")).intValue();
+			    	tY = ((Long) wifiData.get("TR_y")).intValue();
+			    }
+			    
+			    else {
+			    	corner = ((Long) wifiData.get("GreenCorner")).intValue();
+			    	llX = ((Long) wifiData.get("Green_LL_x")).intValue();
+			    	llY = ((Long) wifiData.get("Green_LL_y")).intValue();
+			    	urX = ((Long) wifiData.get("Green_UR_x")).intValue();
+			    	urY = ((Long) wifiData.get("Green_UR_y")).intValue();
+			    	tnLLX = ((Long) wifiData.get("TNG_LL_x")).intValue();
+			    	tnLLY = ((Long) wifiData.get("TNG_LL_y")).intValue();
+			    	tnURX = ((Long) wifiData.get("TNG_UR_x")).intValue();
+			    	tnURY = ((Long) wifiData.get("TNG_UR_y")).intValue();
+			    	tX = ((Long) wifiData.get("TG_x")).intValue();
+			    	tY = ((Long) wifiData.get("TG_y")).intValue();
+			    }
+			    
+			    islandLLX = ((Long) wifiData.get("Island_LL_x")).intValue();
+			    islandLLY = ((Long) wifiData.get("Island_LL_y")).intValue();
+			    islandURX = ((Long) wifiData.get("Island_UR_x")).intValue();
+			    islandURY = ((Long) wifiData.get("Island_UR_y")).intValue();
+			    
 			    (new Thread() {
 			        public void run() {
 			          USLocalizer.whichRoutine(); // Ultrasonic Localize
 			          LSLocalizer.lightLocalize();	// Light localize
+			          
+			          //TODO Set coordinates based on starting corner
+			          //Beta demo starts in corner 1 -> (7, 1)
+			          odometer.setXYT(7 * TILE_LENGTH, TILE_LENGTH, odometer.getXYT()[2]);
 			         
-			          navigation.travelTo(2, 3, false); // Travel to start of tunnel, hardcode value for now
-			          tunnelFollower.traverseTunnel(1.5, 3, 1.5, 6); // Travel to end of tunnel
+			          navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
+			          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY); // Travel to end of tunnel
 			          
-			          ringController.approachTree(2, 6.5); //Travel to tree and do collections
+			          ringController.approachTree(tX, tY); //Travel to tree and do collections
 			          
-			          navigation.travelTo(1.5,  6, false); // Travel back to tunnel
-			          tunnelFollower.traverseTunnel(1.5, 6, 1.5, 3); // Travel opposite way through tunnel
+			          /* The rest is not used for beta demo
+			           
+			          navigation.travelTo(tnURX, tnURY, false); // Travel back to tunnel
+			          tunnelFollower.traverseTunnel(tnURX, tnURY, tnLLX, tnLLY); // Travel opposite way through tunnel
 			          
-			          navigation.travelTo(1, 1, false); // Travel back to starting location
+			          navigation.travelTo(1, 1, false); // Travel back to starting corner
 			          
 			          armController.openArms(); //Drop off ring!*/
 			        } 

@@ -58,8 +58,8 @@ public class Navigation implements UltrasonicController {
 		currentY = odometer[1];
 
 		//Getting the distances with respect to the tile size
-		double deltaX = (x - 1) * TILE_SIZE - currentX;
-		double deltaY =	(y - 1) * TILE_SIZE - currentY;
+		double deltaX = x * TILE_SIZE - currentX;
+		double deltaY =	y * TILE_SIZE - currentY;
 		travelDistance = Math.hypot(Math.abs(deltaX), Math.abs(deltaY));
 
 		//Calculating the minimal angle to get to destination
