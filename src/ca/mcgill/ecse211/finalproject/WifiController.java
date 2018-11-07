@@ -4,6 +4,10 @@ import java.util.Map;
 
 import ca.mcgill.ecse211.WiFiClient.WifiConnection;
 
+/**
+ * The following class obtains the game data map from the server and returns it to the main class
+ *
+ */
 public class WifiController {
 	
 	// ** Set these as appropriate for your team and current situation **
@@ -13,6 +17,10 @@ public class WifiController {
 	  // Enable/disable printing of debug info from the WiFi class
 	  private static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
 
+	  /**
+	   * This method attempts to connect to the server to retrieve game data
+	   * @return data : map of data obtained from server
+	   */
 	  @SuppressWarnings("rawtypes")
 	  public static Map readData() {
 

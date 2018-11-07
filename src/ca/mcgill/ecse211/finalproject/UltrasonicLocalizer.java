@@ -28,7 +28,7 @@ public class UltrasonicLocalizer {
 	}
 
   /**
-   * this method is to process the input that the user just gave,
+   * This method is to process the input that the user just gave,
    * whether using a routine of falling edge or a routine of rising edge
    * if the chooseWhichRoutine == 0 then use the rising edge routine
    * else use a falling edge routine
@@ -43,7 +43,7 @@ public class UltrasonicLocalizer {
   }
   
   /**
-   * this method is implemented as the slides said 
+   * This method is implemented as the slides said 
    * If the robot starts facing a wall, it can:
    * Detect a rising edge, switch directions, then detect another rising edge
    * Detect a rising edge, continue in the same direction, then detect a falling edge
@@ -90,7 +90,7 @@ public class UltrasonicLocalizer {
   }
 
   /**
-   * this method is implemented as the slides said 
+   * This method is implemented as the slides said 
    * If the robot starts facing away from the walls, it can:
    * Detect a falling edge, continue in the same direction, then detect a rising edge
    */
@@ -224,8 +224,8 @@ private void fallingEdgeRoutine() {
 
   /**
    * this method is created to let the robot rotate certain angle
-   * @param cwOrCcw
-   * @param angleToRotate
+   * @param cwOrCcw : clockwise or counterclockwise
+   * @param angleToRotate : angle to rotate
    */
   private void rotateTheRobot(boolean cwOrCcw, double angleToRotate, boolean blocked) {
 	  double absAngleToRotate = Math.abs(angleToRotate);
@@ -251,8 +251,8 @@ private void fallingEdgeRoutine() {
    * This method allows the conversion of a distance to the total rotation of each wheel need to
    * cover that distance.
    * 
-   * @param radius
-   * @param distance
+   * @param radius : radius of the wheels
+   * @param distance : distance to travel
    * @return
    */
   private static int convertDistance(double radius, double travelDistance) {
@@ -264,7 +264,7 @@ private void fallingEdgeRoutine() {
   }  
   
   /**
-   * this method is to stip the motor ,both of them, left and right
+   * this method is to stop the motor ,both of them, left and right
    */
   private void stopMotor() {
 	// TODO Auto-generated method stub

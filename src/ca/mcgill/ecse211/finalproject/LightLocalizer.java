@@ -32,7 +32,7 @@ public class LightLocalizer {
 		}
 
 		/**
-		 * this method is implemented to let the robot first detect 4 black lines in order to detect four angles
+		 * This method is implemented to let the robot first detect 4 black lines in order to detect four angles
 		 * using these four angles to get a and b
 		 * then get x and y to move forward
 		 */
@@ -112,8 +112,8 @@ public class LightLocalizer {
 		
 		  /**
 		   * this method is created to let the robot rotate certain angle
-		   * @param cwOrCcw
-		   * @param angleToRotate
+		   * @param cwOrCcw : define clockwise or counterclockwise direction
+		   * @param angleToRotate : angle to rotate
 		   */
 		  private void rotateTheRobot(boolean cwOrCcw, double angleToRotate, boolean blocked) {
 			  double absAngleToRotate = Math.abs(angleToRotate);
@@ -139,8 +139,8 @@ public class LightLocalizer {
 		   * This method allows the conversion of a distance to the total rotation of each wheel need to
 		   * cover that distance.
 		   * 
-		   * @param radius
-		   * @param distance
+		   * @param radius : radius of wheels
+		   * @param distance : distance to travel
 		   * @return
 		   */
 		  private static int convertDistance(double radius, double travelDistance) {
@@ -152,7 +152,7 @@ public class LightLocalizer {
 		  }  
 
 		  /**
-		   * this method is to stip the motor ,both of them, left and right
+		   * this method is to stop the motor ,both of them, left and right
 		   */
 		  private void stopMotor() {
 			  // TODO Auto-generated method stub
@@ -162,8 +162,8 @@ public class LightLocalizer {
 		  
 		  /**Advances the robot a desired amount of cm.
 		   * 
-		   * @param distanceToTravel Distance to travel in cm.
-		   * @param instantReturn    True if the function is to be instantly returned. False if the function is to be returned after the travel is completed.
+		   * @param distanceToTravel : Distance to travel in cm.
+		   * @param instantReturn : True if the function is to be instantly returned. False if the function is to be returned after the travel is completed.
 		   */
 		   public void advanceRobot(double distanceToTravel, boolean instantReturn) {
 		     
