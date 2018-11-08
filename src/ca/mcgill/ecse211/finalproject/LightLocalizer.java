@@ -12,7 +12,7 @@ import lejos.robotics.SampleProvider;
 
 public class LightLocalizer {
 	private static final double LS_OFFSET = -13.6; //Distance from LS to center of rotation in cm. //negative because of light sensor is at back
-	private static final long CORRECTION_PERIOD = 100;
+	private static final long CORRECTION_PERIOD = 500;
 	  private Navigation Navigator;
 	  private EV3ColorSensor LS;
 	  private Odometer odo;
@@ -58,14 +58,14 @@ public class LightLocalizer {
 			long correctionStart, correctionEnd;
 			int count = 0;
 			
-			advanceRobot(-50,true);
+			advanceRobot(50,true);
 			
 			while (true) {
 				myColorSample.fetchSample(sampleColor, 0); 
 				color = sampleColor[0] * 1000; 
 				
 				correctionStart = System.currentTimeMillis();
-				advanceRobot(-50,true);
+				advanceRobot(50,true);
 				
 				//When a line is detected, go backwards for a distance equal to the distance between the light sensor and the center of the robot
 				while ( LS.getColorID() != 13 ) 
@@ -86,15 +86,15 @@ public class LightLocalizer {
 				
 				if(count == 2)
 				{
-					advanceRobot(6,false);
+					advanceRobot(-22,false);
 					rotateTheRobot(false, 90, false);
 					advanceRobot(-3,false);//back the robot -10 cm
 					break;
 				}
 				
-				advanceRobot(10,false);//back the robot 10 cm
+				advanceRobot(-22,false);//back the robot 10 cm
 				stopMotor();
-				rotateTheRobot(true,95,false);
+				rotateTheRobot(true,90,false);
 				
 				odo.setXYT(7 * TILE_LENGTH, TILE_LENGTH, 0);
 				

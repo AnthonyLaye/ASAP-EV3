@@ -127,7 +127,7 @@ private void fallingEdgeRoutine() {
 	    stopMotor();
 		rotateTheRobot(true,deltaTheta,false);
 		stopMotor();
-		rotateTheRobot(false,56,false);
+		rotateTheRobot(false,45,false);
 		odo.setTheta(0);
 		/*
 			//detect the distance from left wall

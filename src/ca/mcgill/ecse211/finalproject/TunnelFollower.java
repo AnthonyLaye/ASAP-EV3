@@ -32,15 +32,14 @@ public class TunnelFollower {
 	 * @param endY : y position after tunnel
 	 */
 	public void traverseTunnel(double startX, double startY, double endX, double endY) {
-		
-		armController.closeArms();
-		
-		Navigation.leftMotor.setSpeed(FORWARD_SPEED * 2); //TURBO MODE TO BLOW PAST THIS TUNNEL
-		Navigation.rightMotor.setSpeed(FORWARD_SPEED * 2); //TURBO MODE TO BLOW PAST THIS TUNNEL
-		
+			
 		double[] newValues = calculateTunnelEntry(startX, startY, endX, endY);
 		
 		navigation.travelTo(newValues[0], newValues[1], false);	//Offset values by 0.5 so we are lined up with center of tunnel
+		
+		armController.closeArms();
+		Navigation.leftMotor.setSpeed(FORWARD_SPEED * 2); //TURBO MODE TO BLOW PAST THIS TUNNEL
+		Navigation.rightMotor.setSpeed(FORWARD_SPEED * 2); //TURBO MODE TO BLOW PAST THIS TUNNEL
 		
 		navigation.travelTo(newValues[2], newValues[3], false);
 		

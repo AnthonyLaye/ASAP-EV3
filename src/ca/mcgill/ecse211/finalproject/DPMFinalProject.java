@@ -77,10 +77,14 @@ public class DPMFinalProject {
 			    odoThread.start();
 			    Thread odoDisplayThread = new Thread(odometryDisplay);
 			    odoDisplayThread.start();
+			    
 		    	// final Gyro gyro = new Gyro();
 			    final Navigation navigation = new Navigation(leftMotor, rightMotor, odometer);
 			    final UltrasonicLocalizer USLocalizer = new UltrasonicLocalizer(navigation, chooseWhichRoutine);
 			    final LightLocalizer LSLocalizer = new LightLocalizer(navigation, LS);
+			    
+			    //OdometryCorrection odometryCorrection = new OdometryCorrection(odometer, navigation);
+			    //final Thread correctionThread = new Thread(odometryCorrection);
 			    
 			    usPoller = new UltrasonicPoller(usDistance, usData, navigation); // the selected controller on each cycle
 			    usPoller.start();
@@ -152,19 +156,18 @@ public class DPMFinalProject {
 			    islandURX = ((Long) wifiData.get("Island_UR_x")).intValue();
 			    islandURY = ((Long) wifiData.get("Island_UR_y")).intValue();
 			    
-			    lcd.clear();
 			    
 			    (new Thread() {
 			        public void run() {
-			        
-			        	lcd.clear();
+
 			          USLocalizer.whichRoutine(); // Ultrasonic Localize
 			          LSLocalizer.lightLocalize();	// Light localize
+			          
+			          //correctionThread.start();
 			          
 			          //TODO Set coordinates based on starting corner
 			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
 			        	
-			          //navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
 			          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY); // Travel to start of tunnel and then to end of tunnel
 			          
 			          ringController.approachTree(tX, tY); //Travel to tree and do collections
