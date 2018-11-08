@@ -23,6 +23,8 @@ public class ArmController {
 		rightArmMotor.setSpeed(150);
 		leftArmMotor.rotate(70, true);
 		rightArmMotor.rotate(70, false);
+		leftArmMotor.stop(true);
+		rightArmMotor.stop(false);
 	}
 	
 	/**
@@ -33,5 +35,7 @@ public class ArmController {
 		rightArmMotor.setSpeed(150);
 		leftArmMotor.rotate(-70, true);
 		rightArmMotor.rotate(-70, false);
+		leftArmMotor.stop(true);
+		rightArmMotor.stop(false);
 	}
 }

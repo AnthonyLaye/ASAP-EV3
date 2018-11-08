@@ -23,6 +23,7 @@ public class LightLocalizer {
 		private static final double wheelRadius = 2.2;
 		private static final double track = 11.3;
 		private static final int FORWARDSPEED = 100;
+		private static final double TILE_LENGTH = 30.48;
 		//private static SensorModes myColor = new EV3ColorSensor(LS);
 		
 		public LightLocalizer(Navigation Navigator, EV3ColorSensor lightSensor) throws OdometerExceptions {
@@ -94,6 +95,8 @@ public class LightLocalizer {
 				advanceRobot(10,false);//back the robot 10 cm
 				stopMotor();
 				rotateTheRobot(true,95,false);
+				
+				odo.setXYT(7 * TILE_LENGTH, TILE_LENGTH, 0);
 				
 				correctionEnd = System.currentTimeMillis();
 				if (correctionEnd - correctionStart < CORRECTION_PERIOD) {

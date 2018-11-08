@@ -22,6 +22,7 @@ public class Navigation implements UltrasonicController {
 	private static final double TILE_SIZE = 30.48;
 	private static final double WHEEL_RAD = 2.2;
 	private static final double TRACK = 12.5;
+	public static final double TILE_LENGTH = 30.78;
 
 	public Navigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odometer) throws OdometerExceptions {
 		this.leftMotor = leftMotor;

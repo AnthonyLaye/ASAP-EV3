@@ -52,8 +52,8 @@ public class TreeController {
 		    // There is nothing to be done here
 		}
 		
-		navigation.travelTo(treeX - 0.5 , odo.getXYT()[1], false);	// Travel along x first, then along y so we approach the tree head on
-		navigation.travelTo(odo.getXYT()[0], treeY - 0.5, false);	// We subtract 0.5 so the robot doesnt run into the tree
+		navigation.travelTo(treeX, odo.getXYT()[1] / Navigation.TILE_LENGTH, false);	// Travel along x first, then along y so we approach the tree head on
+		navigation.travelTo(odo.getXYT()[0] / Navigation.TILE_LENGTH, treeY - 0.5, false);	// We subtract 0.5 so the robot doesnt run into the tree
 		
 		navigation.rotateTheRobot(true, 360, true);	// Line up directly with tree
 		while(navigation.distance > 17) {
@@ -98,9 +98,9 @@ public class TreeController {
 			
 			armController.openArms();
 			navigation.rotateTheRobot(true, 90, false); // Turn 90 degree to reach other side
-			navigation.advanceRobot(15, false);
+			navigation.advanceRobot(30, false);
 			navigation.rotateTheRobot(false, 90, false);
-			navigation.advanceRobot(15, false);
+			navigation.advanceRobot(30, false);
 			navigation.rotateTheRobot(false, 90, false);
 			count++;
 		}
