@@ -6,6 +6,7 @@ import java.util.Map;
 
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
+import lejos.hardware.lcd.LCD;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
@@ -47,7 +48,7 @@ public class DPMFinalProject {
 			    int buttonChoice;
 			    int chooseWhichRoutine;//if chooseWichEdge is equal to 0, then it is rising edge, else it is falling edge
 			    
-			    final Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD); // TODO Complete implementation
+			    Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD); // TODO Complete implementation
 			    Display odometryDisplay = new Display(lcd); // No need to change
 			  
 			    UltrasonicPoller usPoller = null; 
@@ -100,7 +101,7 @@ public class DPMFinalProject {
 			    // ******************** OPTAIN ALL WIFI DATA FROM SERVER ***********************************
 			    
 			    Map wifiData = WifiController.readData();
-			    System.out.println(wifiData);
+			    //System.out.println(wifiData);
 			    
 			    boolean isRedTeam = false;
 			    
@@ -151,17 +152,20 @@ public class DPMFinalProject {
 			    islandURX = ((Long) wifiData.get("Island_UR_x")).intValue();
 			    islandURY = ((Long) wifiData.get("Island_UR_y")).intValue();
 			    
+			    lcd.clear();
+			    
 			    (new Thread() {
 			        public void run() {
+			        
+			        	lcd.clear();
 			          USLocalizer.whichRoutine(); // Ultrasonic Localize
 			          LSLocalizer.lightLocalize();	// Light localize
 			          
 			          //TODO Set coordinates based on starting corner
-			          //Beta demo starts in corner 1 -> (7, 1)
-			          odometer.setXYT(7 * TILE_LENGTH, TILE_LENGTH, odometer.getXYT()[2]);
-			         
-			          navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
-			          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY); // Travel to end of tunnel
+			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
+			        	
+			          //navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
+			          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY); // Travel to start of tunnel and then to end of tunnel
 			          
 			          ringController.approachTree(tX, tY); //Travel to tree and do collections
 			          
