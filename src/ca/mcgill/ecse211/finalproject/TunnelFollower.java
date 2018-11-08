@@ -12,6 +12,7 @@ public class TunnelFollower {
 	private Odometer odo;
 	private Navigation navigation;
 	private ArmController armController;
+	private static final int FORWARD_SPEED = 150;
 	
 	
 	public TunnelFollower(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, ArmController armController) throws OdometerExceptions {
@@ -34,9 +35,15 @@ public class TunnelFollower {
 		
 		armController.closeArms();
 		
+		Navigation.leftMotor.setSpeed(FORWARD_SPEED * 2); //TURBO MODE TO BLOW PAST THIS TUNNEL
+		Navigation.rightMotor.setSpeed(FORWARD_SPEED * 2); //TURBO MODE TO BLOW PAST THIS TUNNEL
+		
 		navigation.travelTo(startX + 0.5, startY - 0.5, false);	//Offset values by 0.5 so we are lined up with center of tunnel
 		
 		navigation.travelTo(endX - 0.5, endY + 0.5, false);
+		
+		Navigation.leftMotor.setSpeed(FORWARD_SPEED); //TURBO MODE TO BLOW PAST THIS TUNNEL
+		Navigation.rightMotor.setSpeed(FORWARD_SPEED); //TURBO MODE TO BLOW PAST THIS TUNNEL
 		
 		armController.openArms();
 	}
