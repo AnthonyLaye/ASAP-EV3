@@ -57,14 +57,14 @@ public class LightLocalizer {
 			long correctionStart, correctionEnd;
 			int count = 0;
 			
-			advanceRobot(-50,true);
+			advanceRobot(50,true);
 			
 			while (true) {
 				myColorSample.fetchSample(sampleColor, 0); 
 				color = sampleColor[0] * 1000; 
 				
 				correctionStart = System.currentTimeMillis();
-				advanceRobot(-50,true);
+				advanceRobot(50,true);
 				
 				//When a line is detected, go backwards for a distance equal to the distance between the light sensor and the center of the robot
 				while ( LS.getColorID() != 13 ) 
@@ -91,9 +91,9 @@ public class LightLocalizer {
 					break;
 				}
 				
-				advanceRobot(10,false);//back the robot 10 cm
+				advanceRobot(-10,false);//back the robot 10 cm
 				stopMotor();
-				rotateTheRobot(true,95,false);
+				rotateTheRobot(true,90,false);
 				
 				correctionEnd = System.currentTimeMillis();
 				if (correctionEnd - correctionStart < CORRECTION_PERIOD) {

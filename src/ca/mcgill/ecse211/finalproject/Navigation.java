@@ -133,7 +133,7 @@ public class Navigation implements UltrasonicController {
 	 * @param angleToRotate : absolute angle to rotate robot
 	 * @param blocked : True if the function is to be instantly returned. False if the function is to be returned after the travel is completed
 	 */
-	public void rotateTheRobot(boolean clockWise, double angleToRotate, boolean blocked) {
+	public static void rotateTheRobot(boolean clockWise, double angleToRotate, boolean blocked) {
 		double absAngleToRotate = Math.abs(angleToRotate);
 		leftMotor.setSpeed(ROTATE_SPEED);
 		rightMotor.setSpeed(ROTATE_SPEED);
