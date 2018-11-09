@@ -4,6 +4,7 @@ package ca.mcgill.ecse211.finalproject;
 
 import java.util.Map;
 
+import ca.mcgill.ecse211.finalproject.UltrasonicLocalizer1.Localization;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.LCD;
@@ -80,7 +81,8 @@ public class DPMFinalProject {
 			    
 		    	// final Gyro gyro = new Gyro();
 			    final Navigation navigation = new Navigation(leftMotor, rightMotor, odometer);
-			    final UltrasonicLocalizer USLocalizer = new UltrasonicLocalizer(navigation, chooseWhichRoutine);
+			    //final UltrasonicLocalizer USLocalizer = new UltrasonicLocalizer(navigation, chooseWhichRoutine);
+			    final UltrasonicLocalizer1 USLocalizer = new UltrasonicLocalizer1(odometer, leftMotor, rightMotor, Localization.FALLING_EDGE, navigation);
 			    final LightLocalizer LSLocalizer = new LightLocalizer(navigation, LS);
 			    
 			    //OdometryCorrection odometryCorrection = new OdometryCorrection(odometer, navigation);
@@ -160,7 +162,7 @@ public class DPMFinalProject {
 			    (new Thread() {
 			        public void run() {
 
-			          USLocalizer.whichRoutine(); // Ultrasonic Localize
+			          USLocalizer.localize(); // Ultrasonic Localize
 			          LSLocalizer.lightLocalize();	// Light localize
 			          
 			          //correctionThread.start();
