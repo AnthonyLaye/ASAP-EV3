@@ -22,11 +22,16 @@ public class LightLocalizer {
 		private static final double track = 12.5;
 		private static final int FORWARDSPEED = 100;
 		//private static SensorModes myColor = new EV3ColorSensor(LS);
+		private SensorData data;
+		private static Odometer odo;
+		private static final int blackLineColor = -5;
 		
 		public LightLocalizer(Navigation Navigator, EV3ColorSensor LSL, EV3ColorSensor LSR) throws OdometerExceptions {
 			this.Navigator = Navigator;
 			this.LSL = LSL;//LS1 is the left one ultra is face against you
 			this.LSR = LSR;//LS2 is the right one, ultra is face against you
+		    this.data = SensorData.getSensorData();
+		    this.odo = Odometer.getOdometer();
 		}
 
 		/**
@@ -46,31 +51,84 @@ public class LightLocalizer {
 			}
 			long correctionStart, correctionEnd;
 			int count = 0;
-			
+		   /* Navigation.leftMotor.forward();
+		    Navigation. rightMotor.forward();
+		    while (Navigation.leftMotor.isMoving() || Navigation.rightMotor.isMoving()) {
+		      if (data.getL()[0] < blackLineColor) {
+		    	  	Navigation.leftMotor.stop(true);
+		      }
+		      if (data.getL()[1] < blackLineColor) {
+		    	  	Navigation.rightMotor.stop(true);
+		      }
+		    }
+		    
+		    rotateTheRobot(true, 90, false);
+		    
+		    Navigation.leftMotor.setSpeed(100);
+		    Navigation.rightMotor.setSpeed(100);
+		    Navigation.leftMotor.forward();
+		    Navigation.rightMotor.forward();
+		    while (Navigation.leftMotor.isMoving() || Navigation.rightMotor.isMoving()) {
+		      if (data.getL()[0] < blackLineColor) {
+		    	  	Navigation.leftMotor.stop(true);
+		      }
+		      if (data.getL()[1] < blackLineColor) {
+		    	  	Navigation.rightMotor.stop(true);
+		      }
+		    }
+		    
+		    rotateTheRobot(false, 90, false);
+		    
+		    odo.setTheta(0);
+		    odo.setX(0);
+		    odo.setY(0);*/
+			int buff = 0;
 			while (true) {
 				
 				correctionStart = System.currentTimeMillis();
 				advanceRobot(50,true);
 				
-				while (Navigator.leftMotor.isMoving() || Navigator.rightMotor.isMoving()) {
-					
-					if (LSL.getColorID() == 13) {
-						Navigator.leftMotor.stop(true);
-					}
+				while (LSL.getColorID() != 13) {
+					buff = 1;
 					if (LSR.getColorID()== 13) {
-						Navigator.rightMotor.stop(true);
+						buff = 2;
+						break;
 					}
 				}
 				
 				stopMotor();
+				
+				
+				/*if(buff == 1)
+				{
+					Sound.beep();
+					//Navigator.rightMotor.forward();
+					Navigator.rightMotor.setSpeed(100);
+					Navigator.rightMotor.forward();
+				}
+				
+				if(buff == 2)
+				{
+					Sound.beepSequence();
+					Navigator.leftMotor.forward();
+					Navigator.leftMotor.setSpeed(100);
+					while(LSL.getColorID() != 13);
+				}*/
+				
+				buff = 0;
+				
 				
 				count++;
 				
 				if(count == 2)
 				{
 					rotateTheRobot(false, 90, false);
+					odo.setX(7 * 30.48);
+					odo.setTheta(270);
 					break;
 				}
+				else
+					odo.setY(30.48);
 				
 				rotateTheRobot(true,90,false);
 				
@@ -146,8 +204,8 @@ public class LightLocalizer {
 		   */
 		   public void advanceRobot(double distanceToTravel, boolean instantReturn) {
 		     
-		     Navigator.leftMotor.setSpeed(FORWARDSPEED - 50);
-		     Navigator.rightMotor.setSpeed(FORWARDSPEED - 50);
+		     Navigator.leftMotor.setSpeed(FORWARDSPEED);
+		     Navigator.rightMotor.setSpeed(FORWARDSPEED);
 		              
 		     Navigator.leftMotor.rotate(convertDistance(wheelRadius, distanceToTravel), true);
 		     Navigator.rightMotor.rotate(convertDistance(wheelRadius, distanceToTravel), instantReturn);

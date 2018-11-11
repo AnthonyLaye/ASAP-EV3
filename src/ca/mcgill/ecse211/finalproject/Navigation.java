@@ -21,8 +21,8 @@ public class Navigation implements UltrasonicController {
 	private static final int ROTATE_SPEED = 100;
 	private static final int FILTER_OUT = 20;
 	private static final double TILE_SIZE = 30.48;
-	private static final double WHEEL_RAD = 2.2;
-	private static final double TRACK = 12.8;
+	private static final double WHEEL_RAD = 2.08;
+	private static final double TRACK = 12.27;
 	public static final double TILE_LENGTH = 30.78;
 	private SensorData data;
 
@@ -44,17 +44,14 @@ public class Navigation implements UltrasonicController {
 	 */
 	public void travelTo(double x, double y, boolean immediateReturn) {
 		double minimalTheta = 0, travelDistance = 0, currentTheta = 0;
-		double currentX = 0.0;
-		double currentY = 0.0;
-		double odometer[] = { 0, 0, 0 };
+		double currentX = 0;
+		double currentY = 0;
+		double odometer[] = {0, 0, 0};
 
 		// Get odometer readings
-		try {
-			odometer = Odometer.getOdometer().getXYT();
-		} catch (OdometerExceptions e) {
-			// Do nothing
-			e.printStackTrace();
-		}
+	
+		odometer = odo.getXYT();
+	
 
 		// Set odometer reading angle as prev angle as well
 		currentTheta = odometer[2];
@@ -64,8 +61,8 @@ public class Navigation implements UltrasonicController {
 		currentY = odometer[1];
 
 		//Getting the distances with respect to the tile size
-		double deltaX = x * TILE_SIZE - currentX;
-		double deltaY =	y * TILE_SIZE - currentY;
+		double deltaX = x * TILE_SIZE - (currentX);
+		double deltaY =	y * TILE_SIZE - (currentY);
 		travelDistance = Math.hypot(Math.abs(deltaX), Math.abs(deltaY));
 
 		//Calculating the minimal angle to get to destination
@@ -107,7 +104,7 @@ public class Navigation implements UltrasonicController {
 	public void turnTo(double minimalT, double original) {
 		//Calculating by how much we have to rotate with respect to our current angle
 		double deltaT = 0;
-		deltaT = minimalT*1.15 - original;
+		deltaT = minimalT - original;
 		boolean turnLeft = false;
 
 		//Getting the positive equivalent

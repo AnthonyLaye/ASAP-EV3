@@ -9,8 +9,8 @@ import lejos.hardware.Sound;
  */
 public class UltrasonicLocalizer {
 	private static final int ROTATE_SPEED = 100;
-	private static final	 double wheelRadius = 2.2;
-	private static final double track = 12.5;
+	private static final	 double wheelRadius = 2.08;
+	private static final double track = 12.27;
 	private Navigation Navigator = null;
 	/*
 	 * have to mention that k and d are gotten from a lot of experiments but it is not hard code
@@ -84,7 +84,7 @@ public class UltrasonicLocalizer {
 	  stopMotor();
 	  rotateTheRobot(true,deltaTheta,false);
 	  stopMotor();
-	  rotateTheRobot(true,140,false);
+	  rotateTheRobot(true,135,false);
 	  odo.setTheta(0);
 	  
   }

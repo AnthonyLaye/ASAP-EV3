@@ -34,8 +34,8 @@ public class DPMFinalProject {
 				new EV3ColorSensor(LocalEV3.get().getPort("S3"));//LS2 is the right one, ultra is face against you
 		private static final EV3ColorSensor ColSensor =
 				new EV3ColorSensor(LocalEV3.get().getPort("S2"));
-		private static final double WHEEL_RAD = 2.2;
-		private static final double TRACK = 11.3;
+		private static final double WHEEL_RAD = 2.08;
+		private static final double TRACK = 12.27;
 		private static final double TILE_LENGTH = 30.48;
 	
 		private static SensorModes usSensor = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4")); // usSensor is the instance
@@ -87,7 +87,7 @@ public class DPMFinalProject {
 			    odoThread.start();
 			    Thread odoDisplayThread = new Thread(odometryDisplay);
 			    odoDisplayThread.start();
-		    	// final Gyro gyro = new Gyro();
+
 			    final Navigation navigation = new Navigation(leftMotor, rightMotor, odometer, sensorData);
 			    final UltrasonicLocalizer USLocalizer = new UltrasonicLocalizer(navigation, chooseWhichRoutine);
 			    final LightLocalizer LSLocalizer = new LightLocalizer(navigation, LSL, LSR);
@@ -174,9 +174,10 @@ public class DPMFinalProject {
 			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
 			        	
 			          //navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
-			          tunnelFollower.traverseTunnel(1, 4, 5, 7); // Travel to start of tunnel and then to end of tunnel
-			          
-			          ringController.approachTree(7, 7); //Travel to tree and do collections
+			          tunnelFollower.traverseTunnel(2, 3, 3, 5); // Travel to start of tunnel and then to end of tunnel
+
+			          //navigation.travelTo(3, 3, false);
+			          //ringController.approachTree(4, 4); //Travel to tree and do collections
 			          
 			          /* The rest is not used for beta demo
 			           
