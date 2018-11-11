@@ -11,25 +11,22 @@ import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 
 public class LightLocalizer {
-	private static final double LS_OFFSET = -13.6; //Distance from LS to center of rotation in cm. //negative because of light sensor is at back
-	private static final long CORRECTION_PERIOD = 100;
-	  private Navigation Navigator;
-	  private EV3ColorSensor LS;
-	  private Odometer odo;
-	  public static double xToMove, yToMove;//variables that we need to get or need to have
-		private static float color = 0;
+		private static final long CORRECTION_PERIOD = 100;
+		private Navigation Navigator;
+		private EV3ColorSensor LSL;
+		private EV3ColorSensor LSR;
+		public static double xToMove, yToMove;//variables that we need to get or need to have
 		//private static final Port portColor = LocalEV3.get().getPort("S3");
 		private static final int ROTATE_SPEED = 100;
 		private static final double wheelRadius = 2.2;
-		private static final double track = 11.3;
+		private static final double track = 12.5;
 		private static final int FORWARDSPEED = 100;
-		private static final double TILE_LENGTH = 30.48;
 		//private static SensorModes myColor = new EV3ColorSensor(LS);
 		
-		public LightLocalizer(Navigation Navigator, EV3ColorSensor lightSensor) throws OdometerExceptions {
+		public LightLocalizer(Navigation Navigator, EV3ColorSensor LSL, EV3ColorSensor LSR) throws OdometerExceptions {
 			this.Navigator = Navigator;
-			this.LS = lightSensor;
-			this.odo = Odometer.getOdometer();
+			this.LSL = LSL;//LS1 is the left one ultra is face against you
+			this.LSR = LSR;//LS2 is the right one, ultra is face against you
 		}
 
 		/**
@@ -38,65 +35,44 @@ public class LightLocalizer {
 		 * then get x and y to move forward
 		 */
 		public void lightLocalize() {
-			//LS.getMode("Red")
-			//rotateTheRobot(true,45,false);//rotate 45degree cw
 			//advanceRobot(-10,false);//first advance the robot to avoid it detect nothing, according to the length of our robot, 10 is all good it is half of our robot length 
 			//it is not hard code because our robot is in the first square after finishing the first task, so move for half of robot length will finish the second task
 			//because the whole square is a 30.48*30.48 square, our robot is 23 cm add 10 cm is longer than the length of the side of the square and because of that 
 			//this move will not let whole robot go out the square.
-			//rotateTheRobot(false,45,false);//rotate 45 degree ccw to go back to the position
-			//SampleProvider myColorSample = LS.getColorIDMode();
-			//SensorMode color = LS.getColorIDMode();
-			SampleProvider myColorSample = LS.getMode("Red");
-			float[] sampleColor = new float[LS.sampleSize()];
-			
+		
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				
 			}
 			long correctionStart, correctionEnd;
 			int count = 0;
 			
-			advanceRobot(50,true);
-			
 			while (true) {
-				myColorSample.fetchSample(sampleColor, 0); 
-				color = sampleColor[0] * 1000; 
 				
 				correctionStart = System.currentTimeMillis();
 				advanceRobot(50,true);
 				
-				//When a line is detected, go backwards for a distance equal to the distance between the light sensor and the center of the robot
-				while ( LS.getColorID() != 13 ) 
-				{ 
+				while (Navigator.leftMotor.isMoving() || Navigator.rightMotor.isMoving()) {
 					
-					
+					if (LSL.getColorID() == 13) {
+						Navigator.leftMotor.stop(true);
+					}
+					if (LSR.getColorID()== 13) {
+						Navigator.rightMotor.stop(true);
+					}
 				}
 				
-				Sound.beep();
-				
 				stopMotor();
-				
-				//advanceRobot(10,false);//back the robot 10 cm
-				
-				//rotateTheRobot(true,90,false);
 				
 				count++;
 				
 				if(count == 2)
 				{
-					advanceRobot(6,false);
 					rotateTheRobot(false, 90, false);
-					advanceRobot(-3,false);//back the robot -10 cm
 					break;
 				}
 				
-				advanceRobot(-10,false);//back the robot 10 cm
-				stopMotor();
 				rotateTheRobot(true,90,false);
-				
-				odo.setXYT(7 * TILE_LENGTH, TILE_LENGTH, 0);
 				
 				correctionEnd = System.currentTimeMillis();
 				if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
@@ -170,8 +146,8 @@ public class LightLocalizer {
 		   */
 		   public void advanceRobot(double distanceToTravel, boolean instantReturn) {
 		     
-		     Navigator.leftMotor.setSpeed(FORWARDSPEED);
-		     Navigator.rightMotor.setSpeed(FORWARDSPEED);
+		     Navigator.leftMotor.setSpeed(FORWARDSPEED - 50);
+		     Navigator.rightMotor.setSpeed(FORWARDSPEED - 50);
 		              
 		     Navigator.leftMotor.rotate(convertDistance(wheelRadius, distanceToTravel), true);
 		     Navigator.rightMotor.rotate(convertDistance(wheelRadius, distanceToTravel), instantReturn);

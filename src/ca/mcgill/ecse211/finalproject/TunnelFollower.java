@@ -40,9 +40,13 @@ public class TunnelFollower {
 		
 		double[] newValues = calculateTunnelEntry(startX, startY, endX, endY);
 		
-		navigation.travelTo(newValues[0], newValues[1], false);	//Offset values by 0.5 so we are lined up with center of tunnel
+		//navigation.travelTo(newValues[0], newValues[1], false);	//Offset values by 0.5 so we are lined up with center of tunnel
+		navigation.travelTo(newValues[0], odo.getXYT()[1], false);
+		navigation.travelTo(odo.getXYT()[0], newValues[1], false);
 		
-		navigation.travelTo(newValues[2], newValues[3], false);
+		//navigation.travelTo(newValues[2], newValues[3], false);
+		navigation.travelTo(newValues[2], odo.getXYT()[1], false);
+		navigation.travelTo(odo.getXYT()[0], newValues[3], false);
 		
 		Navigation.leftMotor.setSpeed(FORWARD_SPEED); // Back to normal speed
 		Navigation.rightMotor.setSpeed(FORWARD_SPEED); 

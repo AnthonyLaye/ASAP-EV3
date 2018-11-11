@@ -28,12 +28,12 @@ public class DPMFinalProject {
 				new EV3MediumRegulatedMotor(LocalEV3.get().getPort("C"));
 		
 		private static final TextLCD lcd = LocalEV3.get().getTextLCD();
-		private static final EV3ColorSensor LS = 
-				new EV3ColorSensor(LocalEV3.get().getPort("S3"));
+		private static final EV3ColorSensor LSL = 
+				new EV3ColorSensor(LocalEV3.get().getPort("S1"));//LS1 is the left one ultra is face against you
+		private static final EV3ColorSensor LSR = 
+				new EV3ColorSensor(LocalEV3.get().getPort("S3"));//LS2 is the right one, ultra is face against you
 		private static final EV3ColorSensor ColSensor =
 				new EV3ColorSensor(LocalEV3.get().getPort("S2"));
-		private static final EV3GyroSensor GS =
-				new EV3GyroSensor(LocalEV3.get().getPort("S1"));
 		private static final double WHEEL_RAD = 2.2;
 		private static final double TRACK = 11.3;
 		private static final double TILE_LENGTH = 30.48;
@@ -42,11 +42,21 @@ public class DPMFinalProject {
 		private static SampleProvider usDistance = usSensor.getMode("Distance"); // usDistance provides samples from
 		private static float[] usData = new float[usDistance.sampleSize()]; // usData is the buffer in which data are
 		
+		private static LightPoller lightPoller;
 		
 		  public static void main(String[] args) throws OdometerExceptions {
 			  
 			    int buttonChoice;
 			    int chooseWhichRoutine;//if chooseWichEdge is equal to 0, then it is rising edge, else it is falling edge
+			    
+				// Sensor Related Stuff
+				SensorData sensorData = SensorData.getSensorData();
+				SampleProvider backLight[] = new SampleProvider[2];
+				backLight[0] = LSL.getRedMode();
+				backLight[1] = LSR.getRedMode();
+				lightPoller = new LightPoller(backLight, new float[2][backLight[1].sampleSize()], sensorData);
+				Thread lightThread = new Thread();
+				lightThread.start();
 			    
 			    Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD); // TODO Complete implementation
 			    Display odometryDisplay = new Display(lcd); // No need to change
@@ -56,7 +66,7 @@ public class DPMFinalProject {
 			    do {
 			        // clear the display
 			        lcd.clear();
-			        
+			    
 			        // ask the user whether the motors should drive in a square or float
 			        lcd.drawString("< Left | Right >", 0, 0);
 			        lcd.drawString("       |        ", 0, 1);
@@ -78,9 +88,9 @@ public class DPMFinalProject {
 			    Thread odoDisplayThread = new Thread(odometryDisplay);
 			    odoDisplayThread.start();
 		    	// final Gyro gyro = new Gyro();
-			    final Navigation navigation = new Navigation(leftMotor, rightMotor, odometer);
+			    final Navigation navigation = new Navigation(leftMotor, rightMotor, odometer, sensorData);
 			    final UltrasonicLocalizer USLocalizer = new UltrasonicLocalizer(navigation, chooseWhichRoutine);
-			    final LightLocalizer LSLocalizer = new LightLocalizer(navigation, LS);
+			    final LightLocalizer LSLocalizer = new LightLocalizer(navigation, LSL, LSR);
 			    
 			    usPoller = new UltrasonicPoller(usDistance, usData, navigation); // the selected controller on each cycle
 			    usPoller.start();
@@ -88,8 +98,7 @@ public class DPMFinalProject {
 			    final ArmController armController = new ArmController(leftArmMotor, rightArmMotor);
 			    final TunnelFollower tunnelFollower = new TunnelFollower(leftMotor, rightMotor, navigation, odometer, armController);
 			    final TreeController ringController = new TreeController(leftMotor, rightMotor, navigation, odometer, ColSensor, armController);
-			    //usPoller2 = new UltrasonicPoller(usDistanceCol, usDataCol, driveDetect);
-			    //usPoller2.start();
+			    
 			    
 			    // Sleep for 2 seconds
 			    try {
@@ -100,15 +109,15 @@ public class DPMFinalProject {
 			    
 			    // ******************** OPTAIN ALL WIFI DATA FROM SERVER ***********************************
 			    
-			    Map wifiData = WifiController.readData();
+			    //Map wifiData = WifiController.readData();
 			    //System.out.println(wifiData);
 			    
 			    boolean isRedTeam = false;
 			    
-			    int redTeam = ((Long) wifiData.get("RedTeam")).intValue();
-			    int greenTeam = ((Long) wifiData.get("GreenTeam")).intValue();
+			  //  int redTeam = ((Long) wifiData.get("RedTeam")).intValue();
+			    //int greenTeam = ((Long) wifiData.get("GreenTeam")).intValue();
 			    
-			    if(redTeam == 13)	//Check if team 13 is red! if not we are green
+			   /* if(redTeam == 13)	//Check if team 13 is red! if not we are green
 			    	isRedTeam = true;
 			    else if(greenTeam == 13)
 			    	isRedTeam = false;
@@ -117,9 +126,9 @@ public class DPMFinalProject {
 			    
 			    final int corner, llX, llY, urX, urY, islandLLX, islandLLY, islandURX, islandURY, tnLLX, tnLLY, tnURX, tnURY, tX, tY;
 			    
-			    isRedTeam = false; // THIS IS JUST FOR BETA DEMO, GREEN BY DEFAULT IN DEMO
+			    isRedTeam = false; // THIS IS JUST FOR BETA DEMO, GREEN BY DEFAULT IN DEMO*/
 			    
-			    if(isRedTeam) {
+			    /*if(isRedTeam) {
 			    	corner = ((Long) wifiData.get("RedCorner")).intValue();
 			    	llX = ((Long) wifiData.get("Red_LL_x")).intValue();
 			    	llY = ((Long) wifiData.get("Red_LL_y")).intValue();
@@ -151,7 +160,7 @@ public class DPMFinalProject {
 			    islandLLY = ((Long) wifiData.get("Island_LL_y")).intValue();
 			    islandURX = ((Long) wifiData.get("Island_UR_x")).intValue();
 			    islandURY = ((Long) wifiData.get("Island_UR_y")).intValue();
-			    
+			    */
 			    lcd.clear();
 			    
 			    (new Thread() {
@@ -165,9 +174,9 @@ public class DPMFinalProject {
 			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
 			        	
 			          //navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
-			          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY); // Travel to start of tunnel and then to end of tunnel
+			          tunnelFollower.traverseTunnel(1, 4, 5, 7); // Travel to start of tunnel and then to end of tunnel
 			          
-			          ringController.approachTree(tX, tY); //Travel to tree and do collections
+			          ringController.approachTree(7, 7); //Travel to tree and do collections
 			          
 			          /* The rest is not used for beta demo
 			           

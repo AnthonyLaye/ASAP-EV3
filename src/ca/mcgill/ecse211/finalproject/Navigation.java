@@ -5,6 +5,7 @@ package ca.mcgill.ecse211.finalproject;
 
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.sensor.EV3ColorSensor;
 
 /**
  * This class is used to drive the robot on the demo floor.
@@ -21,13 +22,15 @@ public class Navigation implements UltrasonicController {
 	private static final int FILTER_OUT = 20;
 	private static final double TILE_SIZE = 30.48;
 	private static final double WHEEL_RAD = 2.2;
-	private static final double TRACK = 12.5;
+	private static final double TRACK = 12.8;
 	public static final double TILE_LENGTH = 30.78;
+	private SensorData data;
 
-	public Navigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odometer) throws OdometerExceptions {
+	public Navigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odometer, 	SensorData data) throws OdometerExceptions {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
 		this.odo = odometer;
+		this.data = data;
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
 	}
@@ -80,6 +83,16 @@ public class Navigation implements UltrasonicController {
 		leftMotor.rotate(convertDistance(WHEEL_RAD, travelDistance), true);
 		rightMotor.rotate(convertDistance(WHEEL_RAD, travelDistance), immediateReturn);
 		
+		while (leftMotor.isMoving() || rightMotor.isMoving()) {
+			double left = data.getL()[0];
+			double right = data.getL()[1];
+			if (left < -10) {
+				leftMotor.stop(true);
+			}
+			if (right < -10) {
+				rightMotor.stop(true);
+			}
+		}
 		//tell that this method has stopped
 		navigating = false;
 	}

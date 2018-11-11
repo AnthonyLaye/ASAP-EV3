@@ -10,7 +10,7 @@ import lejos.hardware.Sound;
 public class UltrasonicLocalizer {
 	private static final int ROTATE_SPEED = 100;
 	private static final	 double wheelRadius = 2.2;
-	private static final double track = 11.3;
+	private static final double track = 12.5;
 	private Navigation Navigator = null;
 	/*
 	 * have to mention that k and d are gotten from a lot of experiments but it is not hard code
@@ -98,9 +98,6 @@ private void fallingEdgeRoutine() {
 	  // TODO Auto-generated method stub
 		double a = 0;
 		double b = 0;
-		double moveFromLeftWall = 0;
-		double moveFromBacktWall = 0;
-		double cos10 = 0.9848;
 
 		rotateTheRobot(true,360,true);//let it roll for 2 circle, this will make sure that it will finish the data collecting
 		
@@ -127,7 +124,7 @@ private void fallingEdgeRoutine() {
 	    stopMotor();
 		rotateTheRobot(true,deltaTheta,false);
 		stopMotor();
-		rotateTheRobot(false,56,false);
+		rotateTheRobot(false,45,false);
 		odo.setTheta(0);
   }
 

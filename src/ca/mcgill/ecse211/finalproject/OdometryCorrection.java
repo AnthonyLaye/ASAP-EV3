@@ -20,7 +20,7 @@ public class OdometryCorrection implements Runnable {
 	private static final long CORRECTION_PERIOD = 10;
 	private Odometer odometer;
 	private double squareSideLen = 30.48;
-
+	
 	private static EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S4);
 	//static SampleProvider myColorSample = lightSensor.getRedMode();
 	//float [] sample = new float[myColorSample.sampleSize()];
@@ -52,9 +52,7 @@ public class OdometryCorrection implements Runnable {
 	//we first got the offset between the light sensor and the center of rotation then it is easy to calculate the offset between light sensor and x-axis (lightSensorDis*cos(theta))
 	//and y-axis (lightSensorDis*sin(theta))
 	public void run() {
-	
 		final SampleProvider sp = gyroSensor.getAngleAndRateMode();
-		
 		int value = 0;
 		double xpositionBefore = 0;
 		double ypositionBefore = 0;
@@ -71,6 +69,8 @@ public class OdometryCorrection implements Runnable {
             value = (int)sample[0];
 			//
 			if ( odometer.getXYT()[0] - xpositionBefore >= squareSideLen || odometer.getXYT()[1] - ypositionBefore >= squareSideLen) { //we find a black line
+				
+				
 				xpositionBefore = odometer.getXYT()[0];
 				ypositionBefore = odometer.getXYT()[1];
 				double theta = odometer.getXYT()[2]; // we need to get our theta to find offset to X axis and offset to Y axis

@@ -10,12 +10,10 @@ import ca.mcgill.ecse211.WiFiClient.WifiConnection;
  */
 public class WifiController {
 	
-	// ** Set these as appropriate for your team and current situation **
-<<<<<<< HEAD
-	  private static final String SERVER_IP = "142.157.77.40";
-=======
-	  private static final String SERVER_IP = "192.168.2.16";
->>>>>>> 005fc694b9760a220a3a1838a35ea51c13930a10
+
+	  private static final String SERVER_IP = "192.168.2.10";
+
+
 	  private static final int TEAM_NUMBER = 13;
 
 	  // Enable/disable printing of debug info from the WiFi class
