@@ -124,7 +124,7 @@ private void fallingEdgeRoutine() {
 	    stopMotor();
 		rotateTheRobot(true,deltaTheta,false);
 		stopMotor();
-		rotateTheRobot(false,45,false);
+		rotateTheRobot(false,55,false);
 		odo.setTheta(0);
   }
 

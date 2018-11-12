@@ -41,12 +41,11 @@ public class TunnelFollower {
 		//navigation.travelTo(newValues[0], odo.getXYT()[1], false);
 		//navigation.travelTo(odo.getXYT()[0], newValues[1], false);
 		
-		System.out.println("X:" + newValues[0] + " Y:" + newValues[1]);
+		localizeToTunnel();
 		
 		navigation.travelTo(newValues[2], newValues[3], false);
 		//navigation.travelTo(newValues[2], odo.getXYT()[1], false);
 		//navigation.travelTo(odo.getXYT()[0], newValues[3], false);
-		System.out.println("X:" + newValues[2] + " Y:" + newValues[3]);
 		
 		armController.openArms();
 	}
@@ -104,4 +103,9 @@ public class TunnelFollower {
 		return offsetValues;
 	}
 
+	public void localizeToTunnel() {
+		double angle = 270;
+		navigation.turnTo(270, odo.getXYT()[2]);
+		navigation.localizeForTunnel(angle);
+	}
 }

@@ -13,6 +13,7 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorMode;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
@@ -88,7 +89,7 @@ public class DPMFinalProject {
 			    Thread odoDisplayThread = new Thread(odometryDisplay);
 			    odoDisplayThread.start();
 
-			    final Navigation navigation = new Navigation(leftMotor, rightMotor, odometer, sensorData);
+			    final Navigation navigation = new Navigation(leftMotor, rightMotor, odometer, sensorData, LSL, LSR);
 			    final UltrasonicLocalizer USLocalizer = new UltrasonicLocalizer(navigation, chooseWhichRoutine);
 			    final LightLocalizer LSLocalizer = new LightLocalizer(navigation, LSL, LSR);
 			    
@@ -165,11 +166,11 @@ public class DPMFinalProject {
 			    
 			    (new Thread() {
 			        public void run() {
-			        
-			        	lcd.clear();
-			          USLocalizer.whichRoutine(); // Ultrasonic Localize
-			          LSLocalizer.lightLocalize();	// Light localize
-			          
+			        	
+			          //USLocalizer.whichRoutine(); // Ultrasonic Localize
+			          //LSLocalizer.lightLocalize();	// Light localize
+			          LSLocalizer.pollColour();
+			        	
 			          //TODO Set coordinates based on starting corner
 			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
 			        	

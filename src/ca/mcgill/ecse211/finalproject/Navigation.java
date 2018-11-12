@@ -4,8 +4,10 @@
 package ca.mcgill.ecse211.finalproject;
 
 
+import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.SensorMode;
 
 /**
  * This class is used to drive the robot on the demo floor.
@@ -24,15 +26,20 @@ public class Navigation implements UltrasonicController {
 	private static final double WHEEL_RAD = 2.08;
 	private static final double TRACK = 12.27;
 	public static final double TILE_LENGTH = 30.78;
+	private EV3ColorSensor LSL;
+	private EV3ColorSensor LSR;
 	private SensorData data;
 
-	public Navigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odometer, 	SensorData data) throws OdometerExceptions {
+	public Navigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odometer, SensorData data,
+			EV3ColorSensor LSL, EV3ColorSensor LSR) throws OdometerExceptions {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
 		this.odo = odometer;
 		this.data = data;
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
+		this.LSL = LSL;
+		this.LSR = LSR;
 	}
 
 	/**
@@ -190,6 +197,115 @@ public class Navigation implements UltrasonicController {
 	 */
 	public boolean isNavigating() {
 		return this.navigating;
+	}
+	
+	public void localizeForTunnel(double angle) {
+		
+		leftMotor.setSpeed(80);
+		rightMotor.setSpeed(80);
+		
+		leftMotor.forward();
+		rightMotor.forward();
+		
+		SensorMode colourLeft;
+		SensorMode colourRight;
+		
+		boolean first = false;
+		double prevSampleLeft = 0.75;
+		double prevSampleRight = 0.75;
+		
+		while(leftMotor.isMoving() && rightMotor.isMoving()) {
+			colourLeft = LSL.getRedMode();
+    	    float[] sampleLeft = new float[3];
+    	    colourLeft.fetchSample(sampleLeft, 0);
+    	    
+    	    colourRight = LSR.getRedMode();
+    	    float[] sampleRight = new float[3];
+    	    colourRight.fetchSample(sampleRight, 0);
+    	    
+    	    System.out.println(sampleLeft[0]);
+    	    
+			if(Math.abs(prevSampleLeft - sampleLeft[0]) > 0.100) {
+				if(!first) {
+					leftMotor.stop(true);
+					first = true;
+				}
+				else {
+					leftMotor.stop(false);
+				}
+			}
+				
+			if(Math.abs(prevSampleRight - sampleRight[0]) > 0.100) {
+				if(!first) {
+					rightMotor.stop(true);
+					first = true;
+				}
+				else {
+					rightMotor.stop(false);
+				}
+			}
+			prevSampleLeft = sampleLeft[0];
+			prevSampleRight = sampleRight[0];
+		}
+		
+		odo.setTheta(angle);
+	
+
+		leftMotor.rotate(convertDistance(WHEEL_RAD, -19.8), true);
+		rightMotor.rotate(convertDistance(WHEEL_RAD, -19.8), false);
+		
+		turnTo(0, odo.getXYT()[2]);
+		
+		leftMotor.forward();
+		rightMotor.forward();
+		
+		first = false;
+		prevSampleLeft = 0.75;
+		prevSampleRight = 0.75;
+		while(leftMotor.isMoving() && rightMotor.isMoving()) {
+			
+			colourLeft = LSL.getRedMode();
+    	    float[] sampleLeft = new float[3];
+    	    colourLeft.fetchSample(sampleLeft, 0);
+    	    
+    	    colourRight = LSR.getRedMode();
+    	    float[] sampleRight = new float[3];
+    	    colourRight.fetchSample(sampleRight, 0);
+    	    
+			if(Math.abs(prevSampleLeft - sampleLeft[0]) > 0.100) {
+				if(!first) {
+					leftMotor.stop(true);
+					first = true;
+				}
+				else {
+					leftMotor.stop(false);
+				}
+			}
+				
+			if(Math.abs(prevSampleRight - sampleRight[0]) > 0.100) {
+				if(!first) {
+					rightMotor.stop(true);
+					first = true;
+				}
+				else {
+					rightMotor.stop(false);
+				}
+			}
+			
+			prevSampleLeft = sampleLeft[0];
+			prevSampleRight = sampleRight[0];
+		}
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// there is nothing to be done here
+		}
+		
+		odo.setTheta(angle - 270);
+		
+		leftMotor.setSpeed(2*FORWARD_SPEED);
+		rightMotor.setSpeed(2*FORWARD_SPEED);
 	}
 
 

@@ -83,17 +83,38 @@ public class LightLocalizer {
 		    odo.setX(0);
 		    odo.setY(0);*/
 			int buff = 0;
+			
+			SensorMode colourLeft;
+			SensorMode colourRight;
+			
+			double prevSampleLeft = 0.75;
+			double prevSampleRight = 0.75;
+			
 			while (true) {
+				
+				colourLeft = LSL.getRedMode();
+	    	    float[] sampleLeft = new float[3];
+	    	    colourLeft.fetchSample(sampleLeft, 0);
+	    	    
+	    	    colourRight = LSR.getRedMode();
+	    	    float[] sampleRight = new float[3];
+	    	    colourRight.fetchSample(sampleRight, 0);
 				
 				correctionStart = System.currentTimeMillis();
 				advanceRobot(50,true);
 				
-				while (LSL.getColorID() != 13) {
+				while (Math.abs(prevSampleLeft - sampleLeft[0]) < 0.200) {
 					buff = 1;
-					if (LSR.getColorID()== 13) {
+					if (Math.abs(prevSampleLeft - sampleLeft[0]) > 0.200) {
+						Sound.beep();
 						buff = 2;
 						break;
 					}
+					
+					
+					
+					prevSampleLeft = sampleLeft[0];
+					prevSampleRight = sampleRight[0];
 				}
 				
 				stopMotor();
@@ -127,7 +148,7 @@ public class LightLocalizer {
 					odo.setTheta(270);
 					break;
 				}
-				else
+				else if(count == 1)
 					odo.setY(30.48);
 				
 				rotateTheRobot(true,90,false);
@@ -210,5 +231,11 @@ public class LightLocalizer {
 		     Navigator.leftMotor.rotate(convertDistance(wheelRadius, distanceToTravel), true);
 		     Navigator.rightMotor.rotate(convertDistance(wheelRadius, distanceToTravel), instantReturn);
 		     
+		   }
+		   
+		   public void pollColour() {
+			   odo.setX(7 * 30.48);
+			   odo.setY(30.48);
+				odo.setTheta(270);
 		   }
 }
