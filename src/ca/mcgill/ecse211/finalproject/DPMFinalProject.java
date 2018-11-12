@@ -169,7 +169,7 @@ public class DPMFinalProject {
 			        	
 			          //USLocalizer.whichRoutine(); // Ultrasonic Localize
 			          //LSLocalizer.lightLocalize();	// Light localize
-			          //LSLocalizer.pollColour();
+			          LSLocalizer.pollColour();
 			        	
 			          //TODO Set coordinates based on starting corner
 			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
@@ -178,7 +178,7 @@ public class DPMFinalProject {
 			          //tunnelFollower.traverseTunnel(2, 3, 3, 5); // Travel to start of tunnel and then to end of tunnel
 
 			          //navigation.travelTo(3, 3, false);
-			          ringController.approachTree(3, 3); //Travel to tree and do collections
+			          ringController.approachTree(5, 4); //Travel to tree and do collections
 			          
 			          /* The rest is not used for beta demo
 			           
