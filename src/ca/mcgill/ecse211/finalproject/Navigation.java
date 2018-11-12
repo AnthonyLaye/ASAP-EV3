@@ -223,9 +223,9 @@ public class Navigation implements UltrasonicController {
     	    float[] sampleRight = new float[3];
     	    colourRight.fetchSample(sampleRight, 0);
     	    
-    	    System.out.println(sampleLeft[0]);
+    	    System.out.println(LSL.getColorID());
     	    
-			if(Math.abs(prevSampleLeft - sampleLeft[0]) > 0.100) {
+			if(LSL.getColorID() == 2) {
 				if(!first) {
 					leftMotor.stop(true);
 					first = true;
@@ -235,7 +235,7 @@ public class Navigation implements UltrasonicController {
 				}
 			}
 				
-			if(Math.abs(prevSampleRight - sampleRight[0]) > 0.100) {
+			if(LSR.getColorID() == 2) {
 				if(!first) {
 					rightMotor.stop(true);
 					first = true;
@@ -272,7 +272,9 @@ public class Navigation implements UltrasonicController {
     	    float[] sampleRight = new float[3];
     	    colourRight.fetchSample(sampleRight, 0);
     	    
-			if(Math.abs(prevSampleLeft - sampleLeft[0]) > 0.100) {
+    	    System.out.println(LSL.getColorID());
+    	    
+			if(LSL.getColorID() == 2) {
 				if(!first) {
 					leftMotor.stop(true);
 					first = true;
@@ -282,7 +284,7 @@ public class Navigation implements UltrasonicController {
 				}
 			}
 				
-			if(Math.abs(prevSampleRight - sampleRight[0]) > 0.100) {
+			if(LSR.getColorID() == 2) {
 				if(!first) {
 					rightMotor.stop(true);
 					first = true;

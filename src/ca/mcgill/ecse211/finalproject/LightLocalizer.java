@@ -18,8 +18,8 @@ public class LightLocalizer {
 		public static double xToMove, yToMove;//variables that we need to get or need to have
 		//private static final Port portColor = LocalEV3.get().getPort("S3");
 		private static final int ROTATE_SPEED = 100;
-		private static final double wheelRadius = 2.2;
-		private static final double track = 12.5;
+		private static final double wheelRadius = 2.08;
+		private static final double track = 12.27;
 		private static final int FORWARDSPEED = 100;
 		//private static SensorModes myColor = new EV3ColorSensor(LS);
 		private SensorData data;
@@ -51,37 +51,7 @@ public class LightLocalizer {
 			}
 			long correctionStart, correctionEnd;
 			int count = 0;
-		   /* Navigation.leftMotor.forward();
-		    Navigation. rightMotor.forward();
-		    while (Navigation.leftMotor.isMoving() || Navigation.rightMotor.isMoving()) {
-		      if (data.getL()[0] < blackLineColor) {
-		    	  	Navigation.leftMotor.stop(true);
-		      }
-		      if (data.getL()[1] < blackLineColor) {
-		    	  	Navigation.rightMotor.stop(true);
-		      }
-		    }
-		    
-		    rotateTheRobot(true, 90, false);
-		    
-		    Navigation.leftMotor.setSpeed(100);
-		    Navigation.rightMotor.setSpeed(100);
-		    Navigation.leftMotor.forward();
-		    Navigation.rightMotor.forward();
-		    while (Navigation.leftMotor.isMoving() || Navigation.rightMotor.isMoving()) {
-		      if (data.getL()[0] < blackLineColor) {
-		    	  	Navigation.leftMotor.stop(true);
-		      }
-		      if (data.getL()[1] < blackLineColor) {
-		    	  	Navigation.rightMotor.stop(true);
-		      }
-		    }
-		    
-		    rotateTheRobot(false, 90, false);
-		    
-		    odo.setTheta(0);
-		    odo.setX(0);
-		    odo.setY(0);*/
+
 			int buff = 0;
 			
 			SensorMode colourLeft;
@@ -90,22 +60,27 @@ public class LightLocalizer {
 			double prevSampleLeft = 0.75;
 			double prevSampleRight = 0.75;
 			
+			colourLeft = LSL.getRedMode();
+    			float[] sampleLeft = new float[3];
+    			colourLeft.fetchSample(sampleLeft, 0);
+    
+    			colourRight = LSR.getRedMode();
+    			float[] sampleRight = new float[3];
+    			colourRight.fetchSample(sampleRight, 0);
+			
 			while (true) {
 				
-				colourLeft = LSL.getRedMode();
-	    	    float[] sampleLeft = new float[3];
-	    	    colourLeft.fetchSample(sampleLeft, 0);
-	    	    
-	    	    colourRight = LSR.getRedMode();
-	    	    float[] sampleRight = new float[3];
-	    	    colourRight.fetchSample(sampleRight, 0);
-				
 				correctionStart = System.currentTimeMillis();
+				
+	    	    		colourLeft.fetchSample(sampleLeft, 0);
+	    	    
+	    	    		colourRight.fetchSample(sampleRight, 0);
+				
 				advanceRobot(50,true);
 				
-				while (Math.abs(prevSampleLeft - sampleLeft[0]) < 0.200) {
+				while(LSL.getColorID() != 2) {
 					buff = 1;
-					if (Math.abs(prevSampleLeft - sampleLeft[0]) > 0.200) {
+					if (LSR.getColorID() == 2 ) {
 						Sound.beep();
 						buff = 2;
 						break;
@@ -113,28 +88,12 @@ public class LightLocalizer {
 					
 					
 					
-					prevSampleLeft = sampleLeft[0];
-					prevSampleRight = sampleRight[0];
+					//prevSampleLeft = sampleLeft[0];
+					//prevSampleRight = sampleRight[0];
 				}
 				
 				stopMotor();
 				
-				
-				/*if(buff == 1)
-				{
-					Sound.beep();
-					//Navigator.rightMotor.forward();
-					Navigator.rightMotor.setSpeed(100);
-					Navigator.rightMotor.forward();
-				}
-				
-				if(buff == 2)
-				{
-					Sound.beepSequence();
-					Navigator.leftMotor.forward();
-					Navigator.leftMotor.setSpeed(100);
-					while(LSL.getColorID() != 13);
-				}*/
 				
 				buff = 0;
 				
@@ -225,8 +184,8 @@ public class LightLocalizer {
 		   */
 		   public void advanceRobot(double distanceToTravel, boolean instantReturn) {
 		     
-		     Navigator.leftMotor.setSpeed(FORWARDSPEED);
-		     Navigator.rightMotor.setSpeed(FORWARDSPEED);
+		     Navigator.leftMotor.setSpeed(FORWARDSPEED-40);
+		     Navigator.rightMotor.setSpeed(FORWARDSPEED-40);
 		              
 		     Navigator.leftMotor.rotate(convertDistance(wheelRadius, distanceToTravel), true);
 		     Navigator.rightMotor.rotate(convertDistance(wheelRadius, distanceToTravel), instantReturn);
