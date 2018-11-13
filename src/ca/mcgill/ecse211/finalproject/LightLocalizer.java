@@ -195,8 +195,8 @@ public class LightLocalizer {
 		   */
 		   public void advanceRobot(double distanceToTravel, boolean instantReturn) {
 		     
-		     Navigator.leftMotor.setSpeed(FORWARDSPEED-60);
-		     Navigator.rightMotor.setSpeed(FORWARDSPEED-60);
+		     Navigator.leftMotor.setSpeed(FORWARDSPEED);
+		     Navigator.rightMotor.setSpeed(FORWARDSPEED);
 		              
 		     Navigator.leftMotor.rotate(convertDistance(wheelRadius, distanceToTravel), true);
 		     Navigator.rightMotor.rotate(convertDistance(wheelRadius, distanceToTravel), instantReturn);
