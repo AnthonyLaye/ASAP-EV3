@@ -38,12 +38,14 @@ public class TunnelFollower {
 		double[] newValues = calculateTunnelEntry(startX, startY, endX, endY);
 		
 		//navigation.travelTo(newValues[0], newValues[1], false);	//Offset values by 0.5 so we are lined up with center of tunnel
-		navigation.travelTo(startX + 0.5, startY - 0.5, false);	//Offset values by 0.5 so we are lined up with center of tunnel
+		navigation.travelTo(newValues[0], newValues[1] - 0.2, false);	//Offset values by 0.5 so we are lined up with center of tunnel
 		
 		
-		localizeToTunnel(startX, startY, endX, endY);
+		localizeToTunnel(startX, startY);
 		
-		navigation.travelTo(endX - 0.5, endY + 0.5, false);
+		navigation.travelTo(newValues[2], newValues[3] - 0.2, false);
+		
+		navigation.localizeAfterTunnel(endX, endY);
 		
 		
 		armController.openArms();
@@ -102,7 +104,7 @@ public class TunnelFollower {
 		return offsetValues;
 	}
 
-	public void localizeToTunnel(double startX, double startY, double endX, double endY) {
+	public void localizeToTunnel(double startX, double startY) {
 		double angle = 270;
 		navigation.turnTo(270, odo.getXYT()[2]);
 		navigation.localizeForTunnel(angle, startX, startY);

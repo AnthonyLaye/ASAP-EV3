@@ -65,7 +65,7 @@ public class UltrasonicLocalizer {
 
 	  a = odo.getXYT()[2];//get a
 	 	  
-	  rotateTheRobot(false,45,false);
+	  rotateTheRobot(false,100,false);
 	  
 	  //now get b
 	  rotateTheRobot(false,360,true);//let it roll to detect a falling edge again

@@ -18,8 +18,8 @@ public class LightLocalizer {
 		public static double xToMove, yToMove;//variables that we need to get or need to have
 		//private static final Port portColor = LocalEV3.get().getPort("S3");
 		private static final int ROTATE_SPEED = 100;
-		private static final double wheelRadius = 2.08;
-		private static final double track = 12.27;
+		private static final double wheelRadius = 2.2;
+		private static final double track = 12.5;
 		private static final int FORWARDSPEED = 100;
 		//private static SensorModes myColor = new EV3ColorSensor(LS);
 		private SensorData data;
@@ -78,9 +78,9 @@ public class LightLocalizer {
 				
 				advanceRobot(50,true);
 				
-				while(LSL.getColorID() != 2) {
+				while(LSL.getColorID() != 13) {
 					buff = 1;
-					if (LSR.getColorID() == 2 ) {
+					if (LSR.getColorID() == 13 ) {
 						Sound.beep();
 						buff = 2;
 						break;
@@ -102,13 +102,17 @@ public class LightLocalizer {
 				
 				if(count == 2)
 				{
+					advanceRobot(-5, false);
 					rotateTheRobot(false, 90, false);
+					
 					odo.setX(7 * 30.48);
 					odo.setTheta(270);
 					break;
 				}
 				else if(count == 1)
 					odo.setY(30.48);
+				
+				advanceRobot(-5, false);
 				
 				rotateTheRobot(true,90,false);
 				

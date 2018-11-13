@@ -41,13 +41,13 @@ public class TreeController {
 	public void approachTree(double treeX, double treeY) {
 		
 		navigation.travelTo(odo.getXYT()[0] / 30.48, treeY, false);	// Travel along y first, then along x so we approach the tree head on
-		navigation.travelTo(treeX - 0.5, treeY, false);	// We subtract 0.5 so the robot doesnt run into the tree
+		navigation.travelTo(treeX - 0.8, treeY, false);	// We subtract 0.5 so the robot doesnt run into the tree
 		
-		navigation.rotateTheRobot(true, 360, true);	// Line up directly with tree
+		/*navigation.rotateTheRobot(true, 360, true);	// Line up directly with tree
 		while(navigation.distance > 17) {
 			
 		}
-		navigation.stopMotors();
+		navigation.stopMotors();*/
 		
 		findRings();	// Find those rings!!!!!
 		
@@ -74,8 +74,13 @@ public class TreeController {
 			armController.closeArms(); //get the rings
 			navigation.advanceRobot(-15, false);
 			
+			count++;
+			
+			if (count == 4)
+				break;
+			
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(2000);
 			    } catch (InterruptedException e) {
 			    // There is nothing to be done here
 			}
@@ -90,7 +95,6 @@ public class TreeController {
 			navigation.rotateTheRobot(false, 90, false);
 			navigation.advanceRobot(30, false);
 			navigation.rotateTheRobot(false, 90, false);
-			count++;
 		}
 	}
 	

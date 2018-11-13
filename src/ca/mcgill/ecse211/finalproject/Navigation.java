@@ -214,31 +214,17 @@ public class Navigation implements UltrasonicController {
 	
 	public void localizeForTunnel(double angle, double x, double y) {
 		
-		leftMotor.setSpeed(80);
-		rightMotor.setSpeed(80);
+		leftMotor.setSpeed(60);
+		rightMotor.setSpeed(60);
 		
 		leftMotor.forward();
 		rightMotor.forward();
-		
-		SensorMode colourLeft;
-		SensorMode colourRight;
-		
+	
 		boolean first = false;
-		double prevSampleLeft = 0.75;
-		double prevSampleRight = 0.75;
 		
 		while(leftMotor.isMoving() && rightMotor.isMoving()) {
-			colourLeft = LSL.getRedMode();
-    	    float[] sampleLeft = new float[3];
-    	    colourLeft.fetchSample(sampleLeft, 0);
-    	    
-    	    colourRight = LSR.getRedMode();
-    	    float[] sampleRight = new float[3];
-    	    colourRight.fetchSample(sampleRight, 0);
-    	    
-    	    System.out.println(LSL.getColorID());
-    	    
-			if(LSL.getColorID() == 2) {
+			
+			if(LSL.getColorID() == 13) {
 				if(!first) {
 					leftMotor.stop(true);
 					first = true;
@@ -248,7 +234,7 @@ public class Navigation implements UltrasonicController {
 				}
 			}
 				
-			if(LSR.getColorID() == 2) {
+			if(LSR.getColorID() == 13) {
 				if(!first) {
 					rightMotor.stop(true);
 					first = true;
@@ -257,14 +243,11 @@ public class Navigation implements UltrasonicController {
 					rightMotor.stop(false);
 				}
 			}
-			prevSampleLeft = sampleLeft[0];
-			prevSampleRight = sampleRight[0];
 		}
 		
-		odo.setX(x);
+		odo.setX(x * TILE_LENGTH);
 		odo.setTheta(angle);
 	
-
 		leftMotor.rotate(convertDistance(WHEEL_RAD, -19.8), true);
 		rightMotor.rotate(convertDistance(WHEEL_RAD, -19.8), false);
 		
@@ -274,21 +257,9 @@ public class Navigation implements UltrasonicController {
 		rightMotor.forward();
 		
 		first = false;
-		prevSampleLeft = 0.75;
-		prevSampleRight = 0.75;
 		while(leftMotor.isMoving() && rightMotor.isMoving()) {
-			
-			colourLeft = LSL.getRedMode();
-    	    float[] sampleLeft = new float[3];
-    	    colourLeft.fetchSample(sampleLeft, 0);
     	    
-    	    colourRight = LSR.getRedMode();
-    	    float[] sampleRight = new float[3];
-    	    colourRight.fetchSample(sampleRight, 0);
-    	    
-    	    System.out.println(LSL.getColorID());
-    	    
-			if(LSL.getColorID() == 2) {
+			if(LSL.getColorID() == 13) {
 				if(!first) {
 					leftMotor.stop(true);
 					first = true;
@@ -298,7 +269,7 @@ public class Navigation implements UltrasonicController {
 				}
 			}
 				
-			if(LSR.getColorID() == 2) {
+			if(LSR.getColorID() == 13) {
 				if(!first) {
 					rightMotor.stop(true);
 					first = true;
@@ -307,22 +278,18 @@ public class Navigation implements UltrasonicController {
 					rightMotor.stop(false);
 				}
 			}
-			
-			prevSampleLeft = sampleLeft[0];
-			prevSampleRight = sampleRight[0];
 		}
 		
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// there is nothing to be done here
-		}
 		
-		odo.setTheta(angle - 270);
-		odo.setY(y);
+		odo.setTheta(0);
+		odo.setY(y * TILE_LENGTH);
 		
 		leftMotor.setSpeed(2*FORWARD_SPEED);
 		rightMotor.setSpeed(2*FORWARD_SPEED);
+	}
+	
+	public void localizeAfterTunnel(double endX, double endY) {
+		
 	}
 
 

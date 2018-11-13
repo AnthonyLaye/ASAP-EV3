@@ -11,13 +11,13 @@ import ca.mcgill.ecse211.WiFiClient.WifiConnection;
 public class WifiController {
 	
 
-	  private static final String SERVER_IP = "192.168.2.10";
+	  private static final String SERVER_IP = "192.168.2.39";
 
 
 	  private static final int TEAM_NUMBER = 13;
 
 	  // Enable/disable printing of debug info from the WiFi class
-	  private static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
+	  private static final boolean ENABLE_DEBUG_WIFI_PRINT = false;
 
 	  /**
 	   * This method attempts to connect to the server to retrieve game data

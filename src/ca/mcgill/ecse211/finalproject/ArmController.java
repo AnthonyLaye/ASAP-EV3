@@ -21,8 +21,8 @@ public class ArmController {
 	public void closeArms() {
 		leftArmMotor.setSpeed(120);
 		rightArmMotor.setSpeed(120);
-		leftArmMotor.rotate(50, true);
-		rightArmMotor.rotate(50, false);
+		leftArmMotor.rotate(72, true);
+		rightArmMotor.rotate(75, false);
 		leftArmMotor.stop(true);
 		rightArmMotor.stop(false);
 	}
@@ -33,8 +33,8 @@ public class ArmController {
 	public void openArms() {
 		leftArmMotor.setSpeed(120);
 		rightArmMotor.setSpeed(120);
-		leftArmMotor.rotate(-50, true);
-		rightArmMotor.rotate(-50, false);
+		leftArmMotor.rotate(-72, true);
+		rightArmMotor.rotate(-75, false);
 		leftArmMotor.stop(true);
 		rightArmMotor.stop(false);
 	}
