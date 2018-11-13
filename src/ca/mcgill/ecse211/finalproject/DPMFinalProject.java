@@ -5,6 +5,7 @@ package ca.mcgill.ecse211.finalproject;
 import java.util.Map;
 
 import lejos.hardware.Button;
+import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.lcd.TextLCD;
@@ -110,15 +111,15 @@ public class DPMFinalProject {
 			    
 			    // ******************** OPTAIN ALL WIFI DATA FROM SERVER ***********************************
 			    
-			    //Map wifiData = WifiController.readData();
+			    Map wifiData = WifiController.readData();
 			    //System.out.println(wifiData);
 			    
 			    boolean isRedTeam = false;
 			    
-			  //  int redTeam = ((Long) wifiData.get("RedTeam")).intValue();
-			    //int greenTeam = ((Long) wifiData.get("GreenTeam")).intValue();
+			    int redTeam = ((Long) wifiData.get("RedTeam")).intValue();
+			    int greenTeam = ((Long) wifiData.get("GreenTeam")).intValue();
 			    
-			   /* if(redTeam == 13)	//Check if team 13 is red! if not we are green
+			   if(redTeam == 13)	//Check if team 13 is red! if not we are green
 			    	isRedTeam = true;
 			    else if(greenTeam == 13)
 			    	isRedTeam = false;
@@ -129,7 +130,7 @@ public class DPMFinalProject {
 			    
 			    isRedTeam = false; // THIS IS JUST FOR BETA DEMO, GREEN BY DEFAULT IN DEMO*/
 			    
-			    /*if(isRedTeam) {
+			    if(isRedTeam) {
 			    	corner = ((Long) wifiData.get("RedCorner")).intValue();
 			    	llX = ((Long) wifiData.get("Red_LL_x")).intValue();
 			    	llY = ((Long) wifiData.get("Red_LL_y")).intValue();
@@ -161,7 +162,7 @@ public class DPMFinalProject {
 			    islandLLY = ((Long) wifiData.get("Island_LL_y")).intValue();
 			    islandURX = ((Long) wifiData.get("Island_UR_x")).intValue();
 			    islandURY = ((Long) wifiData.get("Island_UR_y")).intValue();
-			    */
+			    
 			    lcd.clear();
 			    
 			    (new Thread() {
@@ -170,15 +171,16 @@ public class DPMFinalProject {
 			          //USLocalizer.whichRoutine(); // Ultrasonic Localize
 			          //LSLocalizer.lightLocalize();	// Light localize
 			          LSLocalizer.pollColour();
+			          
+			          Sound.beep();
 			        	
-			          //TODO Set coordinates based on starting corner
 			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
 			        	
 			          //navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
-			          //tunnelFollower.traverseTunnel(2, 3, 3, 5); // Travel to start of tunnel and then to end of tunnel
+			          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY); // Travel to start of tunnel and then to end of tunnel
 
 			          //navigation.travelTo(3, 3, false);
-			          ringController.approachTree(5, 4); //Travel to tree and do collections
+			          ringController.approachTree(tX, tY); //Travel to tree and do collections
 			          
 			          /* The rest is not used for beta demo
 			           

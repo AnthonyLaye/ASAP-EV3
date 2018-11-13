@@ -19,10 +19,10 @@ public class ArmController {
 	 * Slowly close the arms together to grasp a ring
 	 */
 	public void closeArms() {
-		leftArmMotor.setSpeed(150);
-		rightArmMotor.setSpeed(150);
-		leftArmMotor.rotate(70, true);
-		rightArmMotor.rotate(70, false);
+		leftArmMotor.setSpeed(120);
+		rightArmMotor.setSpeed(120);
+		leftArmMotor.rotate(50, true);
+		rightArmMotor.rotate(50, false);
 		leftArmMotor.stop(true);
 		rightArmMotor.stop(false);
 	}
@@ -31,10 +31,10 @@ public class ArmController {
 	 * Open up arms wide enough to begin collecting rim
 	 */
 	public void openArms() {
-		leftArmMotor.setSpeed(150);
-		rightArmMotor.setSpeed(150);
-		leftArmMotor.rotate(-70, true);
-		rightArmMotor.rotate(-70, false);
+		leftArmMotor.setSpeed(120);
+		rightArmMotor.setSpeed(120);
+		leftArmMotor.rotate(-50, true);
+		rightArmMotor.rotate(-50, false);
 		leftArmMotor.stop(true);
 		rightArmMotor.stop(false);
 	}

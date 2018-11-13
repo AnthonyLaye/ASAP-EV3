@@ -50,6 +50,19 @@ public class Navigation implements UltrasonicController {
 	 * @param immediateReturn : True if the function is to be instantly returned. False if the function is to be returned after the travel is completed
 	 */
 	public void travelTo(double x, double y, boolean immediateReturn) {
+		
+		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] {leftMotor, rightMotor}) {
+		      motor.stop();
+		      motor.setAcceleration(1000);
+		}
+
+		// Sleep for 2 seconds
+		try {
+			Thread.sleep(2000);
+		    } catch (InterruptedException e) {
+		    // There is nothing to be done here
+		}
+		
 		double minimalTheta = 0, travelDistance = 0, currentTheta = 0;
 		double currentX = 0;
 		double currentY = 0;
@@ -199,7 +212,7 @@ public class Navigation implements UltrasonicController {
 		return this.navigating;
 	}
 	
-	public void localizeForTunnel(double angle) {
+	public void localizeForTunnel(double angle, double x, double y) {
 		
 		leftMotor.setSpeed(80);
 		rightMotor.setSpeed(80);
@@ -248,6 +261,7 @@ public class Navigation implements UltrasonicController {
 			prevSampleRight = sampleRight[0];
 		}
 		
+		odo.setX(x);
 		odo.setTheta(angle);
 	
 
@@ -305,6 +319,7 @@ public class Navigation implements UltrasonicController {
 		}
 		
 		odo.setTheta(angle - 270);
+		odo.setY(y);
 		
 		leftMotor.setSpeed(2*FORWARD_SPEED);
 		rightMotor.setSpeed(2*FORWARD_SPEED);

@@ -40,20 +40,8 @@ public class TreeController {
 	 */
 	public void approachTree(double treeX, double treeY) {
 		
-		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] {leftMotor, rightMotor}) {
-		      motor.stop();
-		      motor.setAcceleration(1000);
-		}
-
-		// Sleep for 2 seconds
-		try {
-			Thread.sleep(2000);
-		    } catch (InterruptedException e) {
-		    // There is nothing to be done here
-		}
-		
-		navigation.travelTo(treeX, treeY, false);	// Travel along x first, then along y so we approach the tree head on
-		//navigation.travelTo(treeX, treeY - 0.5, false);	// We subtract 0.5 so the robot doesnt run into the tree
+		navigation.travelTo(odo.getXYT()[0] / 30.48, treeY, false);	// Travel along y first, then along x so we approach the tree head on
+		navigation.travelTo(treeX - 0.5, treeY, false);	// We subtract 0.5 so the robot doesnt run into the tree
 		
 		navigation.rotateTheRobot(true, 360, true);	// Line up directly with tree
 		while(navigation.distance > 17) {
