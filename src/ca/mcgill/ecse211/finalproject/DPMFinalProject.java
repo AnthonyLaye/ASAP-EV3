@@ -168,9 +168,9 @@ public class DPMFinalProject {
 			    (new Thread() {
 			        public void run() {
 			        	
-			          //USLocalizer.whichRoutine(); // Ultrasonic Localize
-			          //LSLocalizer.lightLocalize();	// Light localize
-			          LSLocalizer.pollColour();
+			          USLocalizer.whichRoutine(); // Ultrasonic Localize
+			          LSLocalizer.lightLocalize();	// Light localize
+			          //LSLocalizer.pollColour();
 			          
 			          Sound.beep();
 			        	

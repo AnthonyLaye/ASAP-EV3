@@ -74,11 +74,6 @@ public class TreeController {
 			armController.closeArms(); //get the rings
 			navigation.advanceRobot(-15, false);
 			
-			count++;
-			
-			if (count == 4)
-				break;
-			
 			try {
 				Thread.sleep(2000);
 			    } catch (InterruptedException e) {
@@ -88,6 +83,11 @@ public class TreeController {
 			if(detectRing()) {
 				break;
 			}
+			
+			count++;
+			
+			if (count == 4)
+				break;
 			
 			armController.openArms();
 			navigation.rotateTheRobot(true, 90, false); // Turn 90 degree to reach other side

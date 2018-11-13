@@ -212,7 +212,44 @@ public class Navigation implements UltrasonicController {
 		return this.navigating;
 	}
 	
+	public void lightCorrect() {
+		boolean first = true;
+		boolean leftStopped = false;
+		boolean rightStopped = false;
+		while(leftMotor.isMoving() && rightMotor.isMoving()) {
+			
+			SensorMode colour;
+			colour = LSR.getRedMode();
+		    float[] sample = new float[3];
+		    colour.fetchSample(sample, 0);
+		    
+			if(LSL.getColorID() == 2 && !leftStopped) {
+				if(first) {
+					leftMotor.stop(true);
+					first = false;
+				}
+				else {
+					leftMotor.stop(false);
+				}
+				leftStopped = true;
+			}
+				
+			if(sample[0] < 0.4 && !rightStopped) {
+				if(first) {
+					rightMotor.stop(true);
+					first = false;
+				}
+				else {
+					rightMotor.stop(false);
+				}
+				rightStopped = true;
+			}
+		}
+	}
+	
 	public void localizeForTunnel(double angle, double x, double y) {
+		
+		turnTo(angle, odo.getXYT()[2]);
 		
 		leftMotor.setSpeed(60);
 		rightMotor.setSpeed(60);
@@ -220,30 +257,7 @@ public class Navigation implements UltrasonicController {
 		leftMotor.forward();
 		rightMotor.forward();
 	
-		boolean first = false;
-		
-		while(leftMotor.isMoving() && rightMotor.isMoving()) {
-			
-			if(LSL.getColorID() == 13) {
-				if(!first) {
-					leftMotor.stop(true);
-					first = true;
-				}
-				else {
-					leftMotor.stop(false);
-				}
-			}
-				
-			if(LSR.getColorID() == 13) {
-				if(!first) {
-					rightMotor.stop(true);
-					first = true;
-				}
-				else {
-					rightMotor.stop(false);
-				}
-			}
-		}
+		lightCorrect();
 		
 		odo.setX(x * TILE_LENGTH);
 		odo.setTheta(angle);
@@ -256,31 +270,8 @@ public class Navigation implements UltrasonicController {
 		leftMotor.forward();
 		rightMotor.forward();
 		
-		first = false;
-		while(leftMotor.isMoving() && rightMotor.isMoving()) {
-    	    
-			if(LSL.getColorID() == 13) {
-				if(!first) {
-					leftMotor.stop(true);
-					first = true;
-				}
-				else {
-					leftMotor.stop(false);
-				}
-			}
-				
-			if(LSR.getColorID() == 13) {
-				if(!first) {
-					rightMotor.stop(true);
-					first = true;
-				}
-				else {
-					rightMotor.stop(false);
-				}
-			}
-		}
-		
-		
+		lightCorrect();
+			
 		odo.setTheta(0);
 		odo.setY(y * TILE_LENGTH);
 		
@@ -288,7 +279,33 @@ public class Navigation implements UltrasonicController {
 		rightMotor.setSpeed(2*FORWARD_SPEED);
 	}
 	
-	public void localizeAfterTunnel(double endX, double endY) {
+	public void localizeAfterTunnel(double angle, double endX, double endY) {
+		
+		turnTo(angle, odo.getXYT()[2]);
+		
+		leftMotor.setSpeed(60);
+		rightMotor.setSpeed(60);
+		
+		leftMotor.forward();
+		rightMotor.forward();
+	
+		lightCorrect();
+		
+		odo.setX(endX * TILE_LENGTH);
+		odo.setTheta(angle);
+	
+		leftMotor.rotate(convertDistance(WHEEL_RAD, -19.8), true);
+		rightMotor.rotate(convertDistance(WHEEL_RAD, -19.8), false);
+		
+		turnTo(0, odo.getXYT()[2]);
+		
+		leftMotor.forward();
+		rightMotor.forward();
+		
+		lightCorrect();
+			
+		odo.setTheta(0);
+		odo.setY((endY + 1) * TILE_LENGTH);
 		
 	}
 

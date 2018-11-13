@@ -60,36 +60,46 @@ public class LightLocalizer {
 			double prevSampleLeft = 0.75;
 			double prevSampleRight = 0.75;
 			
-			colourLeft = LSL.getRedMode();
-    			float[] sampleLeft = new float[3];
-    			colourLeft.fetchSample(sampleLeft, 0);
-    
-    			colourRight = LSR.getRedMode();
-    			float[] sampleRight = new float[3];
-    			colourRight.fetchSample(sampleRight, 0);
+			
 			
 			while (true) {
 				
 				correctionStart = System.currentTimeMillis();
 				
-	    	    		colourLeft.fetchSample(sampleLeft, 0);
-	    	    
-	    	    		colourRight.fetchSample(sampleRight, 0);
+				SensorMode colour;
+				colour = LSR.getRedMode();
+			    float[] sample = new float[3];
+			    colour.fetchSample(sample, 0);
 				
 				advanceRobot(50,true);
 				
-				while(LSL.getColorID() != 13) {
-					buff = 1;
-					if (LSR.getColorID() == 13 ) {
+				while(LSL.getColorID() != 2 || sample[0] > 0.4) {
+					colour = LSR.getRedMode();
+				    sample = new float[3];
+				    colour.fetchSample(sample, 0);
+					//buff = 1;
+					if (sample[0] < 0.4) {
 						Sound.beep();
-						buff = 2;
+						//buff = 2;
+						//break;
+						Navigation.rightMotor.stop(true);
+						while(LSL.getColorID() != 2)
+						{
+							int i = 0; 
+						}
 						break;
 					}
-					
-					
-					
-					//prevSampleLeft = sampleLeft[0];
-					//prevSampleRight = sampleRight[0];
+					if (LSL.getColorID() == 2 ) {
+						Sound.beep();
+						//buff = 2;
+						//break;
+						Navigation.leftMotor.stop(true);
+						while(sample[0] > 0.4)
+						{
+							int i =0;
+						}
+						break;
+					}
 				}
 				
 				stopMotor();
@@ -104,7 +114,6 @@ public class LightLocalizer {
 				{
 					advanceRobot(-5, false);
 					rotateTheRobot(false, 90, false);
-					
 					odo.setX(7 * 30.48);
 					odo.setTheta(270);
 					break;
@@ -125,8 +134,6 @@ public class LightLocalizer {
 					}
 				}
 			}
-			
-			
 			
 		}
 		
@@ -188,8 +195,8 @@ public class LightLocalizer {
 		   */
 		   public void advanceRobot(double distanceToTravel, boolean instantReturn) {
 		     
-		     Navigator.leftMotor.setSpeed(FORWARDSPEED-40);
-		     Navigator.rightMotor.setSpeed(FORWARDSPEED-40);
+		     Navigator.leftMotor.setSpeed(FORWARDSPEED-60);
+		     Navigator.rightMotor.setSpeed(FORWARDSPEED-60);
 		              
 		     Navigator.leftMotor.rotate(convertDistance(wheelRadius, distanceToTravel), true);
 		     Navigator.rightMotor.rotate(convertDistance(wheelRadius, distanceToTravel), instantReturn);
@@ -197,8 +204,12 @@ public class LightLocalizer {
 		   }
 		   
 		   public void pollColour() {
+			  
 			   odo.setX(7 * 30.48);
 			   odo.setY(30.48);
 				odo.setTheta(270);
+			 
+			  
+			   
 		   }
 }
