@@ -119,12 +119,12 @@ public class DPMFinalProject {
 			    int redTeam = ((Long) wifiData.get("RedTeam")).intValue();
 			    int greenTeam = ((Long) wifiData.get("GreenTeam")).intValue();
 			    
-			   if(redTeam == 13)	//Check if team 13 is red! if not we are green
+			   /*if(redTeam == 13)	//Check if team 13 is red! if not we are green
 			    	isRedTeam = true;
 			    else if(greenTeam == 13)
 			    	isRedTeam = false;
 			    else
-			    	System.exit(-1); //This better not happen...
+			    	System.exit(-1); //This better not happen...*/
 			    
 			    final int corner, llX, llY, urX, urY, islandLLX, islandLLY, islandURX, islandURY, tnLLX, tnLLY, tnURX, tnURY, tX, tY;
 			    
