@@ -4,6 +4,7 @@
 package ca.mcgill.ecse211.finalproject;
 
 
+import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
@@ -50,6 +51,17 @@ public class Navigation implements UltrasonicController {
 	 * @param immediateReturn : True if the function is to be instantly returned. False if the function is to be returned after the travel is completed
 	 */
 	public void travelTo(double x, double y, boolean immediateReturn) {
+		
+		SensorMode colourLeft;
+		SensorMode colourRight;
+		
+		double prevSampleLeft = 0.75;
+		double prevSampleRight = 0.75;
+		
+		SensorMode colour;
+		colour = LSR.getRedMode();
+	    float[] sample = new float[3];
+	    colour.fetchSample(sample, 0);
 		
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] {leftMotor, rightMotor}) {
 		      motor.stop();
@@ -100,14 +112,27 @@ public class Navigation implements UltrasonicController {
 		leftMotor.rotate(convertDistance(WHEEL_RAD, travelDistance), true);
 		rightMotor.rotate(convertDistance(WHEEL_RAD, travelDistance), immediateReturn);
 		
-		while (leftMotor.isMoving() || rightMotor.isMoving()) {
-			double left = data.getL()[0];
-			double right = data.getL()[1];
-			if (left < -10) {
-				leftMotor.stop(true);
+		while (LSL.getColorID() != 2 || sample[0] > 0.4) {
+			colour = LSR.getRedMode();
+		    sample = new float[3];
+		    colour.fetchSample(sample, 0);
+			if (sample[0] < 0.4) {
+				Sound.beep();
+				Navigation.rightMotor.stop(true);
+				while(LSL.getColorID() != 2)
+				{
+					int i = 0; 
+				}
+				break;
 			}
-			if (right < -10) {
-				rightMotor.stop(true);
+			if (LSL.getColorID() == 2 ) {
+				Sound.beep();
+				Navigation.leftMotor.stop(true);
+				while(sample[0] > 0.4)
+				{
+					int i =0;
+				}
+				break;
 			}
 		}
 		//tell that this method has stopped

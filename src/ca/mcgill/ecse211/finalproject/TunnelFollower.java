@@ -52,13 +52,20 @@ public class TunnelFollower {
 	
 	/**
 	 * This method calculates where to stop in front of the tunnel based on the coordinates.
-	 * @param startX : lower left x value of tunnel
-	 * @param startY : lower left y value of tunnel
-	 * @param endX : upper right x value of tunnel
-	 * @param endY : upper right y value of tunnel
+	 * @param startX
+	 * @param startY
+	 * @param endX
+	 * @param endY
+	 * @param IslandURX
+	 * @param IslandURY
+	 * @param IslandLLX
+	 * @param IslandLLY
+	 * @param myZoneX
+	 * @param myZoneY
 	 * @return
 	 */
-	private double[] calculateTunnelEntry(double startX, double startY, double endX, double endY) {
+	private double[] calculateTunnelEntry(double startX, double startY, double endX, double endY, 
+			double IslandURX, double IslandURY, double IslandLLX, double IslandLLY, double myZoneX, double myZoneY,double TNRURX, double TNRURY, double TNRLLX, double TNRLLY) {
 		double[] offsetValues = new double[4];
 		
 		//DIFFERENT CASES FOR TUNNEL ALIGNMENT
@@ -80,17 +87,55 @@ public class TunnelFollower {
 		}
 		//CASE 2: Difference in Y values is 1 -> tunnel is horizontal
 		else if(Math.abs(endY - startY) == 1) {
-			if(endY > startY) {	// Approaching from the left
-				offsetValues[0] = startX - 0.5;
-				offsetValues[1] = startY + 0.5;
-				offsetValues[2] = endX + 0.5;
-				offsetValues[3] = endY - 0.5;
+		
+			
+			if(Math.abs(TNRURX - TNRLLX) == 1 && Math.abs(TNRURY - TNRLLY) == 1)// this means that it is a square tunnel
+			{
+				
+				if(TNRLLY == IslandURY)
+				{
+					offsetValues[0] = TNRURX - 0.5;
+					offsetValues[1] = TNRURY + 0.5;
+					offsetValues[2] = TNRLLX + 0.5;
+					offsetValues[3] = TNRLLY - 0.5;
+				}
+				else if(TNRLLY == IslandLLY)
+				{
+					offsetValues[0] = TNRLLX + 0.5;
+					offsetValues[1] = TNRLLY - 0.5;
+					offsetValues[2] = TNRURX - 0.5;
+					offsetValues[3] = TNRURY + 0.5;
+				}
+				else if(TNRLLX == IslandURX)
+				{
+					offsetValues[0] = TNRURX + 0.5;
+					offsetValues[1] = TNRURY - 0.5;
+					offsetValues[2] = TNRLLX - 0.5;
+					offsetValues[3] = TNRLLY + 0.5;
+				}
+				else if(TNRURX == IslandLLX)
+				{
+					offsetValues[0] = TNRLLX - 0.5;
+					offsetValues[1] = TNRLLY + 0.5;
+					offsetValues[2] = TNRURX + 0.5;
+					offsetValues[3] = TNRURY - 0.5;
+				}
+				
 			}
-			else if(startY > endY) {	// We are approaching from the right
-				offsetValues[0] = startX + 0.5;
-				offsetValues[1] = startY - 0.5;
-				offsetValues[2] = endX - 0.5;
-				offsetValues[3] = endY + 0.5;
+			else																	// this means that it is not a square tunnel
+			{
+				if(endY > startY) {	// Approaching from the left
+					offsetValues[0] = startX - 0.5;
+					offsetValues[1] = startY + 0.5;
+					offsetValues[2] = endX + 0.5;
+					offsetValues[3] = endY - 0.5;
+				}
+				else if(startY > endY) {	// We are approaching from the right
+					offsetValues[0] = startX + 0.5;
+					offsetValues[1] = startY - 0.5;
+					offsetValues[2] = endX - 0.5;
+					offsetValues[3] = endY + 0.5;
+				}
 			}
 		}
 		else {

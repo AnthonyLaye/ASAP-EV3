@@ -20,7 +20,6 @@ public class UltrasonicLocalizer {
 	int d = 40; //as localize tutorial slides said
 	private Odometer odo; //get the current local position data
 	private int chooseWhichRoutine = -1;//if chooseWichEdge is equal to 0, then it is rising edge, if 1 it is falling edge, intial it as -1 so that it will confused by 0 or 1
-	private Gyro gyro;
 	public UltrasonicLocalizer(Navigation Navigator, int chooseWhichRoutine) throws OdometerExceptions {
 		this.Navigator=Navigator;
 		this.chooseWhichRoutine=chooseWhichRoutine;  
@@ -98,7 +97,23 @@ private void fallingEdgeRoutine() {
 	  // TODO Auto-generated method stub
 		double a = 0;
 		double b = 0;
-
+		
+		rotateTheRobot(true,360,true);
+		int buff = 0;
+		while(Navigator.readUSDistance() < d*2)
+		{
+			if(Navigator.readUSDistance() > d*2)
+			{
+				
+				buff++;
+				if(buff == 20)
+					break;
+				
+			}
+		}
+		odo.setTheta(0);
+		stopMotor();
+		
 		rotateTheRobot(true,360,true);//let it roll for 2 circle, this will make sure that it will finish the data collecting
 		
 		while(true) {
