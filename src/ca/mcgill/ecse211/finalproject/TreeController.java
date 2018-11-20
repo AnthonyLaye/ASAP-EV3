@@ -40,14 +40,10 @@ public class TreeController {
 	 */
 	public void approachTree(double treeX, double treeY) {
 		
-		navigation.travelTo(odo.getXYT()[0] / 30.48, treeY, false);	// Travel along y first, then along x so we approach the tree head on
-		navigation.travelTo(treeX - 0.8, treeY, false);	// We subtract 0.5 so the robot doesnt run into the tree
+		navigation.travelTo(treeX, odo.getXYT()[1] / 30.48, false);	// Travel along x first, then y
 		
-		/*navigation.rotateTheRobot(true, 360, true);	// Line up directly with tree
-		while(navigation.distance > 17) {
-			
-		}
-		navigation.stopMotors();*/
+		double new_y = getStopPosition(treeX, treeY);	// Get y position to stop at
+		navigation.travelTo(odo.getXYT()[0] / 30.48, treeY, false);	// Travel along y 
 		
 		findRings();	// Find those rings!!!!!
 		
@@ -60,6 +56,24 @@ public class TreeController {
 		//have to see the real hardware
 		if(checkColour() != Color.NONE) return true;
 		return false;
+	}
+	
+	/**
+	 * Get the stopping Y coordinate for the robot right before the tree, depending on if the robot is below or above it
+	 * @param treeX : x coordinate for the tree
+	 * @param treeY : y coordinate for the tree
+	 * @return new_y : new stopping y coordinate
+	 */
+	public double getStopPosition(double treeX, double treeY) {
+		
+		double new_y = 0;
+		
+		if(odo.getXYT()[1] / 30.48 < treeY)	// We want to stop half a tile before the tree, so this check is to see if robot is above 
+			new_y = treeY - 0.5; 				// or below the tree.
+		else
+			new_y = treeY + 0.5;
+		
+		return new_y;
 	}
 	
 	/**
