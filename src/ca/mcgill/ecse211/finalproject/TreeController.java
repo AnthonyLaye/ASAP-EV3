@@ -43,7 +43,7 @@ public class TreeController {
 		navigation.travelTo(treeX, odo.getXYT()[1] / 30.48, false);	// Travel along x first, then y
 		
 		double new_y = getStopPosition(treeX, treeY);	// Get y position to stop at
-		navigation.travelTo(odo.getXYT()[0] / 30.48, treeY, false);	// Travel along y 
+		navigation.travelTo(treeX, new_y, false);	// Travel along y 
 		
 		findRings();	// Find those rings!!!!!
 		
@@ -69,9 +69,9 @@ public class TreeController {
 		double new_y = 0;
 		
 		if(odo.getXYT()[1] / 30.48 < treeY)	// We want to stop half a tile before the tree, so this check is to see if robot is above 
-			new_y = treeY - 0.5; 				// or below the tree.
+			new_y = treeY - 1.0; 				// or below the tree.
 		else
-			new_y = treeY + 0.5;
+			new_y = treeY + 1.0;
 		
 		return new_y;
 	}
@@ -96,6 +96,15 @@ public class TreeController {
 			
 			if(detectRing()) {
 				break;
+			}
+			else {
+				armController.rotateArms(-5);
+				if(detectRing()) {
+					break;
+				}
+				else {
+					armController.rotateArms(5);
+				}
 			}
 			
 			count++;
