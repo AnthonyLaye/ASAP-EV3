@@ -169,17 +169,18 @@ public class DPMFinalProject {
 			        	
 			          //USLocalizer.whichRoutine(); // Ultrasonic Localize
 			          //LSLocalizer.lightLocalize();	// Light localize
-			          //LSLocalizer.pollColour();
+			          LSLocalizer.pollColour();
 			          
-			          Sound.beep();
+			          //Sound.beep();
 			        	
+			          navigation.shake();
 			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
 			        	
 			          //navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
 			          //tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY); // Travel to start of tunnel and then to end of tunnel
 
-			          navigation.travelTo(3, 0, false);
-			          //ringController.approachTree(tX, tY); //Travel to tree and do collections
+			          //navigation.travelTo(3, 0, false);
+			          //ringController.approachTree(6, 3); //Travel to tree and do collections
 			          
 			          /* The rest is not used for beta demo
 			           

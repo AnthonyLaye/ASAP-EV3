@@ -112,7 +112,7 @@ public class Navigation implements UltrasonicController {
 		leftMotor.rotate(convertDistance(WHEEL_RAD, travelDistance), true);
 		rightMotor.rotate(convertDistance(WHEEL_RAD, travelDistance), immediateReturn);
 		
-		while (LSL.getColorID() != 2 || sample[0] > 0.4) {
+		/*while (LSL.getColorID() != 2 || sample[0] > 0.4) {
 			colour = LSR.getRedMode();
 		    sample = new float[3];
 		    colour.fetchSample(sample, 0);
@@ -135,6 +135,7 @@ public class Navigation implements UltrasonicController {
 				break;
 			}
 		}
+		*/
 		//tell that this method has stopped
 		navigating = false;
 	}
@@ -331,6 +332,50 @@ public class Navigation implements UltrasonicController {
 			
 		odo.setTheta(0);
 		odo.setY((endY + 1) * TILE_LENGTH);
+		
+	}
+	
+	public void shake() {
+		/*
+		for(int i = 0; i < 100; i++) {
+			this.leftMotor.setSpeed(800);
+			this.rightMotor.setSpeed(800);
+			this.leftMotor.backward();
+			this.rightMotor.forward();
+		}
+		for(int i = 0; i < 100; i++) {
+			this.leftMotor.setSpeed(800);
+			this.rightMotor.setSpeed(800);
+			this.leftMotor.forward();
+			this.rightMotor.backward();
+		}
+		for(int i = 0; i < 100; i++) {
+			this.leftMotor.setSpeed(800);
+			this.rightMotor.setSpeed(800);
+			this.leftMotor.backward();
+			this.rightMotor.forward();
+		}
+		for(int i = 0; i < 100; i++) {
+			this.leftMotor.setSpeed(800);
+			this.rightMotor.setSpeed(800);
+			this.leftMotor.forward();
+			this.rightMotor.backward();
+		}
+		*/
+		
+		leftMotor.setSpeed(1200);
+		rightMotor.setSpeed(1200);
+
+		leftMotor.rotate(convertDistance(WHEEL_RAD, 22), true);
+		rightMotor.rotate(convertDistance(WHEEL_RAD, -25), false);
+		
+		leftMotor.setSpeed(1200);
+		rightMotor.setSpeed(1200);
+
+		leftMotor.rotate(convertDistance(WHEEL_RAD, -25), true);
+		rightMotor.rotate(convertDistance(WHEEL_RAD, 25), false);
+		
+		
 		
 	}
 
