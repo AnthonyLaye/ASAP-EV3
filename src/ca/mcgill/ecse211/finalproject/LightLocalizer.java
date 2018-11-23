@@ -78,10 +78,10 @@ public class LightLocalizer {
 			    colourRight = LSR.getRedMode();
 			    sampleRight = new float[3];
 			    colourRight.fetchSample(sampleRight, 0);
-				
+			    
 				advanceRobot(50,true);
 				
-				while(sampleLeft[0] - Navigation.TILE_FLOOR_COLOR < 0.20  || sampleRight[0] - Navigation.TILE_FLOOR_COLOR < 0.20) {	// While no difference between colors
+				while(Navigation.TILE_FLOOR_COLOR - sampleLeft[0] < 0.30  || Navigation.TILE_FLOOR_COLOR -  sampleRight[0] < 0.30) {	// While no difference between colors
 					
 					colourLeft = LSL.getRedMode();
 					sampleLeft = new float[3];
@@ -90,24 +90,28 @@ public class LightLocalizer {
 					colourRight = LSR.getRedMode();
 				    sampleRight = new float[3];
 				    colourRight.fetchSample(sampleRight, 0);
-				    
+
 				    
 					//buff = 1;
-					if (sampleRight[0] - Navigation.TILE_FLOOR_COLOR > 0.20) {
+					if (Navigation.TILE_FLOOR_COLOR - sampleRight[0] > 0.30) {
 						Sound.beep();
 						Navigation.rightMotor.stop(true);
-						while(sampleLeft[0] - Navigation.TILE_FLOOR_COLOR < 0.20)
+						while(Navigation.TILE_FLOOR_COLOR - sampleLeft[0] < 0.30)
 						{
-							int i = 0; 
+							colourLeft = LSL.getRedMode();
+							sampleLeft = new float[3];
+						    colourLeft.fetchSample(sampleLeft, 0);
 						}
 						break;
 					}
-					if (sampleLeft[0] - Navigation.TILE_FLOOR_COLOR > 0.20) {
+					if (Navigation.TILE_FLOOR_COLOR - sampleLeft[0] > 0.30) {
 						Sound.beep();
 						Navigation.leftMotor.stop(true);
-						while(sampleRight[0] - Navigation.TILE_FLOOR_COLOR < 0.204)
+						while(Navigation.TILE_FLOOR_COLOR - sampleRight[0] < 0.30)
 						{
-							int i =0;
+							colourRight = LSR.getRedMode();
+						    sampleRight = new float[3];
+						    colourRight.fetchSample(sampleRight, 0);
 						}
 						break;
 					}
@@ -219,6 +223,13 @@ public class LightLocalizer {
 			   odo.setX(7 * 30.48);
 			   odo.setY(30.48);
 				odo.setTheta(270);
+				
+				SensorMode colourLeft;
+				colourLeft = LSL.getRedMode();
+			    float[] sampleLeft = new float[3];
+			    colourLeft.fetchSample(sampleLeft, 0);
+				
+				Navigation.TILE_FLOOR_COLOR = sampleLeft[0];	// Save the color of the tile floor to be used for comparisons
 			 
 			  
 			   

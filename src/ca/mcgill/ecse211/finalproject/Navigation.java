@@ -245,7 +245,8 @@ public class Navigation implements UltrasonicController {
 		boolean rightStopped = false;
 		
 		
-		while(leftMotor.isMoving() && rightMotor.isMoving()) {
+		
+		while(leftMotor.isMoving() || rightMotor.isMoving()) {
 			
 			SensorMode colourLeft;
 			colourLeft = LSL.getRedMode();
@@ -257,7 +258,7 @@ public class Navigation implements UltrasonicController {
 		    float[] sampleRight = new float[3];
 		    colourRight.fetchSample(sampleRight, 0);
 		    
-			if(sampleLeft[0] - TILE_FLOOR_COLOR > 0.20 && !leftStopped) {
+			if(TILE_FLOOR_COLOR - sampleLeft[0] > 0.30 && !leftStopped) {
 				if(first) {
 					leftMotor.stop(true);
 					first = false;
@@ -268,7 +269,7 @@ public class Navigation implements UltrasonicController {
 				leftStopped = true;
 			}
 				
-			if(sampleRight[0] - TILE_FLOOR_COLOR > 0.20 && !rightStopped) {
+			if(TILE_FLOOR_COLOR - sampleRight[0] > 0.30 && !rightStopped) {
 				if(first) {
 					rightMotor.stop(true);
 					first = false;
@@ -285,8 +286,8 @@ public class Navigation implements UltrasonicController {
 		
 		turnTo(angle, odo.getXYT()[2]);
 		
-		leftMotor.setSpeed(60);
-		rightMotor.setSpeed(60);
+		leftMotor.setSpeed(FORWARD_SPEED);
+		rightMotor.setSpeed(FORWARD_SPEED);
 		
 		leftMotor.forward();
 		rightMotor.forward();

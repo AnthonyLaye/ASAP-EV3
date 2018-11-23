@@ -35,7 +35,9 @@ public class TunnelFollower {
 		
 		armController.closeArms();
 		
-		double[] newValues = calculateTunnelEntry(startX, startY, endX, endY);
+		double[] newValues = {2.5, 2.5, 2.5, 5.5};	//For testing
+		
+		newValues = calculateTunnelEntry(startX, startY, endX, endY);
 		
 		//navigation.travelTo(newValues[0], newValues[1], false);	//Offset values by 0.5 so we are lined up with center of tunnel
 		navigation.travelTo(newValues[0], newValues[1] - 0.2, false);	//Offset values by 0.5 so we are lined up with center of tunnel
