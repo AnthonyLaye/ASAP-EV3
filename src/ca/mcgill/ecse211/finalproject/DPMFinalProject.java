@@ -108,7 +108,7 @@ public class DPMFinalProject {
 			    }
 			    
 			    // ******************** OPTAIN ALL WIFI DATA FROM SERVER ***********************************
-			    
+			    /*
 			    Map wifiData = WifiController.readData();
 			    //System.out.println(wifiData);
 			    
@@ -122,11 +122,11 @@ public class DPMFinalProject {
 			    else if(greenTeam == 13)
 			    	isRedTeam = false;
 			    else
-			    	System.exit(-1); //This better not happen...*/
+			    	System.exit(-1); //This better not happen...
 			    
 			    final int corner, llX, llY, urX, urY, islandLLX, islandLLY, islandURX, islandURY, tnLLX, tnLLY, tnURX, tnURY, tX, tY;
 			    
-			    isRedTeam = false; // THIS IS JUST FOR BETA DEMO, GREEN BY DEFAULT IN DEMO*/
+			    isRedTeam = false; // THIS IS JUST FOR BETA DEMO, GREEN BY DEFAULT IN DEMO
 			    
 			    if(isRedTeam) {
 			    	corner = ((Long) wifiData.get("RedCorner")).intValue();
@@ -176,26 +176,34 @@ public class DPMFinalProject {
 			    	startX = 1;
 			    	startY = 8;
 			    }
-			    else {	//Corner = 3 or the game parameters were wrong...
-			    	startX = 14;
-			    	startY = 8;
+			   // else {	//Corner = 3 or the game parameters were wrong...
+			    //	startX = 14;
+			    	//startY = 8;
+			    //}
+			    else {
+			    startX = 1;//Debugging purposes
+			    startY = 1;
 			    }
+			    */
 			    
+			    final int startX = 7;
+				final int startY = 1;
 			    
 			    (new Thread() {
 			        public void run() {
 			        	
+			        	
 			          USLocalizer.whichRoutine(); // Ultrasonic Localize
 			          LSLocalizer.lightLocalize(startX, startY);	// Light localize
-			          LSLocalizer.pollColour();
+			          //LSLocalizer.pollColour();
 			          
-			          //Sound.beep();
+			          Sound.beep();
 			        	
-			          navigation.shake();
+			          //navigation.shake();
 			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
 			        	
 			          //navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
-			          //tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY); // Travel to start of tunnel and then to end of tunnel
+			          tunnelFollower.traverseTunnel(5, 3, 5, 7); // Travel to start of tunnel and then to end of tunnel
 
 			          //navigation.travelTo(3, 0, false);
 			          //ringController.approachTree(6, 3); //Travel to tree and do collections
