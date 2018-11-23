@@ -109,26 +109,26 @@ public class DPMFinalProject {
 			    
 			    // ******************** OPTAIN ALL WIFI DATA FROM SERVER ***********************************
 			    
-			    //Map wifiData = WifiController.readData();
+			    Map wifiData = WifiController.readData();
 			    //System.out.println(wifiData);
 			    
-			    //boolean isRedTeam = false;
+			    boolean isRedTeam = false;
 			    
-			    //int redTeam = ((Long) wifiData.get("RedTeam")).intValue();
-			    //int greenTeam = ((Long) wifiData.get("GreenTeam")).intValue();
+			    int redTeam = ((Long) wifiData.get("RedTeam")).intValue();
+			    int greenTeam = ((Long) wifiData.get("GreenTeam")).intValue();
 			    
-			   /*if(redTeam == 13)	//Check if team 13 is red! if not we are green
+			   if(redTeam == 13)	//Check if team 13 is red! if not we are green
 			    	isRedTeam = true;
 			    else if(greenTeam == 13)
 			    	isRedTeam = false;
 			    else
 			    	System.exit(-1); //This better not happen...*/
 			    
-			    /*final int corner, llX, llY, urX, urY, islandLLX, islandLLY, islandURX, islandURY, tnLLX, tnLLY, tnURX, tnURY, tX, tY;
+			    final int corner, llX, llY, urX, urY, islandLLX, islandLLY, islandURX, islandURY, tnLLX, tnLLY, tnURX, tnURY, tX, tY;
 			    
 			    isRedTeam = false; // THIS IS JUST FOR BETA DEMO, GREEN BY DEFAULT IN DEMO*/
 			    
-			    /*if(isRedTeam) {
+			    if(isRedTeam) {
 			    	corner = ((Long) wifiData.get("RedCorner")).intValue();
 			    	llX = ((Long) wifiData.get("Red_LL_x")).intValue();
 			    	llY = ((Long) wifiData.get("Red_LL_y")).intValue();
@@ -160,15 +160,33 @@ public class DPMFinalProject {
 			    islandLLY = ((Long) wifiData.get("Island_LL_y")).intValue();
 			    islandURX = ((Long) wifiData.get("Island_UR_x")).intValue();
 			    islandURY = ((Long) wifiData.get("Island_UR_y")).intValue();
-			    */
 			    
-			    lcd.clear();
+			    final int startX;
+				final int startY;
+			    
+			    if(corner == 0) {
+			    	startX = 1;
+			    	startY = 1;
+			    }
+			    else if (corner == 1) {
+			    	startX = 14;
+			    	startY = 1;
+			    }
+			    else if (corner == 2) {
+			    	startX = 1;
+			    	startY = 8;
+			    }
+			    else {	//Corner = 3 or the game parameters were wrong...
+			    	startX = 14;
+			    	startY = 8;
+			    }
+			    
 			    
 			    (new Thread() {
 			        public void run() {
 			        	
-			          //USLocalizer.whichRoutine(); // Ultrasonic Localize
-			          //LSLocalizer.lightLocalize();	// Light localize
+			          USLocalizer.whichRoutine(); // Ultrasonic Localize
+			          LSLocalizer.lightLocalize(startX, startY);	// Light localize
 			          LSLocalizer.pollColour();
 			          
 			          //Sound.beep();

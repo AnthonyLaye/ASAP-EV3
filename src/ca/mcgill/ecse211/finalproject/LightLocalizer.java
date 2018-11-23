@@ -39,7 +39,7 @@ public class LightLocalizer {
 		 * using these four angles to get a and b
 		 * then get x and y to move forward
 		 */
-		public void lightLocalize() {
+		public void lightLocalize(int startX, int startY) {
 			//advanceRobot(-10,false);//first advance the robot to avoid it detect nothing, according to the length of our robot, 10 is all good it is half of our robot length 
 			//it is not hard code because our robot is in the first square after finishing the first task, so move for half of robot length will finish the second task
 			//because the whole square is a 30.48*30.48 square, our robot is 23 cm add 10 cm is longer than the length of the side of the square and because of that 
@@ -55,46 +55,57 @@ public class LightLocalizer {
 			int buff = 0;
 			
 			SensorMode colourLeft;
-			SensorMode colourRight;
-			
-			double prevSampleLeft = 0.75;
-			double prevSampleRight = 0.75;
-			
+			colourLeft = LSL.getRedMode();
+		    float[] sampleLeft = new float[3];
+		    colourLeft.fetchSample(sampleLeft, 0);
+		    
+		    SensorMode colourRight;
+			colourRight = LSR.getRedMode();
+		    float[] sampleRight = new float[3];
+		    colourRight.fetchSample(sampleRight, 0);
+		    
+		    Navigation.TILE_FLOOR_COLOR = sampleLeft[0];	// Save the color of the tile floor to be used for comparisons
 			
 			
 			while (true) {
 				
 				correctionStart = System.currentTimeMillis();
 				
-				SensorMode colour;
-				colour = LSR.getRedMode();
-			    float[] sample = new float[3];
-			    colour.fetchSample(sample, 0);
+				colourLeft = LSL.getRedMode();
+				sampleLeft = new float[3];
+			    colourLeft.fetchSample(sampleLeft, 0);
+			    
+			    colourRight = LSR.getRedMode();
+			    sampleRight = new float[3];
+			    colourRight.fetchSample(sampleRight, 0);
 				
 				advanceRobot(50,true);
 				
-				while(LSL.getColorID() != 2 || sample[0] > 0.4) {
-					colour = LSR.getRedMode();
-				    sample = new float[3];
-				    colour.fetchSample(sample, 0);
+				while(sampleLeft[0] - Navigation.TILE_FLOOR_COLOR < 0.20  || sampleRight[0] - Navigation.TILE_FLOOR_COLOR < 0.20) {	// While no difference between colors
+					
+					colourLeft = LSL.getRedMode();
+					sampleLeft = new float[3];
+				    colourLeft.fetchSample(sampleLeft, 0);
+					
+					colourRight = LSR.getRedMode();
+				    sampleRight = new float[3];
+				    colourRight.fetchSample(sampleRight, 0);
+				    
+				    
 					//buff = 1;
-					if (sample[0] < 0.4) {
+					if (sampleRight[0] - Navigation.TILE_FLOOR_COLOR > 0.20) {
 						Sound.beep();
-						//buff = 2;
-						//break;
 						Navigation.rightMotor.stop(true);
-						while(LSL.getColorID() != 2)
+						while(sampleLeft[0] - Navigation.TILE_FLOOR_COLOR < 0.20)
 						{
 							int i = 0; 
 						}
 						break;
 					}
-					if (LSL.getColorID() == 2 ) {
+					if (sampleLeft[0] - Navigation.TILE_FLOOR_COLOR > 0.20) {
 						Sound.beep();
-						//buff = 2;
-						//break;
 						Navigation.leftMotor.stop(true);
-						while(sample[0] > 0.4)
+						while(sampleRight[0] - Navigation.TILE_FLOOR_COLOR < 0.204)
 						{
 							int i =0;
 						}
@@ -114,12 +125,12 @@ public class LightLocalizer {
 				{
 					advanceRobot(-5, false);
 					rotateTheRobot(false, 90, false);
-					odo.setX(7 * 30.48);
+					odo.setX(startX * 30.48);
 					odo.setTheta(270);
 					break;
 				}
 				else if(count == 1)
-					odo.setY(30.48);
+					odo.setY(startY * 30.48);
 				
 				advanceRobot(-5, false);
 				
