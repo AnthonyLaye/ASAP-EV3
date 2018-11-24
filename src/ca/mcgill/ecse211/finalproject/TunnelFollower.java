@@ -31,12 +31,13 @@ public class TunnelFollower {
 	 * @param endX : x position after tunnel
 	 * @param endY : y position after tunnel
 	 */
-	public void traverseTunnel(double startX, double startY, double endX, double endY) {
+	public void traverseTunnel(double startX, double startY, double endX, double endY, 
+			double IslandURX, double IslandURY, double IslandLLX, double IslandLLY, double myZoneURX, double myZoneURY,double myZoneLLX, double myZoneLLY, double TNRURX, double TNRURY, double TNRLLX, double TNRLLY) {
 		
 		armController.closeArms();
 		
-		double[] newValues = calculateTunnelEntry(startX, startY, endX, endY);
-		
+		//double[] newValues = calculateTunnelEntry(startX, startY, endX, endY, IslandURX, IslandURY, IslandLLX, IslandLLY, myZoneX, myZoneY, TNRURX, TNRURY, TNRLLX, TNRLLY);
+		double[] newValues = getTheEntry(myZoneURX,myZoneURY,myZoneLLX, myZoneLLY, TNRURX,TNRURY,TNRLLX,TNRLLY, IslandURX, IslandURY, IslandLLX, IslandLLY);
 		//navigation.travelTo(newValues[0], newValues[1], false);	//Offset values by 0.5 so we are lined up with center of tunnel
 		navigation.travelTo(newValues[0], newValues[1] - 0.2, false);	//Offset values by 0.5 so we are lined up with center of tunnel
 		double angle = 270;
@@ -49,7 +50,79 @@ public class TunnelFollower {
 		
 		armController.openArms();
 	}
+
+
 	
+	private double[] getTheEntry(double myZoneURX, double myZoneURY, double myZoneLLX, double myZoneLLY, double tNRURX,
+			double tNRURY, double tNRLLX, double tNRLLY, double islandURX, double islandURY, double islandLLX,
+			double islandLLY) {
+		// TODO Auto-generated method stub
+		
+		/*double islandULX = islandLLX;
+		double islandULY = islandURY;
+		double islandlRX = islandURX;
+		double islandLRY = islandLLY;
+		
+		double myZoneULX = myZoneLLX;
+		double myZoneULY = myZoneURY;
+		double myZoneLRX = myZoneURX;
+		double myZoneLRY = myZoneLLY;
+		
+		double tNRULX = tNRLLX;
+		double tNRULY = tNRURY;
+		double tNRLRX = tNRURX;
+		double tNRLRY = tNRLLY;*/
+		
+		double startVx = tNRURX - 0.5;
+		double startVy = tNRURY + 0.5;
+		double endVx = tNRLLX + 0.5;
+		double endVy = tNRLLY - 0.5;
+		
+		double startHx = tNRLLX - 0.5;
+		double startHy = tNRLLY + 0.5;
+		double endHx = tNRURX + 0.5;
+		double endHy = tNRURY - 0.5;
+		
+		double startVx2 = tNRLLX + 0.5;
+		double startVy2 = tNRLLY - 0.5;
+		double endVx2 = tNRURX - 0.5;
+		double endVy2 = tNRURY + 0.5;
+		
+		double startHx2 = tNRURX + 0.5;
+		double startHy2 = tNRURY - 0.5;
+		double endHx2 = tNRLLX - 0.5;
+		double endHy2 = tNRLLY + 0.5;
+		
+		//if the start point and end point are all in the my zone and island
+		if( myZoneLLX <= startVx && startVx <= myZoneURX && myZoneLLY <= startVy && startVy <= myZoneURY &&
+				islandLLX <= endVx && endVx <= islandURX && islandLLY <= endVy && endVy <= islandURY)
+		{
+			double array[] = {startVx, startVy, endVx, endVy};
+			return array;
+		}
+		else if( myZoneLLX <= startHx && startHx <= myZoneURX && myZoneLLY <= startHy && startHy <= myZoneURY &&
+				islandLLX <= endHx && endHx <= islandURX && islandLLY <= endHy && endHy <= islandURY)
+		{
+			double array[] = {startHx, startHy, endHx, endHy};
+			return array;
+		}
+		else if( myZoneLLX <= startHx2 && startHx2 <= myZoneURX && myZoneLLY <= startHy2 && startHy2 <= myZoneURY &&
+				islandLLX <= endHx2 && endHx2 <= islandURX && islandLLY <= endHy2 && endHy2 <= islandURY)
+		{
+			double array[] = {startHx2, startHy2, endHx2, endHy2};
+			return array;
+		}
+		if( myZoneLLX <= startVx2 && startVx2 <= myZoneURX && myZoneLLY <= startVy2 && startVy2 <= myZoneURY &&
+				islandLLX <= endVx2 && endVx2 <= islandURX && islandLLY <= endVy2 && endVy2 <= islandURY)
+		{
+			double array[] = {startVx2, startVy2, endVx2, endVy2};
+			return array;
+		}
+		
+		
+		return null;
+	}
+
 	/**
 	 * This method calculates where to stop in front of the tunnel based on the coordinates.
 	 * @param startX

@@ -73,28 +73,28 @@ public class LightLocalizer {
 				
 				advanceRobot(50,true);
 				
-				while(LSL.getColorID() != 2 || sample[0] > 0.4) {
+				while(LSL.getColorID() != 13 || LSR.getColorID() != 13) {
 					colour = LSR.getRedMode();
 				    sample = new float[3];
 				    colour.fetchSample(sample, 0);
 					//buff = 1;
-					if (sample[0] < 0.4) {
+					if (LSR.getColorID() == 13) {
 						Sound.beep();
 						//buff = 2;
 						//break;
 						Navigation.rightMotor.stop(true);
-						while(LSL.getColorID() != 2)
+						while(LSL.getColorID() != 13)
 						{
 							int i = 0; 
 						}
 						break;
 					}
-					if (LSL.getColorID() == 2 ) {
+					if (LSL.getColorID() == 13 ) {
 						Sound.beep();
 						//buff = 2;
 						//break;
 						Navigation.leftMotor.stop(true);
-						while(sample[0] > 0.4)
+						while(LSR.getColorID() != 13)
 						{
 							int i =0;
 						}
@@ -114,12 +114,12 @@ public class LightLocalizer {
 				{
 					advanceRobot(-5, false);
 					rotateTheRobot(false, 90, false);
-					odo.setX(7 * 30.48);
+					odo.setX(14 * 30.48);
 					odo.setTheta(270);
 					break;
 				}
 				else if(count == 1)
-					odo.setY(30.48);
+					odo.setY(1*30.48);
 				
 				advanceRobot(-5, false);
 				
