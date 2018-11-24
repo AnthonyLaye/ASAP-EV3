@@ -109,26 +109,26 @@ public class DPMFinalProject {
 			    
 			    // ******************** OPTAIN ALL WIFI DATA FROM SERVER ***********************************
 			    
-			    //Map wifiData = WifiController.readData();
-			    //System.out.println(wifiData);
+			    Map wifiData = WifiController.readData();
+			    System.out.println(wifiData);
 			    
-			    //boolean isRedTeam = false;
+			    boolean isRedTeam = false;
 			    
-			    //int redTeam = ((Long) wifiData.get("RedTeam")).intValue();
-			    //int greenTeam = ((Long) wifiData.get("GreenTeam")).intValue();
+			    int redTeam = ((Long) wifiData.get("RedTeam")).intValue();
+			    int greenTeam = ((Long) wifiData.get("GreenTeam")).intValue();
 			    
-			   /*if(redTeam == 13)	//Check if team 13 is red! if not we are green
+			   if(greenTeam == 13)	//Check if team 13 is red! if not we are green
 			    	isRedTeam = true;
-			    else if(greenTeam == 13)
-			    	isRedTeam = false;
-			    else
+			   //else if(greenTeam == 13)
+			    //	isRedTeam = false;
+			   else
 			    	System.exit(-1); //This better not happen...*/
 			    
-			    /*final int corner, llX, llY, urX, urY, islandLLX, islandLLY, islandURX, islandURY, tnLLX, tnLLY, tnURX, tnURY, tX, tY;
+			    final int corner, llX, llY, urX, urY, islandLLX, islandLLY, islandURX, islandURY, tnLLX, tnLLY, tnURX, tnURY, tX, tY;
 			    
 			    isRedTeam = false; // THIS IS JUST FOR BETA DEMO, GREEN BY DEFAULT IN DEMO*/
 			    
-			    /*if(isRedTeam) {
+			    if(isRedTeam) {
 			    	corner = ((Long) wifiData.get("RedCorner")).intValue();
 			    	llX = ((Long) wifiData.get("Red_LL_x")).intValue();
 			    	llY = ((Long) wifiData.get("Red_LL_y")).intValue();
@@ -160,25 +160,28 @@ public class DPMFinalProject {
 			    islandLLY = ((Long) wifiData.get("Island_LL_y")).intValue();
 			    islandURX = ((Long) wifiData.get("Island_UR_x")).intValue();
 			    islandURY = ((Long) wifiData.get("Island_UR_y")).intValue();
-			    */
 			    
 			    lcd.clear();
 			    
 			    (new Thread() {
 			        public void run() {
 			        	
-			          //USLocalizer.whichRoutine(); // Ultrasonic Localize
-			          //LSLocalizer.lightLocalize();	// Light localize
+			          USLocalizer.whichRoutine(); // Ultrasonic Localize
+			          LSLocalizer.lightLocalize();	// Light localize
 			          //LSLocalizer.pollColour();
+			          
+					
+
 			          
 			          Sound.beep();
 			        	
 			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
 			        	
 			          //navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
-			          //tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY); // Travel to start of tunnel and then to end of tunnel
+			          //startX, startY, endX, endY, IslandURX, IslandURY, IslandLLX, IslandLLY, myZoneX, myZoneY, TNRURX, TNRURY, TNRLLX, TNRLLY
+			          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel to start of tunnel and then to end of tunnel
 
-			          navigation.travelTo(3, 0, false);
+			          //navigation.travelTo(3, 0, false);
 			          //ringController.approachTree(tX, tY); //Travel to tree and do collections
 			          
 			          /* The rest is not used for beta demo
