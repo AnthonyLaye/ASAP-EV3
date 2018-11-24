@@ -27,6 +27,7 @@ public class Navigation implements UltrasonicController {
 	private static final double WHEEL_RAD = 2.08;
 	private static final double TRACK = 12.27;
 	public static final double TILE_LENGTH = 30.78;
+	public static double TILE_FLOOR_COLOR = 0;
 	private EV3ColorSensor LSL;
 	private EV3ColorSensor LSR;
 	private SensorData data;
@@ -242,14 +243,22 @@ public class Navigation implements UltrasonicController {
 		boolean first = true;
 		boolean leftStopped = false;
 		boolean rightStopped = false;
-		while(leftMotor.isMoving() && rightMotor.isMoving()) {
+		
+		
+		
+		while(leftMotor.isMoving() || rightMotor.isMoving()) {
 			
-			SensorMode colour;
-			colour = LSR.getRedMode();
-		    float[] sample = new float[3];
-		    colour.fetchSample(sample, 0);
+			SensorMode colourLeft;
+			colourLeft = LSL.getRedMode();
+		    float[] sampleLeft = new float[3];
+		    colourLeft.fetchSample(sampleLeft, 0);
 		    
-			if(LSL.getColorID() == 2 && !leftStopped) {
+		    SensorMode colourRight;
+			colourRight = LSR.getRedMode();
+		    float[] sampleRight = new float[3];
+		    colourRight.fetchSample(sampleRight, 0);
+		    
+			if(TILE_FLOOR_COLOR - sampleLeft[0] > 0.30 && !leftStopped) {
 				if(first) {
 					leftMotor.stop(true);
 					first = false;
@@ -260,7 +269,7 @@ public class Navigation implements UltrasonicController {
 				leftStopped = true;
 			}
 				
-			if(sample[0] < 0.4 && !rightStopped) {
+			if(TILE_FLOOR_COLOR - sampleRight[0] > 0.30 && !rightStopped) {
 				if(first) {
 					rightMotor.stop(true);
 					first = false;
@@ -277,8 +286,8 @@ public class Navigation implements UltrasonicController {
 		
 		turnTo(angle, odo.getXYT()[2]);
 		
-		leftMotor.setSpeed(60);
-		rightMotor.setSpeed(60);
+		leftMotor.setSpeed(FORWARD_SPEED);
+		rightMotor.setSpeed(FORWARD_SPEED);
 		
 		leftMotor.forward();
 		rightMotor.forward();
