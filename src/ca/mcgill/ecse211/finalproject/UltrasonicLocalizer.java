@@ -10,7 +10,7 @@ import lejos.hardware.Sound;
 public class UltrasonicLocalizer {
 	private static final int ROTATE_SPEED = 100;
 	private static final	 double wheelRadius = 2.08;
-	private static final double track = 12.27;
+	private static final double track = 13.17;
 	private Navigation Navigator = null;
 	/*
 	 * have to mention that k and d are gotten from a lot of experiments but it is not hard code

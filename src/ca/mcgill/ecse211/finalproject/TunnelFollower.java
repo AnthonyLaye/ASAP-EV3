@@ -40,11 +40,15 @@ public class TunnelFollower {
 		double[] newValues = getTheEntry(myZoneURX,myZoneURY,myZoneLLX, myZoneLLY, TNRURX,TNRURY,TNRLLX,TNRLLY, IslandURX, IslandURY, IslandLLX, IslandLLY);
 		//navigation.travelTo(newValues[0], newValues[1], false);	//Offset values by 0.5 so we are lined up with center of tunnel
 		navigation.travelTo(newValues[0], newValues[1] - 0.2, false);	//Offset values by 0.5 so we are lined up with center of tunnel
+		
 		double angle = 270;
+		
 		navigation.localizeForTunnel(angle, startX, startY);
 		
 		navigation.travelTo(newValues[2], newValues[3] - 0.2, false);
+		
 		angle = 90;
+		
 		navigation.localizeAfterTunnel(angle, endX, endY);
 		
 		

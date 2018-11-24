@@ -25,7 +25,7 @@ public class Navigation implements UltrasonicController {
 	private static final int FILTER_OUT = 20;
 	private static final double TILE_SIZE = 30.48;
 	private static final double WHEEL_RAD = 2.08;
-	private static final double TRACK = 12.27;
+	private static final double TRACK = 13.17;
 	public static final double TILE_LENGTH = 30.78;
 	public static double TILE_FLOOR_COLOR = 0;
 	private EV3ColorSensor LSL;

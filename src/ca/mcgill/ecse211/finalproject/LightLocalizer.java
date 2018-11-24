@@ -19,7 +19,7 @@ public class LightLocalizer {
 		//private static final Port portColor = LocalEV3.get().getPort("S3");
 		private static final int ROTATE_SPEED = 100;
 		private static final double wheelRadius = 2.2;
-		private static final double track = 12.5;
+		private static final double track = 13.17;
 		private static final int FORWARDSPEED = 100;
 		//private static SensorModes myColor = new EV3ColorSensor(LS);
 		private SensorData data;
@@ -39,7 +39,7 @@ public class LightLocalizer {
 		 * using these four angles to get a and b
 		 * then get x and y to move forward
 		 */
-		public void lightLocalize(int startX, int startY) {
+		public void lightLocalize(int startX, int startY, int startAngle) {
 			//advanceRobot(-10,false);//first advance the robot to avoid it detect nothing, according to the length of our robot, 10 is all good it is half of our robot length 
 			//it is not hard code because our robot is in the first square after finishing the first task, so move for half of robot length will finish the second task
 			//because the whole square is a 30.48*30.48 square, our robot is 23 cm add 10 cm is longer than the length of the side of the square and because of that 
@@ -128,9 +128,8 @@ public class LightLocalizer {
 				if(count == 2)
 				{
 					advanceRobot(-5, false);
-					rotateTheRobot(false, 90, false);
 					odo.setX(startX * 30.48);
-					odo.setTheta(270);
+					odo.setTheta(startAngle);
 					break;
 				}
 				else if(count == 1)

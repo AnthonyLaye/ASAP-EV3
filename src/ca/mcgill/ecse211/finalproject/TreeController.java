@@ -97,15 +97,7 @@ public class TreeController {
 			if(detectRing()) {
 				break;
 			}
-			else {
-				armController.rotateArms(-5);
-				if(detectRing()) {
-					break;
-				}
-				else {
-					armController.rotateArms(5);
-				}
-			}
+			
 			
 			count++;
 			
@@ -113,6 +105,7 @@ public class TreeController {
 				break;
 			
 			armController.openArms();
+			
 			navigation.rotateTheRobot(true, 90, false); // Turn 90 degree to reach other side
 			navigation.advanceRobot(30, false);
 			navigation.rotateTheRobot(false, 90, false);

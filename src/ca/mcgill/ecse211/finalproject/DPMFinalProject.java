@@ -11,6 +11,7 @@ import lejos.hardware.lcd.LCD;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
+import lejos.hardware.motor.NXTRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
@@ -24,10 +25,10 @@ public class DPMFinalProject {
 				new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 		private static final EV3LargeRegulatedMotor rightMotor =
 				new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
-		private static final EV3MediumRegulatedMotor leftArmMotor = 
-				new EV3MediumRegulatedMotor(LocalEV3.get().getPort("B"));
-		private static final EV3MediumRegulatedMotor rightArmMotor = 
-				new EV3MediumRegulatedMotor(LocalEV3.get().getPort("C"));
+		private static final NXTRegulatedMotor leftArmMotor = 
+				new NXTRegulatedMotor(LocalEV3.get().getPort("B"));
+		private static final NXTRegulatedMotor rightArmMotor = 
+				new NXTRegulatedMotor(LocalEV3.get().getPort("C"));
 		
 		private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 		private static final EV3ColorSensor LSL = 
@@ -37,7 +38,7 @@ public class DPMFinalProject {
 		private static final EV3ColorSensor ColSensor =
 				new EV3ColorSensor(LocalEV3.get().getPort("S2"));
 		private static final double WHEEL_RAD = 2.08;
-		private static final double TRACK = 12.27;
+		private static final double TRACK = 13.17;
 		private static final double TILE_LENGTH = 30.48;
 	
 		private static SensorModes usSensor = new EV3UltrasonicSensor(LocalEV3.get().getPort("S4")); // usSensor is the instance
@@ -163,27 +164,35 @@ public class DPMFinalProject {
 			    
 			    final int startX;
 				final int startY;
+				final int startAngle;
 			    
+				/*
 			    if(corner == 0) {
 			    	startX = 1;
 			    	startY = 1;
+			    	startAngle = 90;
 			    }
 			    else if (corner == 1) {
 			    	startX = 14;
 			    	startY = 1;
+			    	startAngle = 0;
 			    }
 			    else if (corner == 2) {
 			    	startX = 1;
 			    	startY = 8;
+			    	startAngle = 180;
+			    	
 			    }
 			   // else {	//Corner = 3 or the game parameters were wrong...
 			    //	startX = 14;
 			    	//startY = 8;
+			    	 startAngle = 270
 			    //}
-			    else {
-			    startX = 1;//Debugging purposes
+			    else {*/
+			    startX = 7;//Debugging purposes
 			    startY = 1;
-			    }
+			    startAngle = 0;
+			    //}
 			    
 	
 			    (new Thread() {
@@ -191,7 +200,7 @@ public class DPMFinalProject {
 			        	
 			        	
 			          USLocalizer.whichRoutine(); // Ultrasonic Localize
-			          LSLocalizer.lightLocalize(startX, startY);	// Light localize
+			          LSLocalizer.lightLocalize(startX, startY, startAngle);	// Light localize
 			          //LSLocalizer.pollColour();
 			          
 			          Sound.beep();
@@ -200,10 +209,10 @@ public class DPMFinalProject {
 			          //Beta demo starts in corner 1 -> (7, 1) -> Done in LightLocalizer.java
 			        	
 			          //navigation.travelTo(tnLLX, tnLLY, false); // Travel to start of tunnel
-			          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel to start of tunnel and then to end of tunnel
+			          //tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel to start of tunnel and then to end of tunnel
 
 			          //navigation.travelTo(3, 0, false);
-			          //ringController.approachTree(6, 3); //Travel to tree and do collections
+			          ringController.approachTree(5, 3); //Travel to tree and do collections
 			          
 			          /* The rest is not used for beta demo
 			           
