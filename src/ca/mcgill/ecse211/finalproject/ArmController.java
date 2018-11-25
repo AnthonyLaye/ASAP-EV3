@@ -1,6 +1,5 @@
 package ca.mcgill.ecse211.finalproject;
 
-import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.motor.NXTRegulatedMotor;
 
 /**
@@ -25,9 +24,6 @@ public class ArmController {
 		
 		rightArmMotor.rotate(70, true);
 		leftArmMotor.rotate(70, false);
-		
-		//leftArmMotor.stop(true);
-		//rightArmMotor.stop(false);
 	}
 	
 	/**
@@ -39,14 +35,16 @@ public class ArmController {
 		
 		rightArmMotor.rotate(-70, true);
 		leftArmMotor.rotate(-70, false);
-		
-		//leftArmMotor.stop(true);
-		//rightArmMotor.stop(false);
 	}
 	
+	/**
+	 * Rotate the arms by a specified angle
+	 * @param angle : angle to rotate arms
+	 */
 	public void rotateArms(int angle) {
 		leftArmMotor.setSpeed(120);
 		rightArmMotor.setSpeed(120);
+		
 		leftArmMotor.rotate(angle, true);
 		rightArmMotor.rotate(angle, true);
 	}

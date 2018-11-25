@@ -93,7 +93,7 @@ public class UltrasonicLocalizer {
    * If the robot starts facing away from the walls, it can:
    * Detect a falling edge, continue in the same direction, then detect a rising edge
    */
-private void fallingEdgeRoutine() {
+  private void fallingEdgeRoutine() {
 	  // TODO Auto-generated method stub
 		double a = 0;
 		double b = 0;
@@ -144,8 +144,8 @@ private void fallingEdgeRoutine() {
   }
 
   /**
-   * this method is created to let the robot rotate certain angle
-   * @param cwOrCcw : clockwise or counterclockwise
+   * Lets the robot rotate by a specified angle
+   * @param cwOrCcw : direction to rotate (clockwise or counterclockwise)
    * @param angleToRotate : angle to rotate
    */
   private void rotateTheRobot(boolean cwOrCcw, double angleToRotate, boolean blocked) {
@@ -165,7 +165,6 @@ private void fallingEdgeRoutine() {
 		  Navigation.leftMotor.rotate(-convertAngle(wheelRadius, track, absAngleToRotate),true);
 		  Navigation.rightMotor.rotate(convertAngle(wheelRadius, track, absAngleToRotate),blocked);
 	  }
-	  // TODO Auto-generated method stub
   }
 
   /**
@@ -185,26 +184,25 @@ private void fallingEdgeRoutine() {
   }  
   
   /**
-   * this method is to stop the motor ,both of them, left and right
+   * This method is to stop both motors
    */
   private void stopMotor() {
-	// TODO Auto-generated method stub
 	  Navigator.leftMotor.setSpeed(0);
 	  Navigator.rightMotor.setSpeed(0);	
-}
+  }
 
-		  /**Advances the robot a desired amount of cm.
-	   * 
-	   * @param distanceToTravel Distance to travel in cm.
-	   * @param instantReturn    True if the function is to be instantly returned. False if the function is to be returned after the travel is completed.
-	   */
-	  public void advanceRobot(double distanceToTravel, boolean instantReturn) {
+  /**Advances the robot a desired amount of cm.
+   * 
+   * @param distanceToTravel Distance to travel in cm.
+   * @param instantReturn    True if the function is to be instantly returned. False if the function is to be returned after the travel is completed.
+   */
+  public void advanceRobot(double distanceToTravel, boolean instantReturn) {
 	     
-		Navigator.leftMotor.setSpeed(150);
-		Navigator.rightMotor.setSpeed(150);
+	  Navigator.leftMotor.setSpeed(150);
+	  Navigator.rightMotor.setSpeed(150);
 				 
-		Navigator.leftMotor.rotate(convertDistance(wheelRadius, distanceToTravel), true);
-		Navigator.rightMotor.rotate(convertDistance(wheelRadius, distanceToTravel), instantReturn);
+	  Navigator.leftMotor.rotate(convertDistance(wheelRadius, distanceToTravel), true);
+	  Navigator.rightMotor.rotate(convertDistance(wheelRadius, distanceToTravel), instantReturn);
 		
-	  }
+  }
 }

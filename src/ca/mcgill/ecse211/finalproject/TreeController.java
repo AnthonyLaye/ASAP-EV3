@@ -15,26 +15,19 @@ public class TreeController {
 	public enum Color { ORANGE, BLUE, GREEN, YELLOW, NONE };
 	private EV3ColorSensor lightSensor;
 	private SensorMode color;
-	private int distance;
-	private int filterControl;
-	private EV3LargeRegulatedMotor leftMotor;
-	private EV3LargeRegulatedMotor rightMotor;
 	private Navigation navigation;
 	private Odometer odo;
-	private static final int FILTER_OUT = 20;
 	private ArmController armController;
 	
 	public TreeController(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, EV3ColorSensor lightSensor, ArmController armController) throws OdometerExceptions {
 		this.navigation = navigation;
 		this.odo = odometer;
-		this.leftMotor = leftMotor;
-		this.rightMotor = rightMotor;
 		this.lightSensor = lightSensor;
 		this.armController = armController;
 	}
 	
 	/**
-	 * Make the robot travel to the starting position of the tree
+	 * Make the robot travel to the starting position of the tree. We first travel along x, then y, so we approach the tree head on instead of at an angle
 	 * @param treeX : x coordinate of tree
 	 * @param treeY : y coordinate of tree
 	 */
@@ -45,17 +38,18 @@ public class TreeController {
 		double new_y = getStopPosition(treeX, treeY);	// Get y position to stop at
 		navigation.travelTo(treeX, new_y, false);	// Travel along y 
 		
-		findRings();	// Find those rings!!!!!
+		findRings();	// Find those rings!!
 		
 	}
 	
 	/**
-	 * Once at the tree, the robot must detect when it encounters a ring, and beeps a specified amount of times
+	 * Once at a side of the tree, the robot must detect if it encountered a ring, and beeps a specified amount of times
 	 */
 	public boolean detectRing() {
-		//have to see the real hardware
-		if(checkColour() != Color.NONE) return true;
-		return false;
+		if(checkColour() != Color.NONE) 
+			return true;
+		else
+			return false;
 	}
 	
 	/**
@@ -81,26 +75,22 @@ public class TreeController {
 	 */
 	public void findRings() {
 		int count = 0;
-		while(count < 4)//the tree have four sides so count 4
-		{
-			navigation.advanceRobot(15, false);
+		while(count < 4) { // The tree has four sides to visit
 			
+			navigation.advanceRobot(15, false);
 			armController.closeArms(); //get the rings
 			navigation.advanceRobot(-15, false);
 			
-			try {
+			try {	// Sleep for a few seconds to let the ring settle in front of the light sensor
 				Thread.sleep(2000);
 			    } catch (InterruptedException e) {
 			    // There is nothing to be done here
 			}
 			
-			if(detectRing()) {
+			if(detectRing())  // We have spotted a ring
 				break;
-			}
-			
 			
 			count++;
-			
 			if (count == 4)
 				break;
 			
@@ -127,10 +117,6 @@ public class TreeController {
 	    double red = sample[0] * 1000;	//Scale for easier numbers to read
 	    double green = sample[1] * 1000;
 	    double blue = sample[2] * 1000;
-
-	    LCD.drawInt((int)red, 0, 4);
-	    LCD.drawInt((int)green, 0, 5);
-	    LCD.drawInt((int)blue, 0, 6);
 	    
 	    //Ranges were obtained based on sampling different results for the light sensor detection
 	    
