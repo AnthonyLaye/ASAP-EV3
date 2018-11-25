@@ -35,20 +35,34 @@ public class TunnelFollower {
 	 * @param TNRURY : upper right y coordinate of the tunnel
 	 * @param TNRLLX : lower left x coordinate of the tunnel
 	 * @param TNRLLY : lower left y coordinate of the tunnel
+	 * @param isTravelingBack : determines if robot is traveling back to starting point, or traveling to tree
 	 */
 	public void traverseTunnel(double startX, double startY, double endX, double endY, 
-			double IslandURX, double IslandURY, double IslandLLX, double IslandLLY, double myZoneURX, double myZoneURY,double myZoneLLX, double myZoneLLY, double TNRURX, double TNRURY, double TNRLLX, double TNRLLY) {
+			double IslandURX, double IslandURY, double IslandLLX, double IslandLLY, double myZoneURX, double myZoneURY,double myZoneLLX, 
+			double myZoneLLY, double TNRURX, double TNRURY, double TNRLLX, double TNRLLY, boolean isTravelingBack) {
 		
 		armController.closeArms();
 		double[] newValues = getTheEntry(myZoneURX,myZoneURY,myZoneLLX, myZoneLLY, TNRURX,TNRURY,TNRLLX,TNRLLY, IslandURX, IslandURY, IslandLLX, IslandLLY);	// Calculate modified coordinates
 		
-		navigation.travelTo(newValues[0], newValues[1], false);	// Travel to entry point of tunnel
-		double angle = 270;
-		navigation.localizeForTunnel(angle, startX, startY);	// Localize before traversing
+		if(!isTravelingBack) {	// If traveling to ring tree
+			navigation.travelTo(newValues[0], newValues[1], false);	// Travel to entry point of tunnel
+			double angle = 270;
+			navigation.localizeForTunnel(angle, startX, startY);	// Localize before traversing
+			
+			navigation.travelTo(newValues[2], newValues[3], false);	// Travel to exit point of tunnel
+			angle = 90;
+			navigation.localizeAfterTunnel(angle, endX, endY);	// Localize after traversing
+		}
 		
-		navigation.travelTo(newValues[2], newValues[3], false);	// Travel to exit point of tunnel
-		angle = 90;
-		navigation.localizeAfterTunnel(angle, endX, endY);	// Localize after traversing
+		else {	// If traveling back from ring tree
+			navigation.travelTo(newValues[2], newValues[3], false);	// Travel to entry point of tunnel
+			double angle = 270;
+			navigation.localizeForTunnel(angle, endX, endY);	// Localize before traversing
+			
+			navigation.travelTo(newValues[0], newValues[1], false);	// Travel to exit point of tunnel
+			angle = 90;
+			navigation.localizeAfterTunnel(angle, startX, startY);	// Localize after traversing
+		}
 		
 		armController.openArms();
 	}
@@ -71,7 +85,7 @@ public class TunnelFollower {
 	 * @param islandLLY : lower left y coordinate of the island
 	 * @return array : array of modified tunnel coordinates
 	 */
-	private double[] getTheEntry(double myZoneURX, double myZoneURY, double myZoneLLX, double myZoneLLY, double tNRURX,
+	public double[] getTheEntry(double myZoneURX, double myZoneURY, double myZoneLLX, double myZoneLLY, double tNRURX,
 			double tNRURY, double tNRLLX, double tNRLLY, double islandURX, double islandURY, double islandLLX,
 			double islandLLY) {
 		
