@@ -74,7 +74,7 @@ public class LightLocalizer {
 			    colourRight.fetchSample(sampleRight, 0);
 			    
 				advanceRobot(50,true);
-				
+				int counter = 0;
 				while(Navigation.TILE_FLOOR_COLOR - sampleLeft[0] < 0.30  || Navigation.TILE_FLOOR_COLOR -  sampleRight[0] < 0.30) {	// While no difference between colors
 					
 					colourLeft = LSL.getRedMode();
@@ -88,23 +88,55 @@ public class LightLocalizer {
 					if (Navigation.TILE_FLOOR_COLOR - sampleRight[0] > 0.30) {
 						Sound.beep();
 						Navigation.rightMotor.stop(true);
-						while(Navigation.TILE_FLOOR_COLOR - sampleLeft[0] < 0.30)
+						while(Navigation.TILE_FLOOR_COLOR - sampleLeft[0] < 0.3)//should be < 0.30
+						//while(true)
 						{
 							colourLeft = LSL.getRedMode();
 							sampleLeft = new float[3];
 						    colourLeft.fetchSample(sampleLeft, 0);
+						    counter++;
+						    if(counter == 50000)
+						    {
+						    		Navigation.leftMotor.setSpeed(100);
+						    		Navigation.leftMotor.backward();
+						    		while(Navigation.TILE_FLOOR_COLOR - sampleLeft[0] < 0.30)
+						    		{
+									colourLeft = LSL.getRedMode();
+									sampleLeft = new float[3];
+									colourLeft.fetchSample(sampleLeft, 0);
+						    		}
+						    		break;
+						    }
+						    //counter = 0;
 						}
+						counter = 0;
 						break;
 					}
 					if (Navigation.TILE_FLOOR_COLOR - sampleLeft[0] > 0.30) {
 						Sound.beep();
 						Navigation.leftMotor.stop(true);
-						while(Navigation.TILE_FLOOR_COLOR - sampleRight[0] < 0.30)
+						while(Navigation.TILE_FLOOR_COLOR - sampleRight[0] < 0.3)//should be < 0.30
+						//while(true)
 						{
 							colourRight = LSR.getRedMode();
 						    sampleRight = new float[3];
 						    colourRight.fetchSample(sampleRight, 0);
+						    counter++;
+						    if(counter == 50000)
+						    {
+						    		Navigation.rightMotor.setSpeed(100);
+						    		Navigation.rightMotor.backward();
+						    		while(Navigation.TILE_FLOOR_COLOR - sampleLeft[0] < 0.30)
+						    		{
+									colourLeft = LSL.getRedMode();
+									sampleLeft = new float[3];
+									colourLeft.fetchSample(sampleLeft, 0);
+						    		}
+						    		break;
+						    }
+						    //counter = 0;
 						}
+						counter = 0;
 						break;
 					}
 				}

@@ -97,10 +97,14 @@ public class TreeController {
 			armController.openArms();
 			
 			navigation.rotateTheRobot(true, 90, false); // Turn 90 degree to reach other side
+			navigation.advanceRobot(30, true);
+			navigation.lightCorrect();
 			navigation.advanceRobot(30, false);
 			navigation.rotateTheRobot(false, 90, false);
+			navigation.advanceRobot(30, true);
+			navigation.lightCorrect();
 			navigation.advanceRobot(30, false);
-			navigation.rotateTheRobot(false, 90, false);
+			navigation.rotateTheRobot(false, 105, false);
 		}
 	}
 	

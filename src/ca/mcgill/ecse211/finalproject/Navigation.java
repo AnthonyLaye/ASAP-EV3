@@ -26,8 +26,8 @@ public class Navigation implements UltrasonicController {
 	private static final double TRACK = 13.17;
 	public static final double TILE_LENGTH = 30.78;
 	public static double TILE_FLOOR_COLOR = 0;
-	private EV3ColorSensor LSL;
-	private EV3ColorSensor LSR;
+	private static EV3ColorSensor LSL;
+	private static EV3ColorSensor LSR;
 
 	public Navigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odometer, 
 			EV3ColorSensor LSL, EV3ColorSensor LSR) throws OdometerExceptions {
