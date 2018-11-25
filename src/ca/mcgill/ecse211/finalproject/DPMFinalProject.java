@@ -200,11 +200,11 @@ public class DPMFinalProject {
 		          
 		          Sound.beep();
 		        	
-		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY, false); // Travel to start of tunnel and then to end of tunnel
+		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel to start of tunnel and then to end of tunnel
 		
 		          ringController.approachTree(tX, tY); //Travel to tree and do collections
 		          
-		          tunnelFollower.traverseTunnel(tnURX, tnURY, tnLLX, tnLLY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY, true); // Travel opposite way through tunnel
+		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel opposite way through tunnel
 		          
 		          navigation.travelTo(startX, startY, false); // Travel back to starting corner
 		        }  

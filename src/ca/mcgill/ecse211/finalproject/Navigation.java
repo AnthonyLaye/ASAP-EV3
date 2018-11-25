@@ -249,9 +249,17 @@ public class Navigation implements UltrasonicController {
 		}
 	}
 	
-	public void localizeForTunnel(double angle, double x, double y) {
+	/**
+	 * This method takes in 5 arguments to allow the robot to drive in a specified direction, detect lines, and correct the odometer respectively.
+	 * @param angle1 : the first angle to turn to to begin light localization
+	 * @param angle2 : the second angle to turn to to begin light localization
+	 * @param x : the x value to correct to once we reach an x grid line
+	 * @param y : the y value to correct to once we reach a y grid line
+	 * @param isVertical : boolean to check if tunnel is vertical or horizontal
+	 */
+	public void tunnelLocalize(double angle1, double angle2, double x, double y, boolean isVertical) {
 		
-		turnTo(angle, odo.getXYT()[2]);
+		turnTo(angle1, odo.getXYT()[2]);
 		
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
@@ -261,54 +269,32 @@ public class Navigation implements UltrasonicController {
 	
 		lightCorrect();
 		
-		odo.setX(x * TILE_LENGTH);
-		odo.setTheta(angle);
+		if(isVertical) 
+			odo.setX(x * TILE_LENGTH);
+		else
+			odo.setY(y * TILE_LENGTH);
+			
+		odo.setTheta(angle1);
 	
 		leftMotor.rotate(convertDistance(WHEEL_RAD, -19.8), true);
 		rightMotor.rotate(convertDistance(WHEEL_RAD, -19.8), false);
 		
-		turnTo(0, odo.getXYT()[2]);
+		turnTo(angle2, odo.getXYT()[2]);
 		
 		leftMotor.forward();
 		rightMotor.forward();
 		
 		lightCorrect();
-			
-		odo.setTheta(0);
-		odo.setY(y * TILE_LENGTH);
+		
+		if(isVertical)
+			odo.setY(y * TILE_LENGTH);
+		else
+			odo.setX(x * TILE_LENGTH);
+		
+		odo.setTheta(angle2);
 		
 		leftMotor.setSpeed(2*FORWARD_SPEED);
 		rightMotor.setSpeed(2*FORWARD_SPEED);
-	}
-	
-	public void localizeAfterTunnel(double angle, double endX, double endY) {
-		
-		turnTo(angle, odo.getXYT()[2]);
-		
-		leftMotor.setSpeed(60);
-		rightMotor.setSpeed(60);
-		
-		leftMotor.forward();
-		rightMotor.forward();
-	
-		lightCorrect();
-		
-		odo.setX(endX * TILE_LENGTH);
-		odo.setTheta(angle);
-	
-		leftMotor.rotate(convertDistance(WHEEL_RAD, -19.8), true);
-		rightMotor.rotate(convertDistance(WHEEL_RAD, -19.8), false);
-		
-		turnTo(0, odo.getXYT()[2]);
-		
-		leftMotor.forward();
-		rightMotor.forward();
-		
-		lightCorrect();
-			
-		odo.setTheta(0);
-		odo.setY((endY + 1) * TILE_LENGTH);
-		
 	}
 
 	/**

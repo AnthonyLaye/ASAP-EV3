@@ -9,16 +9,22 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 public class TunnelFollower {
 	private Navigation navigation;
 	private ArmController armController;
-	
+	private Odometer odometer;
 	
 	public TunnelFollower(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, ArmController armController) throws OdometerExceptions {
 		this.navigation = navigation;
 		this.armController = armController;
+		this.odometer = odometer;
 	}
 	
 	/**
 	 * This method prepares the robot to traverse the tunnel.
-	 * It may raise or lower the arms to ensure safe passage
+	 * It may raise or lower the arms to ensure safe passage.
+	 * First, it calculates the entry and exit coordinates of the tunnel: there are set to be the center of the tiles right before and right after the tunnel.
+	 * From these, we can determine if the tunnel is oriented horizontally or vertically, and determine which entrance of the tunnel the robot will enter and exit from.
+	 * Once done, we travel to the starting position and localize before the tunnel. There are 4 key parameters for tunnel localization: angle1, angle2, x_corr and y_corr.
+	 * Angle 1 and 2 are the angles the robot must turn to to seek for a line. The correction values corrects the odometer once these lines are found.
+	 * Once passed the bridge, the robot localizes again with slightly different parameters to account for changes in direction.
 	 * @param startX : x position before tunnel
 	 * @param startY : y position before tunnel
 	 * @param endX : x position after tunnel
@@ -39,30 +45,99 @@ public class TunnelFollower {
 	 */
 	public void traverseTunnel(double startX, double startY, double endX, double endY, 
 			double IslandURX, double IslandURY, double IslandLLX, double IslandLLY, double myZoneURX, double myZoneURY,double myZoneLLX, 
-			double myZoneLLY, double TNRURX, double TNRURY, double TNRLLX, double TNRLLY, boolean isTravelingBack) {
+			double myZoneLLY, double TNRURX, double TNRURY, double TNRLLX, double TNRLLY) {
 		
 		armController.closeArms();
-		double[] newValues = getTheEntry(myZoneURX,myZoneURY,myZoneLLX, myZoneLLY, TNRURX,TNRURY,TNRLLX,TNRLLY, IslandURX, IslandURY, IslandLLX, IslandLLY);	// Calculate modified coordinates
+		double[] tunnelValues = getTheEntry(myZoneURX,myZoneURY,myZoneLLX, myZoneLLY, TNRURX,TNRURY,TNRLLX,TNRLLY, IslandURX, IslandURY, IslandLLX, IslandLLY);	// Calculate modified coordinates for entry and exit
 		
-		if(!isTravelingBack) {	// If traveling to ring tree
-			navigation.travelTo(newValues[0], newValues[1], false);	// Travel to entry point of tunnel
-			double angle = 270;
-			navigation.localizeForTunnel(angle, startX, startY);	// Localize before traversing
-			
-			navigation.travelTo(newValues[2], newValues[3], false);	// Travel to exit point of tunnel
-			angle = 90;
-			navigation.localizeAfterTunnel(angle, endX, endY);	// Localize after traversing
+		boolean isVertical;	// Determine if we cross tunnel vertically or horizontally
+		
+		if(tunnelValues[0] == tunnelValues[2])	// If the x values are the same, we are traveling straight up or down - so vertically
+			isVertical = true;
+		else
+			isVertical = false;
+		
+		// Check to see if robot is approaching from LL or UR
+		boolean isTravelingBack; // True if approaching from UR
+		if(isVertical) {	// Vertical tunnel
+			if(odometer.getXYT()[1] <= TNRLLY * 30.48)	// If we are below bridge, we are approaching from LL entry point
+				isTravelingBack = false;
+			else	// Else we are above bridge and robot enters tunnel from UR entry point
+				isTravelingBack = true;
+		}
+		else {	// Horizontal tunnel
+			if(odometer.getXYT()[0] <= TNRLLX * 30.48)	// If we are left of the bridge, we are approaching from LL entry point
+				isTravelingBack = false;
+			else	// Else we are to the right of the bridge and entering tunnel from UR entry point
+				isTravelingBack = true;
 		}
 		
-		else {	// If traveling back from ring tree
-			navigation.travelTo(newValues[2], newValues[3], false);	// Travel to entry point of tunnel
-			double angle = 270;
-			navigation.localizeForTunnel(angle, endX, endY);	// Localize before traversing
+		if(!isTravelingBack)
+			navigation.travelTo(tunnelValues[0], tunnelValues[1], false);	// Travel to LL entry point of tunnel
+		else
+			navigation.travelTo(tunnelValues[2], tunnelValues[3], false);	// Travel to UR entry point of tunnel
 			
-			navigation.travelTo(newValues[0], newValues[1], false);	// Travel to exit point of tunnel
-			angle = 90;
-			navigation.localizeAfterTunnel(angle, startX, startY);	// Localize after traversing
+		//Preparations to localize before tunnel
+		double angle1, angle2, x_corr , y_corr;
+		if(isVertical) {	// Vertical bridge
+			if(odometer.getXYT()[1] <= TNRLLY * 30.48) {	// We are below the bridge if current y is less than tunnel lower left y coordinate
+				angle1 = 270;
+				angle2 = 0;
+				x_corr = startX;
+				y_corr = startY;
+			}
+			else {	// We are above the bridge
+				angle1 = 90;
+				angle2 = 180;
+				x_corr = endX;
+				y_corr = endY;
+			}
 		}
+		else {	// Horizontal bridge
+			if(odometer.getXYT()[0] <= TNRLLX * 30.48) {	// We are to the left of the bridge if current x is less than tunnel lower left x coordinate
+				angle1 = 180;
+				angle2 = 90;
+				x_corr = startX;
+				y_corr = startY;
+			}				
+			else {	// We are to the right of the bridge
+				angle1 = 0;
+				angle2 = 270;
+				x_corr = endX;
+				y_corr = endY;
+			}
+		}
+		
+		navigation.tunnelLocalize(angle1, angle2, x_corr, y_corr, isVertical);	// Localize before traversing
+		
+		if(!isTravelingBack) 
+			navigation.travelTo(tunnelValues[2], tunnelValues[3], false);	// Travel to UR exit point of tunnel
+		else 
+			navigation.travelTo(tunnelValues[0], tunnelValues[1], false);	// Travel to LL exit point of tunnel
+		
+		// Preparations to localize after the tunnel
+		if(isVertical) {	// Vertical bridge
+			if(odometer.getXYT()[1] <= TNRLLY * 30.48) {	// We are below the bridge if current y is less than tunnel lower left y coordinate
+				x_corr = startX;
+				y_corr = startY - 1;
+			}
+			else {	// We are above the bridge
+				x_corr = endX;
+				y_corr = endY + 1;
+			}
+		}
+		else {	// Horizontal bridge
+			if(odometer.getXYT()[0] <= TNRLLX * 30.48) {	// We are to the left of the bridge if current x is less than tunnel lower left x coordinate
+				x_corr = startX - 1;
+				y_corr = startY;
+			}				
+			else {	// We are to the right of the bridge
+				x_corr = endX + 1;
+				y_corr = endY;
+			}
+		}
+		
+		navigation.tunnelLocalize(Math.abs(angle1 - 180), angle2, x_corr, y_corr, isVertical);	// Localize after traversing
 		
 		armController.openArms();
 	}
