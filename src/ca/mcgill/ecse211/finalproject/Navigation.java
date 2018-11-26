@@ -18,7 +18,7 @@ public class Navigation implements UltrasonicController {
 	public int distance = 0;  //this distance is for US, 130 is from lab1's data which is the max distance that the sensor cannot sense 
 	private int filterControl;
 	public boolean navigating = false;
-	private static final int FORWARD_SPEED = 150;
+	public static int FORWARD_SPEED = 200;
 	private static final int ROTATE_SPEED = 100;
 	private static final int FILTER_OUT = 20;
 	private static final double TILE_SIZE = 30.48;
@@ -97,6 +97,9 @@ public class Navigation implements UltrasonicController {
 		//Calling the rotate
 		navigating = true;
 		turnTo(minimalTheta, currentTheta);
+		
+		leftMotor.setSpeed(FORWARD_SPEED);
+		rightMotor.setSpeed(FORWARD_SPEED);
 
 		leftMotor.rotate(convertDistance(WHEEL_RAD, travelDistance), true);
 		rightMotor.rotate(convertDistance(WHEEL_RAD, travelDistance), immediateReturn);
@@ -293,8 +296,8 @@ public class Navigation implements UltrasonicController {
 		
 		odo.setTheta(angle2);
 		
-		leftMotor.setSpeed(2*FORWARD_SPEED);
-		rightMotor.setSpeed(2*FORWARD_SPEED);
+		leftMotor.setSpeed(FORWARD_SPEED);
+		rightMotor.setSpeed(FORWARD_SPEED);
 	}
 
 	/**

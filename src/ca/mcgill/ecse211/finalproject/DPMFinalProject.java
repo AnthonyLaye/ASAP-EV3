@@ -90,7 +90,7 @@ public class DPMFinalProject {
 		
 		    final Navigation navigation = new Navigation(leftMotor, rightMotor, odometer, LSL, LSR);
 		    final UltrasonicLocalizer USLocalizer = new UltrasonicLocalizer(navigation, chooseWhichRoutine);
-		    final LightLocalizer LSLocalizer = new LightLocalizer(navigation, LSL, LSR);
+		    final LightLocalizer LSLocalizer = new LightLocalizer(navigation, LSL, LSR, odometer);
 		    
 		    usPoller = new UltrasonicPoller(usDistance, usData, navigation); // the selected controller on each cycle
 		    usPoller.start();
@@ -162,7 +162,7 @@ public class DPMFinalProject {
 			final int startY;
 			final int startAngle;
 		    
-			/*
+			
 		    if(corner == 0) {
 		    	startX = 1;
 		    	startY = 1;
@@ -179,22 +179,24 @@ public class DPMFinalProject {
 		    	startAngle = 180;
 		    	
 		    }
-		   // else {	//Corner = 3 or the game parameters were wrong...
-		    //	startX = 14;
-		    	//startY = 8;
-		    	 startAngle = 270
+		    else {	//Corner = 3 or the game parameters were wrong...
+		    	startX = 14;
+		    	startY = 8;
+		    	startAngle = 270;
+		    }
+		    //else {
+		    //startX = 7;//Debugging purposes
+		    //startY = 1;
+		    //startAngle = 0;
 		    //}
-		    else {*/
-		    startX = 7;//Debugging purposes
-		    startY = 1;
-		    startAngle = 0;
-		    //}
+		    
+		   
 		    
 		
 		    (new Thread() {
 		        public void run() {
 		        	
-		          USLocalizer.whichRoutine(); // Ultrasonic Localize
+		          USLocalizer.whichRoutine(); // Ultrasonic Localize 
 		          LSLocalizer.lightLocalize(startX, startY, startAngle); // Light localize
 		          //LSLocalizer.pollColour();
 		          
@@ -202,7 +204,7 @@ public class DPMFinalProject {
 		        	
 		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel to start of tunnel and then to end of tunnel
 		
-		          ringController.approachTree(tX, tY); //Travel to tree and do collections
+		          ringController.approachTree(5, 5); //Travel to tree and do collections
 		          
 		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel opposite way through tunnel
 		          

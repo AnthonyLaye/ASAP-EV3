@@ -11,7 +11,7 @@ import ca.mcgill.ecse211.WiFiClient.WifiConnection;
 public class WifiController {
 	
 
-	  private static final String SERVER_IP = "192.168.2.12";
+	  private static final String SERVER_IP = "192.168.2.16";
 
 
 	  private static final int TEAM_NUMBER = 13;

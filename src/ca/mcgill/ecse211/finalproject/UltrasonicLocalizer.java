@@ -17,7 +17,7 @@ public class UltrasonicLocalizer {
 	 * because as the slides said, they are some values from experiments
 	 */
 	int k = 1; //noise margin 
-	int d = 40; //as localize tutorial slides said
+	int d = 50; //as localize tutorial slides said
 	private Odometer odo; //get the current local position data
 	private int chooseWhichRoutine = -1;//if chooseWichEdge is equal to 0, then it is rising edge, if 1 it is falling edge, intial it as -1 so that it will confused by 0 or 1
 	public UltrasonicLocalizer(Navigation Navigator, int chooseWhichRoutine) throws OdometerExceptions {
@@ -64,7 +64,7 @@ public class UltrasonicLocalizer {
 
 	  a = odo.getXYT()[2];//get a
 	 	  
-	  rotateTheRobot(false,100,false);
+	  rotateTheRobot(false,150,false);
 	  
 	  //now get b
 	  rotateTheRobot(false,360,true);//let it roll to detect a falling edge again

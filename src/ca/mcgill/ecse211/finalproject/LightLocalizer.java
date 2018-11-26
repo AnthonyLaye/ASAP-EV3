@@ -26,10 +26,11 @@ public class LightLocalizer {
 		private static final int FORWARDSPEED = 100;
 		private static Odometer odo;
 		
-		public LightLocalizer(Navigation Navigator, EV3ColorSensor LSL, EV3ColorSensor LSR) throws OdometerExceptions {
+		public LightLocalizer(Navigation Navigator, EV3ColorSensor LSL, EV3ColorSensor LSR, Odometer odo) throws OdometerExceptions {
 			this.Navigator = Navigator;
 			this.LSL = LSL;
 			this.LSR = LSR;
+			this.odo = odo;
 		}
 
 		/**
@@ -60,8 +61,23 @@ public class LightLocalizer {
 		    colourRight.fetchSample(sampleRight, 0);
 		    
 		    Navigation.TILE_FLOOR_COLOR = sampleLeft[0];	// Save the color of the tile floor to be used for comparisons
+		    
+		    Navigation.leftMotor.forward();
+		    Navigation.rightMotor.forward();
+		    Navigator.lightCorrect();
+		    
+		    advanceRobot(-5, false);
 			
-			while (true) {
+			rotateTheRobot(true,90,false);
+			
+			Navigation.leftMotor.forward();
+		    Navigation.rightMotor.forward();
+			Navigator.lightCorrect();
+		    
+		    advanceRobot(-5, false);
+		    
+			
+			/*while (true) {
 				
 				correctionStart = System.currentTimeMillis();
 				
@@ -148,12 +164,8 @@ public class LightLocalizer {
 				if(count == 2)
 				{
 					advanceRobot(-5, false);
-					odo.setX(startX * 30.48);
-					odo.setTheta(startAngle);
 					break;
 				}
-				else if(count == 1)
-					odo.setY(startY * 30.48);
 				
 				advanceRobot(-5, false);
 				
@@ -167,7 +179,11 @@ public class LightLocalizer {
 						// there is nothing to be done here
 					}
 				}
-			}
+			}*/
+			
+			odo.setX(startX * 30.48);
+			odo.setTheta(startAngle);
+			odo.setY(startY * 30.48);
 			
 		}
 		

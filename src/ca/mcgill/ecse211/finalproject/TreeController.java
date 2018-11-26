@@ -40,6 +40,8 @@ public class TreeController {
 		
 		findRings();	// Find those rings!!
 		
+		armController.openArms();
+		
 	}
 	
 	/**
