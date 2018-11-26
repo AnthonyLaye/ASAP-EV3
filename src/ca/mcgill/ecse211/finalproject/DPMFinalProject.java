@@ -204,7 +204,7 @@ public class DPMFinalProject {
 		        	
 		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel to start of tunnel and then to end of tunnel
 		
-		          ringController.approachTree(5, 5); //Travel to tree and do collections
+		          ringController.approachTree(3, 3); //Travel to tree and do collections
 		          
 		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel opposite way through tunnel
 		          

@@ -81,6 +81,8 @@ public class TreeController {
 			
 			navigation.advanceRobot(15, false);
 			armController.closeArms(); //get the rings
+			armController.openArms();
+			armController.closeArms();
 			navigation.advanceRobot(-15, false);
 			
 			try {	// Sleep for a few seconds to let the ring settle in front of the light sensor
