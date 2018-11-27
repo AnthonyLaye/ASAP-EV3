@@ -38,6 +38,8 @@ public class TreeController {
 		double new_y = getStopPosition(treeX, treeY);	// Get y position to stop at
 		navigation.travelTo(treeX, new_y, false);	// Travel along y 
 		
+		armController.openArms();
+		
 		findRings();	// Find those rings!!
 		
 		armController.openArms();

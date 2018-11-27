@@ -140,7 +140,7 @@ public class TunnelFollower {
 		
 		navigation.tunnelLocalize(Math.abs(angle1 - 180), angle2, x_corr, y_corr, isVertical);	// Localize after traversing
 		
-		armController.openArms();
+		//armController.openArms();
 		Navigation.FORWARD_SPEED = 200;
 	}
 
