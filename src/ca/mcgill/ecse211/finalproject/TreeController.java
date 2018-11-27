@@ -33,12 +33,19 @@ public class TreeController {
 	 */
 	public void approachTree(double treeX, double treeY) {
 		
+		double angle = 0;
 		navigation.travelTo(treeX, odo.getXYT()[1] / 30.48, false);	// Travel along x first, then y
 		
 		double new_y = getStopPosition(treeX, treeY);	// Get y position to stop at
 		navigation.travelTo(treeX, new_y, false);	// Travel along y 
 		
+		angle = odo.getXYT()[3];//get the angle
+		
 		findRings();	// Find those rings!!
+		
+		odo.setX(treeX);
+		odo.setY(new_y);
+		odo.setTheta(angle);
 		
 		armController.openArms();
 		
