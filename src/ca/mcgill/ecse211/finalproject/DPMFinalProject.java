@@ -199,12 +199,13 @@ public class DPMFinalProject {
 		          USLocalizer.whichRoutine(); // Ultrasonic Localize 
 		          LSLocalizer.lightLocalize(startX, startY, startAngle); // Light localize
 		          //LSLocalizer.pollColour();
+		          //armController.closeArms();
 		          
 		          Sound.beep();
 		        	
 		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel to start of tunnel and then to end of tunnel
 		
-		          ringController.approachTree(3, 3); //Travel to tree and do collections
+		          ringController.approachTree(tX, tY); //Travel to tree and do collections
 		          
 		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel opposite way through tunnel
 		          

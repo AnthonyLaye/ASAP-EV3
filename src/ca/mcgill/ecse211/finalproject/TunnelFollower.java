@@ -108,7 +108,7 @@ public class TunnelFollower {
 			}
 		}
 		
-		Navigation.FORWARD_SPEED = 230;
+		//Navigation.FORWARD_SPEED = 230;
 		navigation.tunnelLocalize(angle1, angle2, x_corr, y_corr, isVertical);	// Localize before traversing
 		
 		if(!isTravelingBack) 
@@ -141,7 +141,7 @@ public class TunnelFollower {
 		navigation.tunnelLocalize(Math.abs(angle1 - 180), angle2, x_corr, y_corr, isVertical);	// Localize after traversing
 		
 		//armController.openArms();
-		Navigation.FORWARD_SPEED = 200;
+		//Navigation.FORWARD_SPEED = 200;
 	}
 
 

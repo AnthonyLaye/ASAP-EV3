@@ -7,8 +7,8 @@ import lejos.hardware.motor.NXTRegulatedMotor;
  *
  */
 public class ArmController {
-	private NXTRegulatedMotor leftArmMotor;
-	private NXTRegulatedMotor rightArmMotor;
+	public NXTRegulatedMotor leftArmMotor;
+	public NXTRegulatedMotor rightArmMotor;
 	
 	public ArmController(NXTRegulatedMotor leftArmMotor, NXTRegulatedMotor rightArmMotor) {
 		this.leftArmMotor = leftArmMotor;
@@ -22,8 +22,8 @@ public class ArmController {
 		leftArmMotor.setSpeed(100);
 		rightArmMotor.setSpeed(100);
 		
-		rightArmMotor.rotate(75, true);
-		leftArmMotor.rotate(75, false);
+		rightArmMotor.rotate(80, true);
+		leftArmMotor.rotate(80, false);
 	}
 	
 	/**
@@ -33,17 +33,17 @@ public class ArmController {
 		leftArmMotor.setSpeed(100);
 		rightArmMotor.setSpeed(100);
 		
-		rightArmMotor.rotate(-75, true);
-		leftArmMotor.rotate(-75, false);
+		rightArmMotor.rotate(-80, true);
+		leftArmMotor.rotate(-80, false);
 	}
 	
 	/**
-	 * Rotate the arms by a specified angle
+	 * Rotate the arms by a specified angle, slowly!
 	 * @param angle : angle to rotate arms
 	 */
 	public void rotateArms(int angle) {
-		leftArmMotor.setSpeed(120);
-		rightArmMotor.setSpeed(120);
+		leftArmMotor.setSpeed(8);
+		rightArmMotor.setSpeed(8);
 		
 		leftArmMotor.rotate(angle, true);
 		rightArmMotor.rotate(angle, true);

@@ -23,7 +23,7 @@ public class LightLocalizer {
 		private static final int ROTATE_SPEED = 100;
 		private static final double wheelRadius = 2.2;
 		private static final double track = 13.17;
-		private static final int FORWARDSPEED = 100;
+		private static final int FORWARDSPEED = 300;
 		private static Odometer odo;
 		
 		public LightLocalizer(Navigation Navigator, EV3ColorSensor LSL, EV3ColorSensor LSR, Odometer odo) throws OdometerExceptions {
@@ -43,7 +43,7 @@ public class LightLocalizer {
 		public void lightLocalize(int startX, int startY, int startAngle) {
 			
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(700);
 			} catch (InterruptedException e) {
 			}
 			
@@ -61,6 +61,8 @@ public class LightLocalizer {
 		    colourRight.fetchSample(sampleRight, 0);
 		    
 		    Navigation.TILE_FLOOR_COLOR = sampleLeft[0];	// Save the color of the tile floor to be used for comparisons
+		    
+		    //Navigation.FORWARD_SPEED = 270;
 		    
 		    Navigation.leftMotor.forward();
 		    Navigation.rightMotor.forward();
@@ -184,6 +186,8 @@ public class LightLocalizer {
 			odo.setX(startX * 30.48);
 			odo.setTheta(startAngle);
 			odo.setY(startY * 30.48);
+			
+			Navigation.FORWARD_SPEED = 200;
 			
 		}
 		

@@ -39,7 +39,7 @@ public class TreeController {
 		double new_y = getStopPosition(treeX, treeY);	// Get y position to stop at
 		navigation.travelTo(treeX, new_y, false);	// Travel along y 
 		
-		angle = odo.getXYT()[3];//get the angle
+		angle = odo.getXYT()[2];//get the angle
 		armController.openArms();
 		
 		findRings();	// Find those rings!!
@@ -85,6 +85,7 @@ public class TreeController {
 	 */
 	public void findRings() {
 		int count = 0;
+		boolean found = false;
 		while(count < 4) { // The tree has four sides to visit
 			
 			navigation.advanceRobot(15, false);
@@ -99,14 +100,25 @@ public class TreeController {
 			    // There is nothing to be done here
 			}
 			
-			if(detectRing())  // We have spotted a ring
-				break;
+			armController.rotateArms(-80);
+			
+			if(!found) {
+				while(armController.leftArmMotor.isMoving() && armController.rightArmMotor.isMoving()) {
+					if(!found) {
+						if(detectRing()) {  // We have spotted a ring
+							found = true;
+						}
+					}
+				}
+			}
+			
+			//if(found)
+			//	break;
 			
 			count++;
-			if (count == 4)
-				break;
+			//if (count == 4)
+			//	break;
 			
-			armController.openArms();
 			
 			navigation.rotateTheRobot(true, 90, false); // Turn 90 degree to reach other side
 			navigation.advanceRobot(30, true);
@@ -118,6 +130,7 @@ public class TreeController {
 			navigation.advanceRobot(30, false);
 			navigation.rotateTheRobot(false, 105, false);
 		}
+		navigation.rotateTheRobot(false, 90, false);
 	}
 	
 		

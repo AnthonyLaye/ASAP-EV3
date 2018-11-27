@@ -123,7 +123,7 @@ public class UltrasonicLocalizer {
 		Sound.beep();//sound buzz to let user know it have detect a rising edge
 	    stopMotor();
 		a = odo.getXYT()[2];//get a
-		rotateTheRobot(false,45,false);
+		rotateTheRobot(false,85,false);
 		//now get b
 		rotateTheRobot(false,360,true);//let it roll to detect a falling edge again
 		
