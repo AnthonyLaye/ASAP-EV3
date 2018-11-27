@@ -40,6 +40,7 @@ public class TreeController {
 		navigation.travelTo(treeX, new_y, false);	// Travel along y 
 		
 		angle = odo.getXYT()[3];//get the angle
+		armController.openArms();
 		
 		findRings();	// Find those rings!!
 		

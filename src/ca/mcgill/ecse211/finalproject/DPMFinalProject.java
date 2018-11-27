@@ -209,6 +209,8 @@ public class DPMFinalProject {
 		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel opposite way through tunnel
 		          
 		          navigation.travelTo(startX, startY, false); // Travel back to starting corner
+		          
+		          armController.openArms();
 		        }  
 		        
 		    }).start();
