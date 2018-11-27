@@ -18,12 +18,12 @@ public class Navigation implements UltrasonicController {
 	public int distance = 0;  //this distance is for US, 130 is from lab1's data which is the max distance that the sensor cannot sense 
 	private int filterControl;
 	public boolean navigating = false;
-	public static int FORWARD_SPEED = 300;
+	public static int FORWARD_SPEED = 350;
 	private static final int ROTATE_SPEED = 100;
 	private static final int FILTER_OUT = 20;
 	private static final double TILE_SIZE = 30.48;
 	private static final double WHEEL_RAD = 2.08;
-	private static final double TRACK = 13.17;
+	private static final double TRACK = 12.50;
 	public static final double TILE_LENGTH = 30.78;
 	public static double TILE_FLOOR_COLOR = 0;
 	private static EV3ColorSensor LSL;
@@ -298,6 +298,15 @@ public class Navigation implements UltrasonicController {
 		
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
+	}
+	
+	public void trackTest() {
+		
+		Navigation.leftMotor.setSpeed(FORWARD_SPEED);
+		Navigation.rightMotor.setSpeed(FORWARD_SPEED);
+		
+		this.rotateTheRobot(true, 360 * 3, false);
+		
 	}
 
 	/**

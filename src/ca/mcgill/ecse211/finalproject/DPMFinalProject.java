@@ -43,7 +43,7 @@ public class DPMFinalProject {
 		private static float[] usData = new float[usDistance.sampleSize()]; // usData is the buffer in which data are
 		
 		private static final double WHEEL_RAD = 2.08;
-		private static final double TRACK = 13.17;
+		private static final double TRACK = 12.50;
 	
 		
 		public static void main(String[] args) throws OdometerExceptions {
@@ -174,15 +174,15 @@ public class DPMFinalProject {
 		    	startAngle = 0;
 		    }
 		    else if (corner == 2) {
-		    	startX = 1;
-		    	startY = 8;
-		    	startAngle = 180;
-		    	
-		    }
-		    else {	//Corner = 3 or the game parameters were wrong...
 		    	startX = 14;
 		    	startY = 8;
 		    	startAngle = 270;
+		    	
+		    }
+		    else {	//Corner = 3 or the game parameters were wrong...
+		    	startX = 1;
+		    	startY = 8;
+		    	startAngle = 180;
 		    }
 		    //else {
 		    //startX = 7;//Debugging purposes
@@ -196,7 +196,9 @@ public class DPMFinalProject {
 		    (new Thread() {
 		        public void run() {
 		        	
-		          USLocalizer.whichRoutine(); // Ultrasonic Localize 
+		          //armController.closeArms();
+		          //navigation.trackTest();
+		          //USLocalizer.whichRoutine(); // Ultrasonic Localize 
 		          LSLocalizer.lightLocalize(startX, startY, startAngle); // Light localize
 		          //LSLocalizer.pollColour();
 		          //armController.closeArms();
