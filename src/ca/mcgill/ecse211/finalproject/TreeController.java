@@ -39,6 +39,9 @@ public class TreeController {
 		double new_y = getStopPosition(treeX, treeY);	// Get y position to stop at
 		navigation.travelTo(treeX, new_y, false);	// Travel along y 
 		
+		Sound.beep();
+		Sound.beep();
+		Sound.beep();
 		angle = odo.getXYT()[2];//get the angle
 		armController.openArms();
 		
@@ -48,7 +51,7 @@ public class TreeController {
 		odo.setY(new_y);
 		odo.setTheta(angle);
 		
-		armController.openArms();
+		//armController.openArms();
 		
 	}
 	

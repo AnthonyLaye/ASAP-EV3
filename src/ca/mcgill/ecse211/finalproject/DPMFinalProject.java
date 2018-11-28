@@ -198,11 +198,13 @@ public class DPMFinalProject {
 		        	
 		          //armController.closeArms();
 		          //navigation.trackTest();
-		          //USLocalizer.whichRoutine(); // Ultrasonic Localize 
+		          USLocalizer.whichRoutine(); // Ultrasonic Localize 
 		          LSLocalizer.lightLocalize(startX, startY, startAngle); // Light localize
 		          //LSLocalizer.pollColour();
 		          //armController.closeArms();
 		          
+		          Sound.beep();
+		          Sound.beep();
 		          Sound.beep();
 		        	
 		          tunnelFollower.traverseTunnel(tnLLX, tnLLY, tnURX, tnURY, islandURX, islandURY, islandLLX, islandLLY,urX, urY, llX, llY, tnURX, tnURY, tnLLX, tnLLY); // Travel to start of tunnel and then to end of tunnel
@@ -214,6 +216,11 @@ public class DPMFinalProject {
 		          navigation.travelTo(startX, startY, false); // Travel back to starting corner
 		          
 		          armController.openArms();
+		          Sound.beep();
+		          Sound.beep();
+		          Sound.beep();
+		          Sound.beep();
+		          Sound.beep();
 		        }  
 		        
 		    }).start();

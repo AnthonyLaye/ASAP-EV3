@@ -18,7 +18,7 @@ public class Navigation implements UltrasonicController {
 	public int distance = 0;  //this distance is for US, 130 is from lab1's data which is the max distance that the sensor cannot sense 
 	private int filterControl;
 	public boolean navigating = false;
-	public static int FORWARD_SPEED = 350;
+	public static int FORWARD_SPEED = 300;
 	private static final int ROTATE_SPEED = 100;
 	private static final int FILTER_OUT = 20;
 	private static final double TILE_SIZE = 30.48;

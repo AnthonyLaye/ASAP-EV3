@@ -187,7 +187,7 @@ public class LightLocalizer {
 			odo.setTheta(startAngle);
 			odo.setY(startY * 30.48);
 			
-			Navigation.FORWARD_SPEED = 200;
+			//Navigation.FORWARD_SPEED = 200;
 			
 		}
 		
