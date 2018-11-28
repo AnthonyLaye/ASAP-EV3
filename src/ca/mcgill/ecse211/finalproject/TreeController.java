@@ -39,15 +39,17 @@ public class TreeController {
 		
 		double new_y = getStopPosition(treeX, treeY);	// Get y position to stop at
 		
-		navigation.travelTo(treeX - 1, new_y, false);
-		
+		navigation.travelTo(treeX - 1, new_y, true);
+
 		navigation.travelTo(treeX, new_y, false);	// Travel along y 
 		if(backOrFarward)
 		{
-			navigation.rotateTheRobot(true, 90, false);
+			navigation.rotateTheRobot(true, 95, false);
 		}
 		else
-			navigation.rotateTheRobot(false, 90, false);
+			navigation.rotateTheRobot(false, 95, false);
+		
+		
 		
 		Sound.beep();
 		Sound.beep();
@@ -142,13 +144,14 @@ public class TreeController {
 			
 			
 			navigation.rotateTheRobot(true, 90, false); // Turn 90 degree to reach other side
-			navigation.advanceRobot(30, true);
+			navigation.advanceRobot(10, false);
+			navigation.advanceRobot(26, true);
 			navigation.lightCorrect();
-			navigation.advanceRobot(30, false);
 			navigation.rotateTheRobot(false, 90, false);
-			navigation.advanceRobot(30, true);
+			navigation.advanceRobot(10, false);
+			navigation.advanceRobot(26, true);
 			navigation.lightCorrect();
-			navigation.advanceRobot(30, false);
+			navigation.advanceRobot(5, false);
 			navigation.rotateTheRobot(false, 105, false);
 		}
 		navigation.rotateTheRobot(false, 90, false);
