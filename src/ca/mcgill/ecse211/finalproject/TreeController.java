@@ -18,6 +18,7 @@ public class TreeController {
 	private Navigation navigation;
 	private Odometer odo;
 	private ArmController armController;
+	private boolean backOrFarward;
 	
 	public TreeController(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Navigation navigation, Odometer odometer, EV3ColorSensor lightSensor, ArmController armController) throws OdometerExceptions {
 		this.navigation = navigation;
@@ -34,10 +35,19 @@ public class TreeController {
 	public void approachTree(double treeX, double treeY) {
 		
 		double angle = 0;
-		navigation.travelTo(treeX, odo.getXYT()[1] / 30.48, false);	// Travel along x first, then y
+		navigation.travelTo(treeX - 1, odo.getXYT()[1] / 30.48, false);	// Travel along x first, then y
 		
 		double new_y = getStopPosition(treeX, treeY);	// Get y position to stop at
+		
+		navigation.travelTo(treeX - 1, new_y, false);
+		
 		navigation.travelTo(treeX, new_y, false);	// Travel along y 
+		if(backOrFarward)
+		{
+			navigation.rotateTheRobot(true, 90, false);
+		}
+		else
+			navigation.rotateTheRobot(false, 90, false);
 		
 		Sound.beep();
 		Sound.beep();
@@ -75,10 +85,17 @@ public class TreeController {
 		
 		double new_y = 0;
 		
+		
 		if(odo.getXYT()[1] / 30.48 < treeY)	// We want to stop half a tile before the tree, so this check is to see if robot is above 
+		{
+			backOrFarward = false;
 			new_y = treeY - 1.0; 				// or below the tree.
+		}
 		else
+		{
+			backOrFarward = true;
 			new_y = treeY + 1.0;
+		}
 		
 		return new_y;
 	}
@@ -92,6 +109,7 @@ public class TreeController {
 		while(count < 4) { // The tree has four sides to visit
 			
 			navigation.advanceRobot(15, false);
+			navigation.lightCorrect();
 			armController.closeArms(); //get the rings
 			armController.openArms();
 			armController.closeArms();

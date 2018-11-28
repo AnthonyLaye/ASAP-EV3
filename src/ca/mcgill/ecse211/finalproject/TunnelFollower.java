@@ -111,6 +111,7 @@ public class TunnelFollower {
 		//Navigation.FORWARD_SPEED = 230;
 		navigation.tunnelLocalize(angle1, angle2, x_corr, y_corr, isVertical);	// Localize before traversing
 		
+		navigation.rotateTheRobot(false, 7, false);
 		if(!isTravelingBack) 
 			navigation.travelTo(tunnelValues[2], tunnelValues[3], false);	// Travel to UR exit point of tunnel
 		else 
