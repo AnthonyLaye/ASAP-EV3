@@ -6,12 +6,12 @@ import ca.mcgill.ecse211.WiFiClient.WifiConnection;
 
 /**
  * The following class obtains the game data map from the server and returns it to the main class
- *
+ * @author ECSE 211 SAMPLE CODE
  */
 public class WifiController {
 	
 
-	  private static final String SERVER_IP = "192.168.2.21";
+	  private static final String SERVER_IP = "192.168.2.2";
 
 
 	  private static final int TEAM_NUMBER = 13;

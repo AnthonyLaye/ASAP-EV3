@@ -9,7 +9,9 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorMode;
 
 /**
- * This class is used to drive the robot on the demo floor.
+ * This class is used to drive the robot on the demo floor. It contains all methods pertinent to the motors, as well as a light correction method
+ * @author Anthony Laye
+ * @author Mai Zeng
  */
 public class Navigation implements UltrasonicController {
 	public static EV3LargeRegulatedMotor leftMotor;
@@ -207,7 +209,7 @@ public class Navigation implements UltrasonicController {
 	}
 	
 	/**
-	 * This method implements light localization to be done while the robot is navigating. It is mostly used for the tree and tunnel
+	 * This method implements light correction to be done while the robot is navigating. It is mostly used for the tree and tunnel, as well as initial light localization.
 	 * While a wheel is moving, we check to see if either one sees a line. When this is the case the wheel stops and waits for the other to see the line.
 	 */
 	public void lightCorrect() {
@@ -298,15 +300,6 @@ public class Navigation implements UltrasonicController {
 		
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
-	}
-	
-	public void trackTest() {
-		
-		Navigation.leftMotor.setSpeed(FORWARD_SPEED);
-		Navigation.rightMotor.setSpeed(FORWARD_SPEED);
-		
-		this.rotateTheRobot(true, 360 * 3, false);
-		
 	}
 
 	/**

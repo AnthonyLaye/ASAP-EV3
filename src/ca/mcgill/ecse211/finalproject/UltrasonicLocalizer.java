@@ -4,24 +4,21 @@ package ca.mcgill.ecse211.finalproject;
 import lejos.hardware.Sound;
 
 /**
- * This class implements falling or rising edge localization to direct the robot towards true 0 degrees
- *
+ * This class implements falling or rising edge localization to help direct the robot towards true 0 degrees
+ * @author Mai Zeng
  */
 public class UltrasonicLocalizer {
-	private static final int ROTATE_SPEED = 100;
-	private static final	 double wheelRadius = 2.08;
-	private static final double track = 13.17;
-	private Navigation Navigator = null;
-	/*
-	 * have to mention that k and d are gotten from a lot of experiments but it is not hard code
-	 * because as the slides said, they are some values from experiments
-	 */
-	int k = 1; //noise margin 
-	int d = 50; //as localize tutorial slides said
+	private Navigation navigation;
 	private Odometer odo; //get the current local position data
-	private int chooseWhichRoutine = -1;//if chooseWichEdge is equal to 0, then it is rising edge, if 1 it is falling edge, intial it as -1 so that it will confused by 0 or 1
-	public UltrasonicLocalizer(Navigation Navigator, int chooseWhichRoutine) throws OdometerExceptions {
-		this.Navigator=Navigator;
+	private static final int ROTATE_SPEED = 100;
+	private static final double WHEEL_RAD = 2.08;
+	private static final double TRACK = 13.17;
+	private static final int NOISE = 1; //noise margin 
+	private static final int DISTANCE = 50; //as localize tutorial slides said
+	private int chooseWhichRoutine = -1; // If chooseWichEdge is equal to 0, then it is rising edge, if 1 it is falling edge, intial it as -1 so that it will confused by 0 or 1
+	
+	public UltrasonicLocalizer(Navigation navigation, int chooseWhichRoutine) throws OdometerExceptions {
+		this.navigation = navigation;
 		this.chooseWhichRoutine=chooseWhichRoutine;  
 		this.odo = Odometer.getOdometer();
 	}
@@ -31,7 +28,6 @@ public class UltrasonicLocalizer {
    * whether using a routine of falling edge or a routine of rising edge
    * if the chooseWhichRoutine == 0 then use the rising edge routine
    * else use a falling edge routine
-   * this is chosen on the EV3 display
    */
   public void whichRoutine()
   {
@@ -42,7 +38,6 @@ public class UltrasonicLocalizer {
   }
   
   /**
-   * This method is implemented as the slides said 
    * If the robot starts facing a wall, it can:
    * Detect a rising edge, switch directions, then detect another rising edge
    * Detect a rising edge, continue in the same direction, then detect a falling edge
@@ -54,7 +49,7 @@ public class UltrasonicLocalizer {
 	  
 	  while(true)
 	  {
-		  if(Navigator.readUSDistance() > d+k)
+		  if(navigation.readUSDistance() > DISTANCE + NOISE)
 			  break;
 	  }
 	  
@@ -69,7 +64,7 @@ public class UltrasonicLocalizer {
 	  //now get b
 	  rotateTheRobot(false,360,true);//let it roll to detect a falling edge again
 
-	  while(Navigator.readUSDistance() < d+k ) {
+	  while(navigation.readUSDistance() < DISTANCE + NOISE) {
 
 	  } 
 	    
@@ -89,7 +84,6 @@ public class UltrasonicLocalizer {
   }
 
   /**
-   * This method is implemented as the slides said 
    * If the robot starts facing away from the walls, it can:
    * Detect a falling edge, continue in the same direction, then detect a rising edge
    */
@@ -100,9 +94,9 @@ public class UltrasonicLocalizer {
 		
 		rotateTheRobot(true,360,true);
 		int buff = 0;
-		while(Navigator.readUSDistance() < d*2)
+		while(navigation.readUSDistance() < DISTANCE * 2)
 		{
-			if(Navigator.readUSDistance() > d*2)
+			if(navigation.readUSDistance() > DISTANCE * 2)
 			{
 				
 				buff++;
@@ -117,7 +111,7 @@ public class UltrasonicLocalizer {
 		rotateTheRobot(true,360,true);//let it roll for 2 circle, this will make sure that it will finish the data collecting
 		
 		while(true) {
-			if(Navigator.readUSDistance() < d-k)   //detect a rising edge  
+			if(navigation.readUSDistance() < DISTANCE - NOISE)   //detect a rising edge  
 				break; 
 		}
 		Sound.beep();//sound buzz to let user know it have detect a rising edge
@@ -127,7 +121,7 @@ public class UltrasonicLocalizer {
 		//now get b
 		rotateTheRobot(false,360,true);//let it roll to detect a falling edge again
 		
-		while(Navigator.readUSDistance() > d-k) {//continue to travel until it detect a falling edge
+		while(navigation.readUSDistance() > DISTANCE - NOISE) {//continue to travel until it detect a falling edge
 
 		}
 		stopMotor();
@@ -157,13 +151,13 @@ public class UltrasonicLocalizer {
 	  //true means cw
 	  //false means ccw
 	  if(cwOrCcw) {
-		  Navigation.leftMotor.rotate(convertAngle(wheelRadius, track, absAngleToRotate),true);
-		  Navigation.rightMotor.rotate(-convertAngle(wheelRadius, track, absAngleToRotate),blocked);
+		  Navigation.leftMotor.rotate(convertAngle(WHEEL_RAD, TRACK, absAngleToRotate),true);
+		  Navigation.rightMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, absAngleToRotate),blocked);
 	  }
 	  else
 	  {
-		  Navigation.leftMotor.rotate(-convertAngle(wheelRadius, track, absAngleToRotate),true);
-		  Navigation.rightMotor.rotate(convertAngle(wheelRadius, track, absAngleToRotate),blocked);
+		  Navigation.leftMotor.rotate(-convertAngle(WHEEL_RAD, TRACK, absAngleToRotate),true);
+		  Navigation.rightMotor.rotate(convertAngle(WHEEL_RAD, TRACK, absAngleToRotate),blocked);
 	  }
   }
 
@@ -187,8 +181,8 @@ public class UltrasonicLocalizer {
    * This method is to stop both motors
    */
   private void stopMotor() {
-	  Navigator.leftMotor.setSpeed(0);
-	  Navigator.rightMotor.setSpeed(0);	
+	  navigation.leftMotor.setSpeed(0);
+	  navigation.rightMotor.setSpeed(0);	
   }
 
   /**Advances the robot a desired amount of cm.
@@ -198,11 +192,11 @@ public class UltrasonicLocalizer {
    */
   public void advanceRobot(double distanceToTravel, boolean instantReturn) {
 	     
-	  Navigator.leftMotor.setSpeed(150);
-	  Navigator.rightMotor.setSpeed(150);
+	  navigation.leftMotor.setSpeed(150);
+	  navigation.rightMotor.setSpeed(150);
 				 
-	  Navigator.leftMotor.rotate(convertDistance(wheelRadius, distanceToTravel), true);
-	  Navigator.rightMotor.rotate(convertDistance(wheelRadius, distanceToTravel), instantReturn);
+	  navigation.leftMotor.rotate(convertDistance(WHEEL_RAD, distanceToTravel), true);
+	  navigation.rightMotor.rotate(convertDistance(WHEEL_RAD, distanceToTravel), instantReturn);
 		
   }
 }

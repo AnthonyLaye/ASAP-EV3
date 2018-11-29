@@ -3,8 +3,10 @@ package ca.mcgill.ecse211.finalproject;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**
- * This class prepares for, and executes tunnel traversal
- *
+ * This class prepares for, and executes tunnel traversal. It computes the entrance and exit points of the tunnel, as well as the direction to turn 
+ * in order to localize before and after crossing.
+ * @author Anthony Laye
+ * @author Mai Zeng
  */
 public class TunnelFollower {
 	private Navigation navigation;
@@ -52,7 +54,7 @@ public class TunnelFollower {
 		
 		boolean isVertical;	// Determine if we cross tunnel vertically or horizontally
 		
-		if(tunnelValues[0] == tunnelValues[2])	// If the x values are the same, we are traveling straight up or down - so vertically
+		if(tunnelValues[0] == tunnelValues[2])	// If the x values of new coordinate system are the same, we are traveling straight up or down - so vertically
 			isVertical = true;
 		else
 			isVertical = false;
@@ -108,7 +110,6 @@ public class TunnelFollower {
 			}
 		}
 		
-		//Navigation.FORWARD_SPEED = 230;
 		navigation.tunnelLocalize(angle1, angle2, x_corr, y_corr, isVertical);	// Localize before traversing
 		
 		navigation.rotateTheRobot(false, 7, false);
@@ -140,9 +141,6 @@ public class TunnelFollower {
 		}
 		
 		navigation.tunnelLocalize(Math.abs(angle1 - 180), angle2, x_corr, y_corr, isVertical);	// Localize after traversing
-		
-		//armController.openArms();
-		//Navigation.FORWARD_SPEED = 200;
 	}
 
 
@@ -166,21 +164,6 @@ public class TunnelFollower {
 	public double[] getTheEntry(double myZoneURX, double myZoneURY, double myZoneLLX, double myZoneLLY, double tNRURX,
 			double tNRURY, double tNRLLX, double tNRLLY, double islandURX, double islandURY, double islandLLX,
 			double islandLLY) {
-		
-		/*double islandULX = islandLLX;
-		double islandULY = islandURY;
-		double islandlRX = islandURX;
-		double islandLRY = islandLLY;
-		
-		double myZoneULX = myZoneLLX;
-		double myZoneULY = myZoneURY;
-		double myZoneLRX = myZoneURX;
-		double myZoneLRY = myZoneLLY;
-		
-		double tNRULX = tNRLLX;
-		double tNRULY = tNRURY;
-		double tNRLRX = tNRURX;
-		double tNRLRY = tNRLLY;*/
 		
 		double startVx = tNRURX - 0.5;
 		double startVy = tNRURY + 0.5;

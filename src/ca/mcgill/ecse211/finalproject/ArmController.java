@@ -4,7 +4,7 @@ import lejos.hardware.motor.NXTRegulatedMotor;
 
 /**
  * This class is used to control the robot's two arms
- *
+ * @author Anthony Laye
  */
 public class ArmController {
 	public NXTRegulatedMotor leftArmMotor;
@@ -27,7 +27,7 @@ public class ArmController {
 	}
 	
 	/**
-	 * Open up arms wide enough to begin collecting rim
+	 * Open up arms wide enough to begin collecting a ring
 	 */
 	public void openArms() {
 		leftArmMotor.setSpeed(100);

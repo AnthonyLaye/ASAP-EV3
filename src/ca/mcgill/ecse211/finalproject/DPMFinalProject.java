@@ -19,6 +19,11 @@ import lejos.hardware.sensor.SensorMode;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
+/**
+ * This class contains the main method and serves as a controller for all game logic.
+ * @author Anthony Laye
+ * @author Mai Zeng
+ */
 public class DPMFinalProject {
 		// Motor Objects, and Robot related parameters
 		private static final EV3LargeRegulatedMotor leftMotor =
@@ -121,7 +126,7 @@ public class DPMFinalProject {
 		    else if(greenTeam == 13)
 		    	isRedTeam = false;
 		    else
-		    	System.exit(-1); //This better not happen...
+		    	System.exit(-1); //This should never happen
 		    
 		    final int corner, llX, llY, urX, urY, islandLLX, islandLLY, islandURX, islandURY, tnLLX, tnLLY, tnURX, tnURY, tX, tY;
 		    
@@ -184,24 +189,12 @@ public class DPMFinalProject {
 		    	startY = 8;
 		    	startAngle = 180;
 		    }
-		    //else {
-		    //startX = 7;//Debugging purposes
-		    //startY = 1;
-		    //startAngle = 0;
-		    //}
-		    
-		   
-		    
-		
+		  
 		    (new Thread() {
 		        public void run() {
 		        	
-		          //armController.closeArms();
-		          //navigation.trackTest();
 		          USLocalizer.whichRoutine(); // Ultrasonic Localize 
 		          LSLocalizer.lightLocalize(startX, startY, startAngle); // Light localize
-		          //LSLocalizer.pollColour();
-		          //armController.closeArms();
 		          
 		          Sound.beep();
 		          Sound.beep();

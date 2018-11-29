@@ -9,7 +9,8 @@ import lejos.hardware.sensor.SensorModes;
 
 /**
  * This class handles all logic related to interacting with the tree and rings
- *
+ * @author Anthony Laye
+ * @author Mai Zeng
  */
 public class TreeController {
 	public enum Color { ORANGE, BLUE, GREEN, YELLOW, NONE };
@@ -40,8 +41,8 @@ public class TreeController {
 		double new_y = getStopPosition(treeX, treeY);	// Get y position to stop at
 		
 		navigation.travelTo(treeX - 1, new_y, true);
-
 		navigation.travelTo(treeX, new_y, false);	// Travel along y 
+		
 		if(backOrFarward)
 		{
 			navigation.rotateTheRobot(true, 95, false);
@@ -49,22 +50,19 @@ public class TreeController {
 		else
 			navigation.rotateTheRobot(false, 95, false);
 		
+		Sound.beep();	// We are at tree
+		Sound.beep();
+		Sound.beep();
 		
+		angle = odo.getXYT()[2]; // Store initial angle for later use
 		
-		Sound.beep();
-		Sound.beep();
-		Sound.beep();
-		angle = odo.getXYT()[2];//get the angle
 		armController.openArms();
 		
 		findRings();	// Find those rings!!
 		
-		odo.setX(treeX);
+		odo.setX(treeX);	// After full rotation, reset odometer to what it was before
 		odo.setY(new_y);
 		odo.setTheta(angle);
-		
-		//armController.openArms();
-		
 	}
 	
 	/**
@@ -87,11 +85,10 @@ public class TreeController {
 		
 		double new_y = 0;
 		
-		
 		if(odo.getXYT()[1] / 30.48 < treeY)	// We want to stop half a tile before the tree, so this check is to see if robot is above 
-		{
+		{									// or below the tree.
 			backOrFarward = false;
-			new_y = treeY - 1.0; 				// or below the tree.
+			new_y = treeY - 1.0; 				
 		}
 		else
 		{
@@ -123,7 +120,7 @@ public class TreeController {
 			    // There is nothing to be done here
 			}
 			
-			armController.rotateArms(-80);
+			armController.rotateArms(-80);	// Open arms slightly to let light sensor detect color
 			
 			if(!found) {
 				while(armController.leftArmMotor.isMoving() && armController.rightArmMotor.isMoving()) {
@@ -135,14 +132,6 @@ public class TreeController {
 				}
 			}
 			
-			//if(found)
-			//	break;
-			
-			count++;
-			//if (count == 4)
-			//	break;
-			
-			
 			navigation.rotateTheRobot(true, 90, false); // Turn 90 degree to reach other side
 			navigation.advanceRobot(10, false);
 			navigation.advanceRobot(26, true);
@@ -153,7 +142,10 @@ public class TreeController {
 			navigation.lightCorrect();
 			navigation.advanceRobot(5, false);
 			navigation.rotateTheRobot(false, 105, false);
+			
+			count++;
 		}
+		
 		navigation.rotateTheRobot(false, 90, false);
 	}
 	
