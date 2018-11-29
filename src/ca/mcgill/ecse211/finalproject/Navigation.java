@@ -33,11 +33,11 @@ public class Navigation implements UltrasonicController {
 
 	public Navigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, Odometer odometer, 
 			EV3ColorSensor LSL, EV3ColorSensor LSR) throws OdometerExceptions {
-		this.leftMotor = leftMotor;
-		this.rightMotor = rightMotor;
+		Navigation.leftMotor = leftMotor;
+		Navigation.rightMotor = rightMotor;
 		this.odo = odometer;
-		this.LSL = LSL;
-		this.LSR = LSR;
+		Navigation.LSL = LSL;
+		Navigation.LSR = LSR;
 	}
 
 	/**

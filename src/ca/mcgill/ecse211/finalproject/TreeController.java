@@ -1,11 +1,9 @@
 package ca.mcgill.ecse211.finalproject;
 
 import lejos.hardware.Sound;
-import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorMode;
-import lejos.hardware.sensor.SensorModes;
 
 /**
  * This class handles all logic related to interacting with the tree and rings

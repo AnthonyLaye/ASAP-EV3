@@ -6,7 +6,6 @@ import lejos.hardware.lcd.TextLCD;
 
 /**
  * This class is used to display the content of the odometer variables (x, y, Theta)
- * 
  * @author ECSE211 SAMPLE CODE
  */
 public class Display implements Runnable {
