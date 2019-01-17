@@ -30,35 +30,35 @@ Built through the use of a Lego EV3 as well as the Lejos API which enables the E
 ### HIGHLIGHTS
 
 #### Crab mechanism: 
-
-• Successful and consistent ring collection
+ 
+• Successful and consistent ring collection   
 • Hook allows colour to be detected after collecting
 
 #### Navigation:
-
-• Excellent precision
+ 
+• Excellent precision   
 • Highly accurate odometer due to two light sensors
 
 ### TESTING PHASE
 
 #### PHASE ONE - HARDWARE
 
-• Testing of individual components such as light sensors, ultrasonic sensors and motors  
-• Optimal wheel radius and track values  
+• Testing of individual components such as light sensors, ultrasonic sensors and motors    
+• Optimal wheel radius and track values     
 • Optimal light sensor positioning 
 
 #### PHASE TWO - SOFTWARE
 
-• Localization 
-• General navigation 
-• Tunnel Traversal  
-• Ring grabbing  
+• Localization  
+• General navigation   
+• Tunnel Traversal    
+• Ring grabbing     
 • Wi-Fi test
 
 #### PHASE THREE - INTEGRATION
 
-• Beta demo testing  
-• Testing for optimal robot speed  
-• Probability of failure vs success  
+• Beta demo testing    
+• Testing for optimal robot speed    
+• Probability of failure vs success     
 • Integrated localization, navigation and ring collection testing
  
