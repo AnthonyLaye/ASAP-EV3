@@ -6,6 +6,7 @@
 
 **Project Manager** – Mia Yuxin Zhou  
 **Document Manager** – Rayan Osseiran  
+**Software Manager** - Anthony Laye   
 **Software Engineer** - Mai Zeng  
 **Hardware Lead** – Kexin Xu  
 **Testing Lead** – Tooba Rahimnia
